@@ -33,10 +33,14 @@ Decimal phases appear between their surrounding integers in numeric order.
   6. Emergency hotline click-to-call appears in header on all pages
   7. Site renders correctly on mobile, tablet, and desktop breakpoints
   8. All pages served over HTTPS with valid SSL certificate
-**Plans**: TBD
+**Plans**: 5 plans
 
 Plans:
-- [ ] TBD during planning
+- [ ] 01-01-PLAN.md — Project setup with Next.js 16 and Tailwind v4
+- [ ] 01-02-PLAN.md — Layout components (Header, Footer, EmergencyBadge, MobileNav)
+- [ ] 01-03-PLAN.md — Homepage with hero section and Calendly booking
+- [ ] 01-04-PLAN.md — Services overview page with all offerings
+- [ ] 01-05-PLAN.md — Contact page with form and multiple contact methods
 
 ### Phase 2: Trust Building & Detail Pages
 **Goal**: Provide depth and proof needed to convert skeptical enterprise buyers
@@ -112,7 +116,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Core Conversion | 0/TBD | Not started | - |
+| 1. Foundation & Core Conversion | 0/5 | Planned | - |
 | 2. Trust Building & Detail Pages | 0/TBD | Not started | - |
 | 3. Case Studies | 0/TBD | Not started | - |
 | 4. Blog | 0/TBD | Not started | - |

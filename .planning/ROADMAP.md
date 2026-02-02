@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation & Core Conversion** - Next.js foundation with homepage, services, contact, and booking
 - [x] **Phase 2: Trust Building & Detail Pages** - Service details, team, about, trust signals, emergency messaging
-- [ ] **Phase 3: Case Studies** - Portfolio of client success with filtering and quantified results
+- [x] **Phase 3: Case Studies** - Portfolio of client success with filtering and quantified results
 - [ ] **Phase 4: Blog** - Technical content with initial posts for thought leadership and SEO
 - [ ] **Phase 5: Optimization & Polish** - Performance tuning, SEO completion, analytics, conversion optimization
 
@@ -75,10 +75,11 @@ Plans:
   2. Visitor can read 2-3 detailed case study pages with quantified results (e.g., "Reduced recovery time from 48 hours to 2 hours")
   3. Each case study includes problem, solution, and measurable outcomes
   4. Case studies demonstrate technical depth and emergency response capability
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] TBD during planning
+- [x] 03-01-PLAN.md — Case study data and listing page with filtering
+- [x] 03-02-PLAN.md — Case study detail pages with dynamic routes
 
 ### Phase 4: Blog
 **Goal**: Establish thought leadership and SEO foundation through technical content

@@ -10,9 +10,9 @@ See: .planning/PROJECT.md (updated 2026-01-28)
 ## Current Position
 
 Phase: 2 of 5 (Trust Building & Detail Pages)
-Plan: 02-02 of 4 complete
+Plan: 02-01 of 4 complete
 Status: In progress
-Last activity: 2026-02-02 — Completed 02-02-PLAN.md (About Page)
+Last activity: 2026-02-02 — Completed 02-01-PLAN.md (Service Detail Pages)
 
 Progress: [██████░░░░] 60% (6/10 plans complete - Phase 1: 5/5, Phase 2: 1/4)
 
@@ -60,6 +60,9 @@ Recent decisions affecting current work:
 - 01-05: useActionState with Server Actions for form handling (React 19 pattern)
 - 01-05: Zod schema for type-safe form validation
 - 01-05: Email service integration deferred to Phase 2+ (currently logs to console)
+- 02-01: Centralized service data in app/data/services.ts for single source of truth
+- 02-01: Service icons kept in page components (not data file) to avoid JSX serialization
+- 02-01: Emergency-recovery gets special crisis banner; others get urgent help callout
 - 02-02: Vertical timeline on mobile, horizontal on desktop for optimal readability
 - 02-02: Data file pattern for content (app/data/*.ts with TypeScript interfaces)
 - 02-02: Stats bar positioned immediately after hero for impact
@@ -81,8 +84,8 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-02T22:43:00Z
-Stopped at: Completed 02-02-PLAN.md (About Page)
+Last session: 2026-02-02T17:28:00Z
+Stopped at: Completed 02-01-PLAN.md (Service Detail Pages)
 Resume file: None
 
 ## Phase 1 Deliverables
@@ -98,4 +101,5 @@ Resume file: None
 
 ## Phase 2 Deliverables (In Progress)
 
+- Service detail pages for all 7 services with technical specificity (02-01)
 - About page with company story, mission, values, milestones, and stats (02-02)

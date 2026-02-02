@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand colors - Red Leader emergency/rescue theme */
+  --color-brand-red: #dc2626;
+  --color-brand-red-dark: #b91c1c;
+  --color-brand-dark: #1f2937;
+  --color-brand-gray: #6b7280;
+
+  /* Custom spacing for consistent layout */
+  --spacing-section: 5rem;
+
+  /* Typography */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Emergency pulse animation for badge */
+@keyframes emergency-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}

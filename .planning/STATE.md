@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-01-28)
 
 **Core value:** Emergency response is the differentiator — when systems are down, Red Leader fixes them fast.
-**Current focus:** Phase 3 - Case Studies & Social Proof
+**Current focus:** Phase 3 Complete - Moving to Phase 4
 
 ## Current Position
 
 Phase: 3 of 5 (Case Studies & Social Proof)
-Plan: 1 of 2 complete
-Status: In progress
-Last activity: 2026-02-02 — Completed 03-01-PLAN.md (Case Study Data + Listing Page)
+Plan: 2 of 2 complete
+Status: Phase Complete
+Last activity: 2026-02-02 — Completed 03-02-PLAN.md (Case Study Detail Pages)
 
-Progress: [███████████░] 92% (11/12 plans complete - Phase 1: 5/5, Phase 2: 4/4 + 1 catch-up, Phase 3: 1/2)
+Progress: [████████████] 100% (12/12 plans complete - Phase 1: 5/5, Phase 2: 4/4 + 1 catch-up, Phase 3: 2/2)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 10
+- Total plans completed: 12
 - Average duration: 3min
-- Total execution time: 0.5 hours
+- Total execution time: 0.6 hours
 
 **By Phase:**
 
@@ -29,10 +29,10 @@ Progress: [███████████░] 92% (11/12 plans complete - Pha
 |-------|-------|-------|----------|
 | 01-foundation-core-conversion | 5 | 14min | 3min |
 | 02-trust-building-detail-pages | 4 | 12min | 3min |
-| 03-case-studies | 1 | 3min | 3min |
+| 03-case-studies | 2 | 6min | 3min |
 
 **Recent Trend:**
-- Last 5 plans: 02-01 (3min), 02-02 (3min), 02-03 (3min), 02-04 (3min), 03-01 (3min)
+- Last 5 plans: 02-02 (3min), 02-03 (3min), 02-04 (3min), 03-01 (3min), 03-02 (3min)
 - Trend: Consistent velocity
 
 *Updated after each plan completion*
@@ -75,6 +75,7 @@ Recent decisions affecting current work:
 - 02-03: On-call badge for 24/7 rotation visibility
 - 03-01: Client component for filtering (useState), layout.tsx for metadata
 - 03-01: line-clamp-3 for consistent card heights with meaningful preview
+- 03-02: Prev/next navigation from array index for deterministic order
 
 ### Pending Todos
 
@@ -93,8 +94,8 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-02T23:10:00Z
-Stopped at: Completed 03-01-PLAN.md (Case Study Data + Listing Page)
+Last session: 2026-02-02T23:15:00Z
+Stopped at: Completed 03-02-PLAN.md (Case Study Detail Pages)
 Resume file: None
 
 ## Phase 1 Deliverables
@@ -115,7 +116,9 @@ Resume file: None
 - Team section with bios, expertise, certifications, and on-call status (02-03)
 - Trust signals: client logos, testimonials, certifications, success metrics (02-04)
 
-## Phase 3 Deliverables (In Progress)
+## Phase 3 Deliverables (Complete)
 
 - Case study data layer with 3 case studies and TypeScript interfaces (03-01)
 - Case studies listing page with filtering by crisis type and industry (03-01)
+- Case study detail pages with metrics, challenge/solution/outcome, sidebar (03-02)
+- Prev/next navigation and related case studies (03-02)

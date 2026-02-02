@@ -1,5 +1,9 @@
 import Link from 'next/link'
 import { CalendlyEmbed } from '@/app/components/CalendlyEmbed'
+import { SuccessMetrics } from '@/app/components/SuccessMetrics'
+import { ClientLogos } from '@/app/components/ClientLogos'
+import { Testimonials } from '@/app/components/Testimonials'
+import { Certifications } from '@/app/components/Certifications'
 
 export const dynamic = 'force-static'
 
@@ -49,6 +53,13 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Success Metrics - Response time prominently displayed (EMER-03) */}
+      <section className="py-8 bg-brand-dark">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SuccessMetrics variant="dark" />
         </div>
       </section>
 
@@ -105,6 +116,13 @@ export default function HomePage() {
               </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Client Logos (TRUST-01) */}
+      <section className="py-12 border-y border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <ClientLogos showHeading />
         </div>
       </section>
 
@@ -170,6 +188,20 @@ export default function HomePage() {
               </svg>
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* Testimonials (TRUST-02) */}
+      <section className="py-16 sm:py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Testimonials limit={3} />
+        </div>
+      </section>
+
+      {/* Certifications (TRUST-03) */}
+      <section className="py-12 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Certifications />
         </div>
       </section>
 

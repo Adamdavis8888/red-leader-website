@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { companyInfo, values, milestones, stats } from '@/app/data/company'
+import { TeamSection } from '@/app/components/TeamSection'
 
 export const dynamic = 'force-static'
 
@@ -225,8 +226,15 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* Team Section */}
       <section className="py-16 sm:py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <TeamSection />
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-16 sm:py-20 bg-gray-50">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-brand-dark">
             Ready to Work with Us?

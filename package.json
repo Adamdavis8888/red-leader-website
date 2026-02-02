@@ -1,0 +1,29 @@
+{
+  "name": "red-leader-website",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "bugs": {
+    "url": "https://github.com/Adamdavis8888/red-leader-website/issues"
+  },
+  "homepage": "https://github.com/Adamdavis8888/red-leader-website#readme",
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.1.18",
+    "@types/node": "^25.2.0",
+    "@types/react": "^19.2.10",
+    "@types/react-dom": "^19.2.3",
+    "next": "^16.1.6",
+    "postcss": "^8.5.6",
+    "react": "^19.2.4",
+    "react-calendly": "^4.4.0",
+    "react-dom": "^19.2.4",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.9.3",
+    "zod": "^4.3.6"
+  }
+}

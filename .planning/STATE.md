@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-01-28)
 ## Current Position
 
 Phase: 1 of 5 (Foundation & Core Conversion)
-Plan: 0 of TBD in current phase
-Status: Ready to plan
-Last activity: 2026-02-01 — Roadmap created with 5 phases covering all 29 v1 requirements
+Plan: 1 of 5 in current phase
+Status: In progress
+Last activity: 2026-02-02 — Completed 01-01-PLAN.md (Next.js 16 initialization)
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [██░░░░░░░░] 20%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 0
-- Average duration: N/A
-- Total execution time: 0.0 hours
+- Total plans completed: 1
+- Average duration: 3min
+- Total execution time: 0.05 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| - | - | - | - |
+| 01-foundation-core-conversion | 1 | 3min | 3min |
 
 **Recent Trend:**
-- Last 5 plans: None yet
-- Trend: N/A
+- Last 5 plans: 01-01 (3min)
+- Trend: Just started
 
 *Updated after each plan completion*
 
@@ -45,6 +45,9 @@ Recent decisions affecting current work:
 - Phase 1: Next.js 16 + Tailwind v4 stack selected for performance and developer velocity
 - Phase 1: Server-first architecture with strategic client-side interactivity (forms, booking, mobile nav)
 - Phase 1: Calendly for booking vs custom solution (3x conversion improvement, zero maintenance)
+- 01-01: Tailwind v4 CSS-first approach with @theme instead of tailwind.config.js
+- 01-01: next/font Inter with CSS variable for optimal font loading
+- 01-01: force-static export for homepage to maximize performance
 
 ### Pending Todos
 
@@ -63,6 +66,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-01 (roadmap creation)
-Stopped at: Roadmap and STATE.md created, ready for Phase 1 planning
+Last session: 2026-02-02T03:25:05Z
+Stopped at: Completed 01-01-PLAN.md (Next.js 16 initialization with Tailwind v4)
 Resume file: None

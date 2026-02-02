@@ -12,7 +12,7 @@ Five-phase delivery of a lead-generation marketing website for Red Leader's emer
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation & Core Conversion** - Next.js foundation with homepage, services, contact, and booking
+- [x] **Phase 1: Foundation & Core Conversion** - Next.js foundation with homepage, services, contact, and booking
 - [ ] **Phase 2: Trust Building & Detail Pages** - Service details, team, about, trust signals, emergency messaging
 - [ ] **Phase 3: Case Studies** - Portfolio of client success with filtering and quantified results
 - [ ] **Phase 4: Blog** - Technical content with initial posts for thought leadership and SEO
@@ -36,11 +36,11 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 5 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Project setup with Next.js 16 and Tailwind v4
-- [ ] 01-02-PLAN.md — Layout components (Header, Footer, EmergencyBadge, MobileNav)
-- [ ] 01-03-PLAN.md — Homepage with hero section and Calendly booking
-- [ ] 01-04-PLAN.md — Services overview page with all offerings
-- [ ] 01-05-PLAN.md — Contact page with form and multiple contact methods
+- [x] 01-01-PLAN.md — Project setup with Next.js 16 and Tailwind v4
+- [x] 01-02-PLAN.md — Layout components (Header, Footer, EmergencyBadge, MobileNav)
+- [x] 01-03-PLAN.md — Homepage with hero section and Calendly booking
+- [x] 01-04-PLAN.md — Services overview page with all offerings
+- [x] 01-05-PLAN.md — Contact page with form and multiple contact methods
 
 ### Phase 2: Trust Building & Detail Pages
 **Goal**: Provide depth and proof needed to convert skeptical enterprise buyers
@@ -116,7 +116,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Core Conversion | 0/5 | Planned | - |
+| 1. Foundation & Core Conversion | 5/5 | Complete | 2026-02-02 |
 | 2. Trust Building & Detail Pages | 0/TBD | Not started | - |
 | 3. Case Studies | 0/TBD | Not started | - |
 | 4. Blog | 0/TBD | Not started | - |

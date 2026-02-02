@@ -5,32 +5,33 @@
 See: .planning/PROJECT.md (updated 2026-01-28)
 
 **Core value:** Emergency response is the differentiator — when systems are down, Red Leader fixes them fast.
-**Current focus:** Phase 2 - Trust Building & Detail Pages (pending planning)
+**Current focus:** Phase 2 - Trust Building & Detail Pages
 
 ## Current Position
 
-Phase: 1 of 5 COMPLETE
-Plan: 5/5 complete
-Status: Phase 1 Complete - Ready for Phase 2 planning
-Last activity: 2026-02-02 — Completed Phase 1 (Foundation & Core Conversion)
+Phase: 2 of 5 (Trust Building & Detail Pages)
+Plan: 02-02 of 4 complete
+Status: In progress
+Last activity: 2026-02-02 — Completed 02-02-PLAN.md (About Page)
 
-Progress: [██████████] 100% (Phase 1)
+Progress: [██████░░░░] 60% (6/10 plans complete - Phase 1: 5/5, Phase 2: 1/4)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 5
+- Total plans completed: 6
 - Average duration: 3min
-- Total execution time: 0.23 hours
+- Total execution time: 0.28 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-foundation-core-conversion | 5 | 14min | 3min |
+| 02-trust-building-detail-pages | 1 | 3min | 3min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (3min), 01-02 (3min), 01-03 (3min), 01-04 (2min), 01-05 (3min)
+- Last 5 plans: 01-02 (3min), 01-03 (3min), 01-04 (2min), 01-05 (3min), 02-02 (3min)
 - Trend: Consistent velocity
 
 *Updated after each plan completion*
@@ -59,6 +60,9 @@ Recent decisions affecting current work:
 - 01-05: useActionState with Server Actions for form handling (React 19 pattern)
 - 01-05: Zod schema for type-safe form validation
 - 01-05: Email service integration deferred to Phase 2+ (currently logs to console)
+- 02-02: Vertical timeline on mobile, horizontal on desktop for optimal readability
+- 02-02: Data file pattern for content (app/data/*.ts with TypeScript interfaces)
+- 02-02: Stats bar positioned immediately after hero for impact
 
 ### Pending Todos
 
@@ -77,8 +81,8 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-02T08:30:00Z
-Stopped at: Phase 1 complete - Ready for Phase 2 planning
+Last session: 2026-02-02T22:43:00Z
+Stopped at: Completed 02-02-PLAN.md (About Page)
 Resume file: None
 
 ## Phase 1 Deliverables
@@ -91,3 +95,7 @@ Resume file: None
 - EmergencyBadge with 24/7 indicator
 - Responsive design across all breakpoints
 - Static rendering for optimal performance
+
+## Phase 2 Deliverables (In Progress)
+
+- About page with company story, mission, values, milestones, and stats (02-02)

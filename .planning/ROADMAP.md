@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation & Core Conversion** - Next.js foundation with homepage, services, contact, and booking
 - [x] **Phase 2: Trust Building & Detail Pages** - Service details, team, about, trust signals, emergency messaging
 - [x] **Phase 3: Case Studies** - Portfolio of client success with filtering and quantified results
-- [ ] **Phase 4: Blog** - Technical content with initial posts for thought leadership and SEO
+- [x] **Phase 4: Blog** - Technical content with initial posts for thought leadership and SEO
 - [ ] **Phase 5: Optimization & Polish** - Performance tuning, SEO completion, analytics, conversion optimization
 
 ## Phase Details
@@ -90,10 +90,11 @@ Plans:
   2. Visitor can read 2-3 initial blog posts with technical depth (e.g., post-mortems, best practices)
   3. Blog posts demonstrate expertise and provide value to technical audiences
   4. Each post has proper metadata for SEO (title, description, published date)
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] TBD during planning
+- [x] 04-01-PLAN.md — Blog data and listing page
+- [x] 04-02-PLAN.md — Blog post detail pages with 3 technical articles
 
 ### Phase 5: Optimization & Polish
 **Goal**: Achieve production-ready performance, SEO excellence, and conversion optimization
@@ -122,8 +123,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 |-------|----------------|--------|-----------|
 | 1. Foundation & Core Conversion | 5/5 | Complete | 2026-02-02 |
 | 2. Trust Building & Detail Pages | 4/4 | Complete | 2026-02-02 |
-| 3. Case Studies | 0/TBD | Not started | - |
-| 4. Blog | 0/TBD | Not started | - |
+| 3. Case Studies | 2/2 | Complete | 2026-02-02 |
+| 4. Blog | 2/2 | Complete | 2026-02-02 |
 | 5. Optimization & Polish | 0/TBD | Not started | - |
 
 ---

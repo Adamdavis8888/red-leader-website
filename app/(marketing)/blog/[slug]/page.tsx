@@ -2,6 +2,13 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { blogPosts, getBlogPostBySlug, getRelatedPosts } from '@/app/data/blog-posts'
+import {
+  JsonLd,
+  generateArticleSchema,
+  generateBreadcrumbSchema,
+} from '@/app/lib/structured-data'
+
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://redleader.io'
 
 export const dynamic = 'force-static'
 
@@ -113,8 +120,18 @@ export default async function BlogPostPage({ params }: Props) {
   const prevPost = currentIndex > 0 ? blogPosts[currentIndex - 1] : null
   const nextPost = currentIndex < blogPosts.length - 1 ? blogPosts[currentIndex + 1] : null
 
+  const breadcrumbs = [
+    { name: 'Home', url: BASE_URL },
+    { name: 'Blog', url: `${BASE_URL}/blog` },
+    { name: post.title, url: `${BASE_URL}/blog/${post.slug}` },
+  ]
+
   return (
     <>
+      {/* Structured Data */}
+      <JsonLd data={generateArticleSchema(post)} />
+      <JsonLd data={generateBreadcrumbSchema(breadcrumbs)} />
+
       {/* Breadcrumb */}
       <nav className="bg-gray-50 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">

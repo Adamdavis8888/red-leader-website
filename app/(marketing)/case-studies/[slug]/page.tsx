@@ -2,6 +2,13 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { caseStudies, getCaseStudyBySlug, getRelatedCaseStudies } from '@/app/data/case-studies'
+import {
+  JsonLd,
+  generateCaseStudySchema,
+  generateBreadcrumbSchema,
+} from '@/app/lib/structured-data'
+
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://redleader.io'
 
 export const dynamic = 'force-static'
 
@@ -44,8 +51,18 @@ export default async function CaseStudyDetailPage({ params }: Props) {
   const prevCaseStudy = currentIndex > 0 ? caseStudies[currentIndex - 1] : null
   const nextCaseStudy = currentIndex < caseStudies.length - 1 ? caseStudies[currentIndex + 1] : null
 
+  const breadcrumbs = [
+    { name: 'Home', url: BASE_URL },
+    { name: 'Case Studies', url: `${BASE_URL}/case-studies` },
+    { name: caseStudy.title, url: `${BASE_URL}/case-studies/${caseStudy.slug}` },
+  ]
+
   return (
     <>
+      {/* Structured Data */}
+      <JsonLd data={generateCaseStudySchema(caseStudy)} />
+      <JsonLd data={generateBreadcrumbSchema(breadcrumbs)} />
+
       {/* Breadcrumb */}
       <nav className="bg-gray-50 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">

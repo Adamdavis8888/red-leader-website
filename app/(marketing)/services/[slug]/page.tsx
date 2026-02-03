@@ -2,6 +2,13 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { services, getServiceBySlug, getRelatedServices } from '@/app/data/services'
+import {
+  JsonLd,
+  generateServiceSchema,
+  generateBreadcrumbSchema,
+} from '@/app/lib/structured-data'
+
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://redleader.io'
 
 export const dynamic = 'force-static'
 
@@ -43,8 +50,18 @@ export default async function ServiceDetailPage({ params }: Props) {
   const relatedServices = getRelatedServices(service)
   const isEmergencyService = service.slug === 'emergency-recovery'
 
+  const breadcrumbs = [
+    { name: 'Home', url: BASE_URL },
+    { name: 'Services', url: `${BASE_URL}/services` },
+    { name: service.title, url: `${BASE_URL}/services/${service.slug}` },
+  ]
+
   return (
     <>
+      {/* Structured Data */}
+      <JsonLd data={generateServiceSchema(service)} />
+      <JsonLd data={generateBreadcrumbSchema(breadcrumbs)} />
+
       {/* Crisis Banner - Only for Emergency Recovery */}
       {isEmergencyService && (
         <section className="bg-brand-red text-white py-4">

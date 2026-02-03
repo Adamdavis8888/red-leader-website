@@ -4,6 +4,11 @@ import { SuccessMetrics } from '@/app/components/SuccessMetrics'
 import { ClientLogos } from '@/app/components/ClientLogos'
 import { Testimonials } from '@/app/components/Testimonials'
 import { Certifications } from '@/app/components/Certifications'
+import {
+  JsonLd,
+  generateOrganizationSchema,
+  generateWebSiteSchema,
+} from '@/app/lib/structured-data'
 
 export const dynamic = 'force-static'
 
@@ -12,6 +17,10 @@ export default function HomePage() {
 
   return (
     <>
+      {/* Structured Data */}
+      <JsonLd data={generateOrganizationSchema()} />
+      <JsonLd data={generateWebSiteSchema()} />
+
       {/* Hero Section - Above the Fold */}
       <section className="bg-gradient-to-br from-brand-dark to-gray-900 text-white py-16 sm:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -109,10 +109,12 @@ Plans:
   6. Search engines can crawl and index all public pages
   7. Privacy-focused analytics (Plausible) tracks visitor behavior
   8. Site handles errors gracefully with proper 404 pages and error boundaries
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] TBD during planning
+- [ ] 05-01-PLAN.md — SEO (sitemap, robots.txt, structured data, meta tags)
+- [ ] 05-02-PLAN.md — Error handling (404 page, error boundaries)
+- [ ] 05-03-PLAN.md — Analytics (Plausible integration)
 
 ## Progress
 
@@ -125,8 +127,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 2. Trust Building & Detail Pages | 4/4 | Complete | 2026-02-02 |
 | 3. Case Studies | 2/2 | Complete | 2026-02-02 |
 | 4. Blog | 2/2 | Complete | 2026-02-02 |
-| 5. Optimization & Polish | 0/TBD | Not started | - |
+| 5. Optimization & Polish | 0/3 | Planning complete | - |
 
 ---
 *Created: 2026-02-01*
-*Updated: 2026-02-02 - Phase 2 planning complete*
+*Updated: 2026-02-02 - Phase 5 planning complete*

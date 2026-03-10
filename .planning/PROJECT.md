@@ -8,17 +8,18 @@ A lead-generation focused marketing website for Red Leader, a tech consulting co
 
 Emergency response is the differentiator — when systems are down, Red Leader fixes them fast. The site must make this capability immediately clear and make it effortless to reach us in a crisis.
 
-## Current Milestone: v1.1 Branding & Content Refresh
+## Current Milestone: v2.0 Visual Redesign
 
-**Goal:** Update branding, content, and visual assets to reflect real company identity (Red-Leader LLC, MindSource partnership, actual clients and phone number).
+**Goal:** Full visual refresh inspired by world-class tech company websites (Linear, Vercel, Stripe, PlanetScale) — modern typography, clean layouts, bold hero sections, subtle animations, and premium aesthetics.
 
 **Target features:**
-- Real phone number (408-841-3982) site-wide
-- Logo images replacing text placeholders
-- Updated client logos, testimonials, certifications
-- Accurate company milestones (2024-2026)
-- SVG service illustrations and team illustration
-- "Red-Leader" branding consistency
+- Modern typography system (premium font pairings, refined scale)
+- Bold, immersive hero sections with strong visual hierarchy
+- Clean, spacious layouts with intentional whitespace
+- Subtle animations and micro-interactions
+- Professional color system refinement
+- Component-level redesign across all pages
+- Modern UI patterns from top infrastructure/tech sites
 
 ## Requirements
 
@@ -91,4 +92,4 @@ Emergency response is the differentiator — when systems are down, Red Leader f
 | Emergency number always visible | Reinforces core differentiator | — Pending |
 
 ---
-*Last updated: 2026-03-10 after v1.1 milestone start*
+*Last updated: 2026-03-10 after v2.0 milestone start*

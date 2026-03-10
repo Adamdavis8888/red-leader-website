@@ -5,14 +5,14 @@
 See: .planning/PROJECT.md (updated 2026-03-10)
 
 **Core value:** Emergency response is the differentiator — when systems are down, Red-Leader fixes them fast.
-**Current focus:** Milestone v1.1 — Branding & Content Refresh (complete)
+**Current focus:** Milestone v2.0 — Visual Redesign
 
 ## Current Position
 
-Phase: v1.1 complete
-Plan: All changes implemented
-Status: Ready to commit
-Last activity: 2026-03-10 — v1.1 branding & content refresh implemented
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-03-10 — Milestone v2.0 started
 
 ## Accumulated Context
 

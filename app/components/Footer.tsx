@@ -8,8 +8,8 @@ export function Footer() {
           {/* Company Info */}
           <div className="md:col-span-2">
             <div className="flex items-center space-x-2 mb-4">
-              <div className="text-brand-red font-bold text-2xl">RL</div>
-              <span className="font-semibold text-lg">Red Leader</span>
+              <img src="/images/logo-icon.png" alt="Red-Leader" className="h-10 w-auto brightness-0 invert" />
+              <span className="font-semibold text-lg">Red-Leader</span>
             </div>
             <p className="text-gray-400 mb-4">
               Emergency Infrastructure Rescue
@@ -46,10 +46,10 @@ export function Footer() {
             <h3 className="font-semibold text-lg mb-4">Emergency Contact</h3>
             <div className="space-y-3">
               <a
-                href="tel:+1-555-RED-LEAD"
+                href="tel:+14088413982"
                 className="block text-brand-red hover:text-white transition-colors font-semibold"
               >
-                +1-555-RED-LEAD
+                408-841-3982
               </a>
               <p className="text-gray-400 text-sm">
                 Available 24/7/365
@@ -66,7 +66,7 @@ export function Footer() {
 
         {/* Bottom Bar */}
         <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 text-sm">
-          <p>&copy; {new Date().getFullYear()} Red Leader. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Red-Leader. All rights reserved.</p>
         </div>
       </div>
     </footer>

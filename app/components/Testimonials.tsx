@@ -40,29 +40,20 @@ export function Testimonials({ limit, className = '' }: TestimonialsProps) {
               "{testimonial.quote}"
             </p>
 
-            {/* Attribution - TRUST-02: Full attribution required */}
+            {/* Attribution - Role/title only */}
             <div className="flex items-center">
-              {testimonial.image ? (
-                <img
-                  src={testimonial.image}
-                  alt={testimonial.name}
-                  className="w-12 h-12 rounded-full object-cover mr-4"
-                />
-              ) : (
-                <div className="w-12 h-12 rounded-full bg-brand-red flex items-center justify-center mr-4">
-                  <span className="text-white font-semibold">
-                    {testimonial.name
-                      .split(' ')
-                      .map((n) => n[0])
-                      .join('')}
-                  </span>
-                </div>
-              )}
+              <div className="w-12 h-12 rounded-full bg-brand-red flex items-center justify-center mr-4">
+                <span className="text-white font-semibold">
+                  {testimonial.role
+                    .split(' ')
+                    .map((n) => n[0])
+                    .filter((c) => c === c.toUpperCase())
+                    .join('')
+                    .slice(0, 2)}
+                </span>
+              </div>
               <div>
-                <p className="font-semibold text-brand-dark">{testimonial.name}</p>
-                <p className="text-sm text-brand-gray">
-                  {testimonial.role}, {testimonial.company}
-                </p>
+                <p className="font-semibold text-brand-dark">{testimonial.role}</p>
               </div>
             </div>
           </div>

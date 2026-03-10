@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { companyInfo, values, milestones, stats } from '@/app/data/company'
-import { TeamSection } from '@/app/components/TeamSection'
 
 export const dynamic = 'force-static'
 
@@ -35,7 +34,7 @@ const valueIcons = {
 }
 
 export default function AboutPage() {
-  const emergencyPhone = process.env.NEXT_PUBLIC_EMERGENCY_PHONE || '+1-555-123-4567'
+  const emergencyPhone = process.env.NEXT_PUBLIC_EMERGENCY_PHONE || '408-841-3982'
 
   return (
     <>
@@ -87,16 +86,73 @@ export default function AboutPage() {
               </div>
             </div>
 
-            {/* Image placeholder */}
-            <div className="bg-gray-100 rounded-lg min-h-[400px] flex items-center justify-center">
-              <div className="text-center p-8">
-                <div className="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-12 h-12 text-brand-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
-                </div>
-                <p className="text-brand-gray text-sm">Team photo placeholder</p>
-              </div>
+            {/* Team illustration */}
+            <div className="bg-gray-100 rounded-lg min-h-[400px] flex items-center justify-center p-8">
+              <svg viewBox="0 0 400 300" className="w-full max-w-md" fill="none">
+                {/* Desk/table */}
+                <rect x="40" y="180" width="320" height="8" rx="4" fill="#dc2626" opacity="0.2"/>
+                <rect x="60" y="188" width="8" height="60" rx="2" fill="#9ca3af"/>
+                <rect x="332" y="188" width="8" height="60" rx="2" fill="#9ca3af"/>
+
+                {/* Monitor 1 */}
+                <rect x="70" y="120" width="70" height="55" rx="4" fill="#1f2937" stroke="#374151" strokeWidth="2"/>
+                <rect x="75" y="125" width="60" height="40" rx="2" fill="#111827"/>
+                <rect x="80" y="130" width="50" height="4" rx="1" fill="#dc2626" opacity="0.7"/>
+                <rect x="80" y="138" width="35" height="3" rx="1" fill="#4ade80" opacity="0.6"/>
+                <rect x="80" y="145" width="45" height="3" rx="1" fill="#60a5fa" opacity="0.5"/>
+                <rect x="80" y="152" width="30" height="3" rx="1" fill="#f59e0b" opacity="0.5"/>
+                <rect x="100" y="175" width="10" height="5" fill="#374151"/>
+
+                {/* Monitor 2 */}
+                <rect x="165" y="115" width="70" height="55" rx="4" fill="#1f2937" stroke="#374151" strokeWidth="2"/>
+                <rect x="170" y="120" width="60" height="40" rx="2" fill="#111827"/>
+                <rect x="175" y="125" width="50" height="4" rx="1" fill="#dc2626" opacity="0.7"/>
+                <rect x="175" y="133" width="40" height="3" rx="1" fill="#4ade80" opacity="0.6"/>
+                <rect x="175" y="140" width="50" height="3" rx="1" fill="#60a5fa" opacity="0.5"/>
+                <rect x="175" y="147" width="25" height="3" rx="1" fill="#4ade80" opacity="0.5"/>
+                <rect x="195" y="170" width="10" height="10" fill="#374151"/>
+
+                {/* Monitor 3 */}
+                <rect x="260" y="120" width="70" height="55" rx="4" fill="#1f2937" stroke="#374151" strokeWidth="2"/>
+                <rect x="265" y="125" width="60" height="40" rx="2" fill="#111827"/>
+                <rect x="270" y="130" width="50" height="4" rx="1" fill="#dc2626" opacity="0.7"/>
+                <rect x="270" y="138" width="45" height="3" rx="1" fill="#f59e0b" opacity="0.6"/>
+                <rect x="270" y="145" width="35" height="3" rx="1" fill="#60a5fa" opacity="0.5"/>
+                <rect x="270" y="152" width="48" height="3" rx="1" fill="#4ade80" opacity="0.5"/>
+                <rect x="290" y="175" width="10" height="5" fill="#374151"/>
+
+                {/* Person 1 - sitting at left */}
+                <circle cx="105" cy="75" r="18" fill="#dc2626"/>
+                <circle cx="105" cy="70" r="12" fill="#fecaca"/>
+                <rect x="88" y="88" width="34" height="35" rx="8" fill="#dc2626"/>
+                <rect x="80" y="95" width="12" height="25" rx="4" fill="#dc2626" transform="rotate(-15 80 95)"/>
+                <rect x="118" y="92" width="12" height="28" rx="4" fill="#dc2626" transform="rotate(10 118 92)"/>
+
+                {/* Person 2 - center, leaning forward */}
+                <circle cx="200" cy="68" r="18" fill="#b91c1c"/>
+                <circle cx="200" cy="63" r="12" fill="#fecaca"/>
+                <rect x="183" y="81" width="34" height="38" rx="8" fill="#b91c1c"/>
+                <rect x="173" y="90" width="12" height="28" rx="4" fill="#b91c1c" transform="rotate(-20 173 90)"/>
+                <rect x="214" y="86" width="12" height="30" rx="4" fill="#b91c1c" transform="rotate(5 214 86)"/>
+
+                {/* Person 3 - right side */}
+                <circle cx="295" cy="75" r="18" fill="#ef4444"/>
+                <circle cx="295" cy="70" r="12" fill="#fecaca"/>
+                <rect x="278" y="88" width="34" height="35" rx="8" fill="#ef4444"/>
+                <rect x="270" y="95" width="12" height="25" rx="4" fill="#ef4444" transform="rotate(-10 270 95)"/>
+                <rect x="308" y="92" width="12" height="28" rx="4" fill="#ef4444" transform="rotate(15 308 92)"/>
+
+                {/* Status indicator / problem visualization above center monitor */}
+                <circle cx="200" cy="35" r="15" fill="none" stroke="#dc2626" strokeWidth="2" strokeDasharray="4 2">
+                  <animate attributeName="r" values="15;18;15" dur="2s" repeatCount="indefinite"/>
+                  <animate attributeName="opacity" values="1;0.5;1" dur="2s" repeatCount="indefinite"/>
+                </circle>
+                <text x="200" y="40" textAnchor="middle" fontSize="14" fill="#dc2626" fontWeight="bold">!</text>
+
+                {/* Coffee mugs */}
+                <rect x="145" y="172" width="8" height="10" rx="2" fill="#9ca3af"/>
+                <rect x="250" y="172" width="8" height="10" rx="2" fill="#9ca3af"/>
+              </svg>
             </div>
           </div>
         </div>
@@ -201,7 +257,7 @@ export default function AboutPage() {
               {/* Horizontal line */}
               <div className="absolute left-0 right-0 top-6 h-0.5 bg-gray-300" />
 
-              <div className="grid grid-cols-5 gap-4">
+              <div className="grid grid-cols-3 gap-4">
                 {milestones.map((milestone) => (
                   <div key={milestone.year} className="relative pt-12">
                     {/* Dot */}
@@ -223,13 +279,6 @@ export default function AboutPage() {
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Team Section */}
-      <section className="py-16 sm:py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <TeamSection />
         </div>
       </section>
 

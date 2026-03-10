@@ -13,7 +13,7 @@ import {
 export const dynamic = 'force-static'
 
 export default function HomePage() {
-  const emergencyPhone = process.env.NEXT_PUBLIC_EMERGENCY_PHONE || '+1-555-123-4567'
+  const emergencyPhone = process.env.NEXT_PUBLIC_EMERGENCY_PHONE || '408-841-3982'
 
   return (
     <>
@@ -25,6 +25,7 @@ export default function HomePage() {
       <section className="bg-gradient-to-br from-brand-dark to-gray-900 text-white py-16 sm:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
+            <img src="/images/logo-full.png" className="h-20 w-auto brightness-0 invert mb-8" alt="Red-Leader" />
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
               When Your Systems Go Down,{' '}
               <span className="text-brand-red">We Bring Them Back</span>
@@ -77,7 +78,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold text-brand-dark">
-              Why Companies Trust Red Leader
+              Why Companies Trust Red-Leader
             </h2>
             <p className="mt-4 text-lg text-brand-gray max-w-2xl mx-auto">
               When critical infrastructure fails, experience and speed matter.

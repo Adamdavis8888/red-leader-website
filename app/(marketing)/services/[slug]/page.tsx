@@ -46,7 +46,7 @@ export default async function ServiceDetailPage({ params }: Props) {
     notFound()
   }
 
-  const emergencyPhone = process.env.NEXT_PUBLIC_EMERGENCY_PHONE || '+1-555-123-4567'
+  const emergencyPhone = process.env.NEXT_PUBLIC_EMERGENCY_PHONE || '408-841-3982'
   const relatedServices = getRelatedServices(service)
   const isEmergencyService = service.slug === 'emergency-recovery'
 

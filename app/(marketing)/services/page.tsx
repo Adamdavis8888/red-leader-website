@@ -48,8 +48,144 @@ const serviceIcons: Record<string, React.ReactNode> = {
   ),
 }
 
+// Unique SVG illustrations for each service
+const serviceIllustrations: Record<string, React.ReactNode> = {
+  'emergency-recovery': (
+    <svg viewBox="0 0 240 180" className="w-full max-w-xs" fill="none">
+      {/* Server rack */}
+      <rect x="70" y="30" width="100" height="120" rx="6" stroke="#dc2626" strokeWidth="2" fill="#fef2f2"/>
+      <rect x="82" y="45" width="76" height="14" rx="2" fill="#fee2e2" stroke="#dc2626" strokeWidth="1.5"/>
+      <rect x="82" y="67" width="76" height="14" rx="2" fill="#fee2e2" stroke="#dc2626" strokeWidth="1.5"/>
+      <rect x="82" y="89" width="76" height="14" rx="2" fill="#fee2e2" stroke="#dc2626" strokeWidth="1.5"/>
+      {/* Status lights */}
+      <circle cx="92" cy="52" r="3" fill="#dc2626"><animate attributeName="opacity" values="1;0.3;1" dur="1s" repeatCount="indefinite"/></circle>
+      <circle cx="92" cy="74" r="3" fill="#f59e0b"/>
+      <circle cx="92" cy="96" r="3" fill="#22c55e"/>
+      {/* Lightning bolt - emergency */}
+      <path d="M120 10l-15 30h12l-8 25 20-30h-14l10-25z" fill="#dc2626" opacity="0.8"/>
+      {/* Wrench */}
+      <path d="M175 60l-15 15m0 0l-5-5m5 5l5-5" stroke="#dc2626" strokeWidth="2.5" strokeLinecap="round"/>
+      <circle cx="178" cy="57" r="8" stroke="#dc2626" strokeWidth="2" fill="none"/>
+    </svg>
+  ),
+  'cloud-migration': (
+    <svg viewBox="0 0 240 180" className="w-full max-w-xs" fill="none">
+      {/* On-prem server */}
+      <rect x="20" y="80" width="50" height="70" rx="4" stroke="#6b7280" strokeWidth="2" fill="#f3f4f6"/>
+      <rect x="28" y="90" width="34" height="8" rx="1" fill="#e5e7eb" stroke="#6b7280" strokeWidth="1"/>
+      <rect x="28" y="104" width="34" height="8" rx="1" fill="#e5e7eb" stroke="#6b7280" strokeWidth="1"/>
+      <rect x="28" y="118" width="34" height="8" rx="1" fill="#e5e7eb" stroke="#6b7280" strokeWidth="1"/>
+      {/* Arrow */}
+      <path d="M80 110h50" stroke="#dc2626" strokeWidth="2.5" strokeDasharray="6 4"/>
+      <path d="M125 105l10 5-10 5" fill="#dc2626"/>
+      {/* Cloud */}
+      <path d="M160 75c0-11 9-20 20-20 8.5 0 15.8 5.3 18.7 12.8C201 65.4 205 63 210 63c8.3 0 15 6.7 15 15 0 .5 0 1-.1 1.5 4.5 2.3 7.6 7 7.6 12.5 0 7.7-6.3 14-14 14h-46c-7.2 0-13-5.8-13-13 0-5.5 3.5-10.2 8.4-12 .1-.2.1-4 0-6z" fill="#fee2e2" stroke="#dc2626" strokeWidth="2"/>
+      {/* Check in cloud */}
+      <path d="M185 82l6 6 12-12" stroke="#dc2626" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ),
+  'infrastructure-modernization': (
+    <svg viewBox="0 0 240 180" className="w-full max-w-xs" fill="none">
+      {/* Old system */}
+      <rect x="20" y="50" width="70" height="90" rx="4" stroke="#9ca3af" strokeWidth="2" fill="#f9fafb" strokeDasharray="4 2"/>
+      <text x="55" y="80" textAnchor="middle" fontSize="10" fill="#9ca3af" fontFamily="monospace">Legacy</text>
+      <rect x="30" y="90" width="50" height="6" rx="1" fill="#e5e7eb"/>
+      <rect x="30" y="102" width="50" height="6" rx="1" fill="#e5e7eb"/>
+      <rect x="30" y="114" width="50" height="6" rx="1" fill="#e5e7eb"/>
+      {/* Transform arrow */}
+      <path d="M100 95h30" stroke="#dc2626" strokeWidth="2"/>
+      <path d="M125 90l10 5-10 5" fill="#dc2626"/>
+      {/* Modern microservices */}
+      <rect x="145" y="40" width="35" height="30" rx="6" fill="#fee2e2" stroke="#dc2626" strokeWidth="1.5"/>
+      <rect x="190" y="40" width="35" height="30" rx="6" fill="#fee2e2" stroke="#dc2626" strokeWidth="1.5"/>
+      <rect x="145" y="80" width="35" height="30" rx="6" fill="#fee2e2" stroke="#dc2626" strokeWidth="1.5"/>
+      <rect x="190" y="80" width="35" height="30" rx="6" fill="#fee2e2" stroke="#dc2626" strokeWidth="1.5"/>
+      <rect x="168" y="120" width="35" height="30" rx="6" fill="#fee2e2" stroke="#dc2626" strokeWidth="1.5"/>
+      {/* Connections */}
+      <line x1="180" y1="55" x2="190" y2="55" stroke="#dc2626" strokeWidth="1" opacity="0.5"/>
+      <line x1="162" y1="70" x2="162" y2="80" stroke="#dc2626" strokeWidth="1" opacity="0.5"/>
+      <line x1="207" y1="70" x2="207" y2="80" stroke="#dc2626" strokeWidth="1" opacity="0.5"/>
+      <line x1="180" y1="95" x2="190" y2="95" stroke="#dc2626" strokeWidth="1" opacity="0.5"/>
+    </svg>
+  ),
+  'high-availability': (
+    <svg viewBox="0 0 240 180" className="w-full max-w-xs" fill="none">
+      {/* Shield */}
+      <path d="M120 20l50 20v50c0 30-20 55-50 70-30-15-50-40-50-70V40l50-20z" fill="#fef2f2" stroke="#dc2626" strokeWidth="2"/>
+      {/* Uptime arrow */}
+      <path d="M120 60v40" stroke="#dc2626" strokeWidth="3" strokeLinecap="round"/>
+      <path d="M108 72l12-16 12 16" stroke="#dc2626" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+      {/* 99.99% text */}
+      <text x="120" y="120" textAnchor="middle" fontSize="14" fill="#dc2626" fontWeight="bold" fontFamily="system-ui">99.99%</text>
+      <text x="120" y="135" textAnchor="middle" fontSize="9" fill="#6b7280" fontFamily="system-ui">uptime</text>
+      {/* Redundancy nodes */}
+      <circle cx="40" cy="90" r="12" fill="#fee2e2" stroke="#dc2626" strokeWidth="1.5"/>
+      <circle cx="200" cy="90" r="12" fill="#fee2e2" stroke="#dc2626" strokeWidth="1.5"/>
+      <path d="M52 90h18" stroke="#dc2626" strokeWidth="1" strokeDasharray="3 2"/>
+      <path d="M188 90h-18" stroke="#dc2626" strokeWidth="1" strokeDasharray="3 2"/>
+    </svg>
+  ),
+  'cicd-devops': (
+    <svg viewBox="0 0 240 180" className="w-full max-w-xs" fill="none">
+      {/* Infinity/pipeline loop */}
+      <path d="M70 90c0-22 18-40 40-40s40 18 40 40-18 40-40 40" stroke="#dc2626" strokeWidth="2.5" fill="none"/>
+      <path d="M170 90c0 22-18 40-40 40s-40-18-40-40 18-40 40-40" stroke="#dc2626" strokeWidth="2.5" fill="none" strokeDasharray="6 4"/>
+      {/* Pipeline stages */}
+      <circle cx="70" cy="90" r="14" fill="#fee2e2" stroke="#dc2626" strokeWidth="2"/>
+      <text x="70" y="94" textAnchor="middle" fontSize="8" fill="#dc2626" fontWeight="bold">Code</text>
+      <circle cx="120" cy="50" r="14" fill="#fee2e2" stroke="#dc2626" strokeWidth="2"/>
+      <text x="120" y="54" textAnchor="middle" fontSize="8" fill="#dc2626" fontWeight="bold">Build</text>
+      <circle cx="170" cy="90" r="14" fill="#fee2e2" stroke="#dc2626" strokeWidth="2"/>
+      <text x="170" y="94" textAnchor="middle" fontSize="8" fill="#dc2626" fontWeight="bold">Test</text>
+      <circle cx="120" cy="130" r="14" fill="#fee2e2" stroke="#dc2626" strokeWidth="2"/>
+      <text x="120" y="134" textAnchor="middle" fontSize="7" fill="#dc2626" fontWeight="bold">Deploy</text>
+      {/* Rocket */}
+      <path d="M205 30l-5 15h10l-5-15z" fill="#dc2626"/>
+      <path d="M200 45l5 8 5-8" fill="#f59e0b"/>
+    </svg>
+  ),
+  'networking': (
+    <svg viewBox="0 0 240 180" className="w-full max-w-xs" fill="none">
+      {/* Central hub */}
+      <circle cx="120" cy="90" r="20" fill="#fee2e2" stroke="#dc2626" strokeWidth="2"/>
+      <circle cx="120" cy="90" r="8" fill="#dc2626"/>
+      {/* Nodes */}
+      <circle cx="50" cy="40" r="14" fill="#fef2f2" stroke="#dc2626" strokeWidth="1.5"/>
+      <circle cx="190" cy="40" r="14" fill="#fef2f2" stroke="#dc2626" strokeWidth="1.5"/>
+      <circle cx="50" cy="140" r="14" fill="#fef2f2" stroke="#dc2626" strokeWidth="1.5"/>
+      <circle cx="190" cy="140" r="14" fill="#fef2f2" stroke="#dc2626" strokeWidth="1.5"/>
+      <circle cx="30" cy="90" r="14" fill="#fef2f2" stroke="#dc2626" strokeWidth="1.5"/>
+      <circle cx="210" cy="90" r="14" fill="#fef2f2" stroke="#dc2626" strokeWidth="1.5"/>
+      {/* Connections */}
+      <line x1="64" y1="48" x2="102" y2="78" stroke="#dc2626" strokeWidth="1.5" opacity="0.6"/>
+      <line x1="176" y1="48" x2="138" y2="78" stroke="#dc2626" strokeWidth="1.5" opacity="0.6"/>
+      <line x1="64" y1="132" x2="102" y2="102" stroke="#dc2626" strokeWidth="1.5" opacity="0.6"/>
+      <line x1="176" y1="132" x2="138" y2="102" stroke="#dc2626" strokeWidth="1.5" opacity="0.6"/>
+      <line x1="44" y1="90" x2="100" y2="90" stroke="#dc2626" strokeWidth="1.5" opacity="0.6"/>
+      <line x1="196" y1="90" x2="140" y2="90" stroke="#dc2626" strokeWidth="1.5" opacity="0.6"/>
+      {/* Data packets */}
+      <circle cx="83" cy="64" r="3" fill="#dc2626"><animate attributeName="cx" values="64;102" dur="2s" repeatCount="indefinite"/><animate attributeName="cy" values="48;78" dur="2s" repeatCount="indefinite"/></circle>
+    </svg>
+  ),
+  'disaster-prevention': (
+    <svg viewBox="0 0 240 180" className="w-full max-w-xs" fill="none">
+      {/* Shield with checkmark */}
+      <path d="M120 15l60 25v55c0 35-25 65-60 80-35-15-60-45-60-80V40l60-25z" fill="#fef2f2" stroke="#dc2626" strokeWidth="2"/>
+      <path d="M95 85l15 15 35-35" stroke="#dc2626" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
+      {/* Monitoring lines */}
+      <path d="M20 150h30l5-10 8 20 6-15 8 10 5-5h30" stroke="#dc2626" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.5"/>
+      <path d="M130 150h20l5-8 6 16 5-12 7 8 4-4h25" stroke="#dc2626" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.5"/>
+      {/* Warning indicators prevented */}
+      <circle cx="35" cy="35" r="10" stroke="#9ca3af" strokeWidth="1.5" fill="none" strokeDasharray="3 2"/>
+      <line x1="28" y1="28" x2="42" y2="42" stroke="#9ca3af" strokeWidth="1.5"/>
+      <circle cx="205" cy="35" r="10" stroke="#9ca3af" strokeWidth="1.5" fill="none" strokeDasharray="3 2"/>
+      <line x1="198" y1="28" x2="212" y2="42" stroke="#9ca3af" strokeWidth="1.5"/>
+    </svg>
+  ),
+}
+
 export default function ServicesPage() {
-  const emergencyPhone = process.env.NEXT_PUBLIC_EMERGENCY_PHONE || '+1-555-123-4567'
+  const emergencyPhone = process.env.NEXT_PUBLIC_EMERGENCY_PHONE || '408-841-3982'
 
   return (
     <>
@@ -164,16 +300,9 @@ export default function ServicesPage() {
                   </Link>
                 </div>
 
-                {/* Visual placeholder - could be image or illustration */}
-                <div className="flex-1 bg-gray-100 rounded-lg min-h-[200px] lg:min-h-0 flex items-center justify-center">
-                  <div className="text-center p-8">
-                    <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4 text-brand-red">
-                      {serviceIcons[service.slug]}
-                    </div>
-                    <p className="text-brand-gray text-sm">
-                      Service illustration placeholder
-                    </p>
-                  </div>
+                {/* Service illustration */}
+                <div className="flex-1 bg-gray-100 rounded-lg min-h-[200px] lg:min-h-0 flex items-center justify-center p-8">
+                  {serviceIllustrations[service.slug]}
                 </div>
               </div>
             ))}

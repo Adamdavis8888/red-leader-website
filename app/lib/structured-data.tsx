@@ -3,7 +3,7 @@ import { CaseStudy } from '@/app/data/case-studies'
 import { BlogPost } from '@/app/data/blog-posts'
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://redleader.io'
-const EMERGENCY_PHONE = process.env.NEXT_PUBLIC_EMERGENCY_PHONE || '+1-555-123-4567'
+const EMERGENCY_PHONE = process.env.NEXT_PUBLIC_EMERGENCY_PHONE || '408-841-3982'
 
 // Organization schema - used on homepage and about page
 export function generateOrganizationSchema() {
@@ -16,7 +16,7 @@ export function generateOrganizationSchema() {
     logo: `${BASE_URL}/logo.png`,
     telephone: EMERGENCY_PHONE,
     email: 'contact@redleader.io',
-    foundingDate: '2018',
+    foundingDate: '2024',
     areaServed: 'Worldwide',
     serviceType: 'IT Infrastructure Services',
     sameAs: [

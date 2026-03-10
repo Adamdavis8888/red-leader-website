@@ -112,7 +112,7 @@ export function MobileNav() {
               {/* Emergency CTA in mobile menu */}
               <div className="pt-4 border-t border-gray-200">
                 <a
-                  href="tel:+1-555-RED-LEAD"
+                  href="tel:+14088413982"
                   className="block text-center bg-brand-red text-white px-6 py-3 rounded-lg font-semibold hover:bg-brand-red-dark transition-colors"
                 >
                   Emergency: Call Now

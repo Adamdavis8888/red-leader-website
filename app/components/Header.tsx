@@ -8,9 +8,9 @@ export function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            <div className="text-brand-red font-bold text-2xl">RL</div>
+            <img src="/images/logo-icon.png" alt="Red-Leader" className="h-10 w-auto" />
             <span className="text-brand-dark font-semibold text-lg hidden sm:inline">
-              Red Leader
+              Red-Leader
             </span>
           </Link>
 
@@ -45,7 +45,7 @@ export function Header() {
           {/* Emergency Hotline - Desktop */}
           <div className="hidden md:block">
             <a
-              href="tel:+1-555-RED-LEAD"
+              href="tel:+14088413982"
               className="bg-brand-red text-white px-4 py-2 rounded-lg font-semibold hover:bg-brand-red-dark transition-colors inline-flex items-center space-x-2"
             >
               <svg

@@ -5,6 +5,33 @@ interface ClientLogosProps {
   className?: string
 }
 
+function ClientNameSvg({ name }: { name: string }) {
+  // Adjust font size based on name length
+  const fontSize = name.length > 15 ? 11 : name.length > 10 ? 13 : 16
+
+  return (
+    <svg
+      viewBox="0 0 160 48"
+      className="w-full h-full"
+      aria-label={name}
+    >
+      <text
+        x="80"
+        y="28"
+        textAnchor="middle"
+        dominantBaseline="central"
+        fontSize={fontSize}
+        fontWeight="700"
+        fontFamily="system-ui, -apple-system, sans-serif"
+        fill="currentColor"
+        letterSpacing="-0.02em"
+      >
+        {name}
+      </text>
+    </svg>
+  )
+}
+
 export function ClientLogos({ showHeading = false, className = '' }: ClientLogosProps) {
   return (
     <div className={className}>
@@ -18,20 +45,10 @@ export function ClientLogos({ showHeading = false, className = '' }: ClientLogos
         {clientLogos.map((client) => (
           <div
             key={client.name}
-            className="group flex items-center justify-center w-24 h-12 md:w-32 md:h-16 grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all duration-300"
-            title={`${client.name} - ${client.industry}`}
+            className="group flex items-center justify-center w-36 h-14 md:w-44 md:h-16 grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all duration-300 text-brand-gray hover:text-brand-dark"
+            title={client.name}
           >
-            {/* Placeholder with company initials - replace with actual logos */}
-            <div className="flex items-center justify-center w-full h-full bg-gray-100 rounded-lg group-hover:bg-gray-50 transition-colors">
-              <span className="text-lg md:text-xl font-bold text-brand-gray group-hover:text-brand-dark transition-colors">
-                {client.name
-                  .split(' ')
-                  .map((word) => word[0])
-                  .join('')
-                  .slice(0, 2)
-                  .toUpperCase()}
-              </span>
-            </div>
+            <ClientNameSvg name={client.name} />
           </div>
         ))}
       </div>

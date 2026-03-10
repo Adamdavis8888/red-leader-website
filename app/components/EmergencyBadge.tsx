@@ -4,7 +4,7 @@ export function EmergencyBadge() {
   return (
     <div className="fixed bottom-6 right-6 z-40">
       <a
-        href="tel:+1-555-RED-LEAD"
+        href="tel:+14088413982"
         className="flex items-center space-x-3 bg-brand-red text-white px-5 py-3 rounded-full shadow-lg hover:bg-brand-red-dark transition-colors"
         aria-label="24/7 Emergency Response - Call Now"
       >

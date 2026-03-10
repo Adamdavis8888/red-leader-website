@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 }
 
 export default function ContactPage() {
-  const emergencyPhone = process.env.NEXT_PUBLIC_EMERGENCY_PHONE || '+1-555-123-4567'
+  const emergencyPhone = process.env.NEXT_PUBLIC_EMERGENCY_PHONE || '408-841-3982'
   const contactEmail = 'contact@redleader.com'
 
   return (

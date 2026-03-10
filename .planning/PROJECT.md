@@ -8,27 +8,46 @@ A lead-generation focused marketing website for Red Leader, a tech consulting co
 
 Emergency response is the differentiator — when systems are down, Red Leader fixes them fast. The site must make this capability immediately clear and make it effortless to reach us in a crisis.
 
+## Current Milestone: v1.1 Branding & Content Refresh
+
+**Goal:** Update branding, content, and visual assets to reflect real company identity (Red-Leader LLC, MindSource partnership, actual clients and phone number).
+
+**Target features:**
+- Real phone number (408-841-3982) site-wide
+- Logo images replacing text placeholders
+- Updated client logos, testimonials, certifications
+- Accurate company milestones (2024-2026)
+- SVG service illustrations and team illustration
+- "Red-Leader" branding consistency
+
 ## Requirements
 
 ### Validated
 
-(None yet — ship to validate)
+- ✓ Homepage with hero, emergency CTA, services preview, Calendly — v1.0
+- ✓ Service detail pages for all 7 services — v1.0
+- ✓ About page with story, mission, values, milestones — v1.0
+- ✓ Contact page with form — v1.0
+- ✓ Case studies with listing and detail pages — v1.0
+- ✓ Blog infrastructure — v1.0
+- ✓ SEO infrastructure — v1.0
+- ✓ Error handling pages — v1.0
+- ✓ Mobile-responsive design — v1.0
+- ✓ Emergency hotline always visible — v1.0
+- ✓ Trust signals (testimonials, certifications, metrics) — v1.0
 
 ### Active
 
-- [ ] Home page emphasizing emergency response capability
-- [ ] Services section covering all offerings (emergency recovery, cloud migration, infrastructure modernization, CI/CD, networking, disaster prevention, training)
-- [ ] 2-3 case studies with before/after success stories
-- [ ] About page establishing credibility and team expertise
-- [ ] Contact page with form (email submissions)
-- [ ] Blog infrastructure with initial posts
-- [ ] Calendly integration for consultation booking
-- [ ] Click-to-call emergency hotline prominently displayed (always visible)
-- [ ] Mobile-responsive design
-- [ ] SEO optimization
-- [ ] Fast loading performance
-- [ ] Professional design (IBM/Accenture caliber)
-- [ ] Trust signals (testimonials, certifications, success metrics)
+- [ ] Real phone number (408-841-3982) across all pages and tel: hrefs
+- [ ] Logo images (logo-icon.png, logo-full.png) in header, footer, hero
+- [ ] Client logos: Samsung Research America, Joyent, Apple, Western Digital
+- [ ] Testimonials: role/title only, no names or companies
+- [ ] Certifications: "Partner" removed, credentials section removed, inline SVG brand logos
+- [ ] "Red-Leader" branding (hyphenated) throughout site
+- [ ] Company milestones: Founded 2024, Fortune 10 Client 2025, MindSource 2026
+- [ ] SVG illustrations for each service on services page
+- [ ] Team illustration SVG replacing photo placeholder on about page
+- [ ] TeamSection component removed from about page
 
 ### Out of Scope
 
@@ -72,4 +91,4 @@ Emergency response is the differentiator — when systems are down, Red Leader f
 | Emergency number always visible | Reinforces core differentiator | — Pending |
 
 ---
-*Last updated: 2026-01-30 after initialization*
+*Last updated: 2026-03-10 after v1.1 milestone start*

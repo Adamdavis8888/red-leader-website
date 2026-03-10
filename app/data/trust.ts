@@ -29,74 +29,68 @@ export interface SuccessMetric {
 
 // TRUST-01: Client logos for logo wall
 export const clientLogos: ClientLogo[] = [
-  { name: 'TechCorp', logoUrl: '/images/logos/techcorp.svg', industry: 'Technology' },
-  { name: 'FinanceFirst', logoUrl: '/images/logos/financefirst.svg', industry: 'Finance' },
-  { name: 'HealthNet', logoUrl: '/images/logos/healthnet.svg', industry: 'Healthcare' },
-  { name: 'RetailGiant', logoUrl: '/images/logos/retailgiant.svg', industry: 'Retail' },
-  { name: 'ManufacturePro', logoUrl: '/images/logos/manufacturepro.svg', industry: 'Manufacturing' },
-  { name: 'CloudScale', logoUrl: '/images/logos/cloudscale.svg', industry: 'Technology' },
-  { name: 'SecureBank', logoUrl: '/images/logos/securebank.svg', industry: 'Finance' },
-  { name: 'MediCare Plus', logoUrl: '/images/logos/medicareplus.svg', industry: 'Healthcare' },
-  { name: 'GlobalLogistics', logoUrl: '/images/logos/globallogistics.svg', industry: 'Manufacturing' },
-  { name: 'DataDriven', logoUrl: '/images/logos/datadriven.svg', industry: 'Technology' },
+  { name: 'Samsung Research America', logoUrl: '/images/logos/samsung.svg', industry: 'Technology' },
+  { name: 'Joyent', logoUrl: '/images/logos/joyent.svg', industry: 'Technology' },
+  { name: 'Apple', logoUrl: '/images/logos/apple.svg', industry: 'Technology' },
+  { name: 'Western Digital', logoUrl: '/images/logos/western-digital.svg', industry: 'Technology' },
 ]
 
-// TRUST-02: Testimonials with full attribution (name, role, company)
+// TRUST-02: Testimonials with role/title only
 export const testimonials: Testimonial[] = [
   {
-    quote: "When our production database went down at 2 AM on a Friday, Red Leader had us back online in 90 minutes. They saved us from a weekend of downtime that would have cost us millions.",
-    name: 'Sarah Chen',
+    quote: "When our production database went down at 2 AM on a Friday, Red-Leader had us back online in 90 minutes. They saved us from a weekend of downtime that would have cost us millions.",
+    name: '',
     role: 'VP of Engineering',
-    company: 'TechCorp',
+    company: '',
   },
   {
-    quote: "Our Kubernetes cluster was in complete chaos after a failed upgrade. Red Leader's team diagnosed and fixed the issue in under two hours. Their expertise is unmatched.",
-    name: 'Michael Rodriguez',
+    quote: "Our Kubernetes cluster was in complete chaos after a failed upgrade. Red-Leader's team diagnosed and fixed the issue in under two hours. Their expertise is unmatched.",
+    name: '',
     role: 'CTO',
-    company: 'CloudScale',
+    company: '',
   },
   {
-    quote: "We thought we'd lost three years of financial records when our storage system corrupted. Red Leader recovered 100% of our data. They're miracle workers.",
-    name: 'Jennifer Walsh',
+    quote: "We thought we'd lost three years of financial records when our storage system corrupted. Red-Leader recovered 100% of our data. They're miracle workers.",
+    name: '',
     role: 'Director of IT',
-    company: 'FinanceFirst',
+    company: '',
   },
   {
-    quote: "Red Leader didn't just fix our immediate crisis — they redesigned our infrastructure to prevent it from happening again. Our uptime has been 99.99% since.",
-    name: 'David Park',
+    quote: "Red-Leader didn't just fix our immediate crisis — they redesigned our infrastructure to prevent it from happening again. Our uptime has been 99.99% since.",
+    name: '',
     role: 'Head of Platform',
-    company: 'HealthNet',
+    company: '',
   },
   {
-    quote: "I've worked with dozens of infrastructure consultants. Red Leader is the only team I'd call at 3 AM knowing they'll answer and actually solve the problem.",
-    name: 'Amanda Foster',
+    quote: "I've worked with dozens of infrastructure consultants. Red-Leader is the only team I'd call at 3 AM knowing they'll answer and actually solve the problem.",
+    name: '',
     role: 'SVP of Technology',
-    company: 'RetailGiant',
+    company: '',
   },
   {
-    quote: "After two other firms failed to migrate us to AWS, Red Leader completed it in three weeks with zero downtime. They're now our go-to for all infrastructure work.",
-    name: 'Robert Kim',
+    quote: "After two other firms failed to migrate us to AWS, Red-Leader completed it in three weeks with zero downtime. They're now our go-to for all infrastructure work.",
+    name: '',
     role: 'CIO',
-    company: 'ManufacturePro',
+    company: '',
   },
 ]
 
 // TRUST-03: Certifications and credentials
 export const certifications: Certification[] = [
   {
-    name: 'AWS Advanced Consulting Partner',
+    name: 'AWS Advanced Consulting',
     issuer: 'Amazon Web Services',
     logoUrl: '/images/certs/aws-partner.svg',
     description: 'Recognized expertise in AWS architecture, migration, and operations',
   },
   {
-    name: 'Google Cloud Partner',
+    name: 'Google Cloud',
     issuer: 'Google Cloud',
     logoUrl: '/images/certs/gcp-partner.svg',
     description: 'Certified expertise in Google Cloud Platform solutions',
   },
   {
-    name: 'Microsoft Azure Solutions Partner',
+    name: 'Microsoft Azure Solutions',
     issuer: 'Microsoft',
     logoUrl: '/images/certs/azure-partner.svg',
     description: 'Validated competency in Azure cloud services',

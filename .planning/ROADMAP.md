@@ -75,11 +75,11 @@ Plans:
   3. The type scale is visually consistent at mobile (375px), tablet (768px), and desktop (1440px) breakpoints
   4. A background noise texture at ~3% opacity is visible on all full-screen sections, adding depth without distraction
   5. The complete OKLCH color token system and z-index scale are defined in globals.css @theme and no raw Tailwind gray/slate/zinc utilities appear in component files
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 06-01: globals.css @theme — OKLCH color system, z-index scale, animation keyframes
-- [ ] 06-02: layout.tsx — Display font loading via next/font, type scale, background application
+- [ ] 06-01-PLAN.md — globals.css @theme: OKLCH color system, semantic aliases, type scale, z-index, animations, noise texture
+- [ ] 06-02-PLAN.md — layout.tsx: Geist Sans + Geist Mono font loading, gradient text verification
 
 #### Phase 7: Global Shell Redesign
 **Goal**: The site's persistent chrome (header, footer, emergency elements) communicates premium and urgency on every page

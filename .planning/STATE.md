@@ -5,14 +5,34 @@
 See: .planning/PROJECT.md (updated 2026-03-10)
 
 **Core value:** Emergency response is the differentiator — when systems are down, Red-Leader fixes them fast.
-**Current focus:** Milestone v2.0 — Visual Redesign
+**Current focus:** Milestone v2.0 — Visual Redesign (Phase 6: Design Token Foundation)
 
 ## Current Position
 
-Phase: Not started (defining requirements)
+Phase: 6 of 10 (Design Token Foundation)
 Plan: —
-Status: Defining requirements
-Last activity: 2026-03-10 — Milestone v2.0 started
+Status: Ready to plan
+Last activity: 2026-03-10 — v2.0 roadmap created, phases 6-10 defined
+
+Progress: [░░░░░░░░░░] 0% (v2.0 — 0/12 plans)
+
+## Performance Metrics
+
+**Velocity (v1.0):**
+- Total plans completed: 16
+- v1.0 phases 1-5: 16 plans shipped
+
+**By Phase (v1.0):**
+
+| Phase | Plans | Status |
+|-------|-------|--------|
+| 1. Foundation | 5 | Complete |
+| 2. Trust Building | 4 | Complete |
+| 3. Case Studies | 2 | Complete |
+| 4. Blog | 2 | Complete |
+| 5. Optimization | 3 | Complete |
+
+*v2.0 metrics will be tracked here as phases complete*
 
 ## Accumulated Context
 
@@ -20,17 +40,11 @@ Last activity: 2026-03-10 — Milestone v2.0 started
 
 - v1.1: "Red Leader" → "Red-Leader" (hyphenated) for brand consistency
 - v1.1: Phone number 408-841-3982 replaces all placeholder numbers
-- v1.1: Logo extracted from image-2.jpg with background removal (white on transparent PNG)
 - v1.1: Testimonials anonymized — role/title only, no names or companies
-- v1.1: "Partner" removed from all certification names
-- v1.1: Team credentials section removed from Certifications component
-- v1.1: TeamSection component removed from about page
-- v1.1: Milestones updated to reflect real history (Founded 2024, Fortune 10 2025, MindSource 2026)
-- v1.1: Company timeline grid changed from 5-col to 3-col for 3 milestones
-- v1.1: Inline SVG brand logos for AWS, Google Cloud, Azure, CNCF, SOC2
-- v1.1: Client logos as SVG text: Samsung Research America, Joyent, Apple, Western Digital
-- v1.1: Unique SVG illustrations for all 7 services
-- v1.1: SVG team illustration replacing photo placeholder
+- v1.1: TeamSection removed from about page
+- v2.0: CSS-first throughout — Tailwind v4 @theme for tokens, motion package only where CSS cannot express the behavior
+- v2.0: Animation added as a dedicated pass (Phase 9) not per-component, to ensure prefers-reduced-motion is applied consistently
+- v2.0: AnimateOnScroll pattern — thin Client Component wrapper, Server Component children; never add 'use client' at page level
 
 ### Pending Todos
 
@@ -38,4 +52,11 @@ None.
 
 ### Blockers/Concerns
 
-None.
+- Phase 9 (Animation): Confirm exact motion package version with `npm view motion version` before installing — expected ^12.x but unverified
+- Phase 6 (Font): Final font pairing selection (Inter Display vs Geist) requires visual validation against brand guidelines before locking token
+
+## Session Continuity
+
+Last session: 2026-03-10
+Stopped at: Roadmap created — ready to begin Phase 6 planning
+Resume file: None

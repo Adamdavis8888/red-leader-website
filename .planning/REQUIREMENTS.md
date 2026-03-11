@@ -106,40 +106,40 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| CLR-01 | — | Pending |
-| CLR-02 | — | Pending |
-| CLR-03 | — | Pending |
-| CLR-04 | — | Pending |
-| TYP-01 | — | Pending |
-| TYP-02 | — | Pending |
-| TYP-03 | — | Pending |
-| TYP-04 | — | Pending |
-| NAV-01 | — | Pending |
-| NAV-02 | — | Pending |
-| NAV-03 | — | Pending |
-| NAV-04 | — | Pending |
-| NAV-05 | — | Pending |
-| HOME-01 | — | Pending |
-| HOME-02 | — | Pending |
-| HOME-03 | — | Pending |
-| HOME-04 | — | Pending |
-| HOME-05 | — | Pending |
-| HOME-06 | — | Pending |
-| ANIM-01 | — | Pending |
-| ANIM-02 | — | Pending |
-| ANIM-03 | — | Pending |
-| ANIM-04 | — | Pending |
-| PAGE-01 | — | Pending |
-| PAGE-02 | — | Pending |
-| PAGE-03 | — | Pending |
-| PAGE-04 | — | Pending |
-| PAGE-05 | — | Pending |
+| CLR-01 | Phase 6 | Pending |
+| CLR-02 | Phase 6 | Pending |
+| CLR-03 | Phase 6 | Pending |
+| CLR-04 | Phase 6 | Pending |
+| TYP-01 | Phase 6 | Pending |
+| TYP-02 | Phase 6 | Pending |
+| TYP-03 | Phase 6 | Pending |
+| TYP-04 | Phase 6 | Pending |
+| NAV-01 | Phase 7 | Pending |
+| NAV-02 | Phase 7 | Pending |
+| NAV-03 | Phase 7 | Pending |
+| NAV-04 | Phase 7 | Pending |
+| NAV-05 | Phase 7 | Pending |
+| HOME-01 | Phase 8 | Pending |
+| HOME-02 | Phase 8 | Pending |
+| HOME-03 | Phase 8 | Pending |
+| HOME-04 | Phase 8 | Pending |
+| HOME-05 | Phase 8 | Pending |
+| HOME-06 | Phase 8 | Pending |
+| ANIM-01 | Phase 9 | Pending |
+| ANIM-02 | Phase 9 | Pending |
+| ANIM-03 | Phase 9 | Pending |
+| ANIM-04 | Phase 9 | Pending |
+| PAGE-01 | Phase 10 | Pending |
+| PAGE-02 | Phase 10 | Pending |
+| PAGE-03 | Phase 10 | Pending |
+| PAGE-04 | Phase 10 | Pending |
+| PAGE-05 | Phase 10 | Pending |
 
 **Coverage:**
 - v2.0 requirements: 28 total
-- Mapped to phases: 0
-- Unmapped: 28 ⚠️
+- Mapped to phases: 28
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-03-10*
-*Last updated: 2026-03-10 after initial definition*
+*Last updated: 2026-03-10 — traceability complete, all 28 requirements mapped to phases 6-10*

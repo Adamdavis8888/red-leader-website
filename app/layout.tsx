@@ -1,14 +1,19 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Geist, Geist_Mono } from 'next/font/google'
 import Script from 'next/script'
 import './globals.css'
 
 const plausibleDomain = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN
 const plausibleHost = process.env.NEXT_PUBLIC_PLAUSIBLE_HOST || 'plausible.io'
 
-const inter = Inter({
+const geistSans = Geist({
+  variable: '--font-geist-sans',
   subsets: ['latin'],
-  variable: '--font-inter',
+})
+
+const geistMono = Geist_Mono({
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
 })
 
 export const metadata: Metadata = {
@@ -22,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       {plausibleDomain && (
         <Script
           strategy="afterInteractive"

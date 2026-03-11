@@ -78,8 +78,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 06-01-PLAN.md — globals.css @theme: OKLCH color system, semantic aliases, type scale, z-index, animations, noise texture
-- [ ] 06-02-PLAN.md — layout.tsx: Geist Sans + Geist Mono font loading, gradient text verification
+- [x] 06-01-PLAN.md — globals.css @theme: OKLCH color system, semantic aliases, type scale, z-index, animations, noise texture
+- [x] 06-02-PLAN.md — layout.tsx: Geist Sans + Geist Mono font loading, gradient text verification
 
 #### Phase 7: Global Shell Redesign
 **Goal**: The site's persistent chrome (header, footer, emergency elements) communicates premium and urgency on every page
@@ -159,7 +159,7 @@ Phases execute in numeric order: 6 → 7 → 8 → 9 → 10
 | 3. Case Studies | v1.0 | 2/2 | Complete | 2026-02-02 |
 | 4. Blog | v1.0 | 2/2 | Complete | 2026-02-02 |
 | 5. Optimization & Polish | v1.0 | 3/3 | Complete | 2026-02-02 |
-| 6. Design Token Foundation | v2.0 | 0/2 | Not started | - |
+| 6. Design Token Foundation | v2.0 | 2/2 | Complete | 2026-03-10 |
 | 7. Global Shell Redesign | v2.0 | 0/2 | Not started | - |
 | 8. Homepage Redesign | v2.0 | 0/3 | Not started | - |
 | 9. Animation & Motion Layer | v2.0 | 0/2 | Not started | - |

@@ -31,8 +31,9 @@ export default function HomePage() {
               <span className="text-brand-red">We Bring Them Back</span>
             </h1>
             <p className="mt-6 text-xl text-gray-300">
-              24/7 emergency infrastructure rescue for enterprises. Expert response when
-              every minute of downtime costs thousands. We fix what others can't — fast.
+              24/7 emergency infrastructure rescue for enterprises. From cloud outages to
+              AI security incidents — expert response when every minute of downtime costs
+              thousands. We fix what others can't — fast.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-4">
               <a
@@ -109,7 +110,7 @@ export default function HomePage() {
               </div>
               <h3 className="text-xl font-bold text-brand-dark mb-2">Battle-Tested Experts</h3>
               <p className="text-brand-gray">
-                Kubernetes, AWS, Azure, bare metal — we've rescued them all. 20+ years combined experience.
+                Kubernetes, AWS, Azure, GPU clusters, LLM infrastructure — we've rescued them all. 20+ years combined experience.
               </p>
             </div>
 
@@ -144,7 +145,7 @@ export default function HomePage() {
               Our Services
             </h2>
             <p className="mt-4 text-lg text-brand-gray">
-              From emergency rescue to long-term modernization
+              From emergency rescue to AI infrastructure and LLM security
             </p>
           </div>
 
@@ -173,6 +174,18 @@ export default function HomePage() {
               {
                 title: 'Disaster Prevention',
                 description: 'Audits and hardening to prevent the next crisis.',
+              },
+              {
+                title: 'AI Security & LLM Infrastructure',
+                description: 'Secure your AI deployments — prompt injection defense, model security audits, LLM ops.',
+              },
+              {
+                title: 'AI Infrastructure',
+                description: 'GPU clusters, model serving, vector databases — production-grade AI platforms.',
+              },
+              {
+                title: 'Prompting Parties',
+                description: 'We fix your systems, then teach your team to use AI to handle the next incident themselves.',
               },
             ].map((service) => (
               <div

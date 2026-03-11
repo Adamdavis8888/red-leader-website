@@ -354,7 +354,151 @@ Beyond the audit, we help you build the practices that prevent future disasters:
       'Insurance requiring infrastructure documentation',
     ],
     ctaText: 'Prevent Your Next Outage',
-    relatedServices: ['emergency-recovery', 'high-availability', 'cicd-devops'],
+    relatedServices: ['emergency-recovery', 'high-availability', 'ai-security'],
+  },
+  {
+    id: 'ai-security',
+    slug: 'ai-security',
+    title: 'AI Security & LLM Infrastructure',
+    tagline: 'Secure your AI before it ships.',
+    headline: 'Deploy AI Systems That Are Secure by Design',
+    description: 'As organizations rush to deploy LLMs and AI systems, security gaps multiply. We audit, harden, and operationalize AI infrastructure — from prompt injection defense to model access controls to GPU cluster security.',
+    longDescription: `The AI gold rush has created a new class of infrastructure vulnerabilities. Prompt injection, model exfiltration, training data leaks, and unsecured API endpoints are the new attack surface — and most security teams aren't equipped to handle them.
+
+We bring the same rigor we apply to traditional infrastructure security to the AI stack. Our team audits LLM deployments for prompt injection vulnerabilities, reviews model serving infrastructure for unauthorized access, and implements guardrails that prevent data leakage without crippling model performance.
+
+Beyond security, we operationalize AI infrastructure for production. That means monitoring model drift, implementing circuit breakers for hallucination detection, setting up proper access controls for fine-tuned models, and ensuring your vector databases are both performant and secure. We've hardened AI systems for enterprises handling sensitive data under SOC2 and HIPAA requirements.`,
+    features: [
+      'LLM security audits and penetration testing',
+      'Prompt injection defense and guardrails',
+      'Model access control and API security',
+      'AI infrastructure monitoring and observability',
+      'Compliance for AI systems (SOC2, HIPAA)',
+    ],
+    metrics: [
+      { value: '100%', label: 'Audit Coverage' },
+      { value: '< 1 wk', label: 'Security Assessment' },
+      { value: '24/7', label: 'AI Ops Monitoring' },
+      { value: '0', label: 'Data Leaks Tolerated' },
+    ],
+    technicalCapabilities: [
+      'Prompt injection testing and defense implementation',
+      'LLM API gateway security (rate limiting, auth, content filtering)',
+      'Model serving infrastructure hardening (vLLM, TGI, Triton)',
+      'Vector database security (Pinecone, Weaviate, pgvector)',
+      'RAG pipeline security audits',
+      'Training data isolation and access control',
+      'Model artifact signing and supply chain security',
+      'GPU cluster network segmentation and access control',
+      'AI-specific incident response playbooks',
+      'Compliance mapping for AI workloads (EU AI Act, SOC2, HIPAA)',
+    ],
+    useCases: [
+      'Deploying customer-facing LLM application with sensitive data',
+      'Enterprise AI platform needing security audit before launch',
+      'Regulated industry requiring AI compliance documentation',
+      'Securing internal AI tools accessing proprietary codebases',
+      'Incident response after AI system data exposure',
+      'Hardening GPU clusters shared across teams',
+    ],
+    ctaText: 'Secure Your AI Stack',
+    relatedServices: ['disaster-prevention', 'ai-infrastructure', 'networking'],
+  },
+  {
+    id: 'ai-infrastructure',
+    slug: 'ai-infrastructure',
+    title: 'AI Infrastructure',
+    tagline: 'Scale AI from prototype to production.',
+    headline: 'Production-Grade Infrastructure for LLMs and ML Systems',
+    description: 'Deploy and scale LLM infrastructure that actually works in production. From GPU cluster orchestration to vector database optimization to model serving at scale — we build the platform your AI team needs.',
+    longDescription: `Most AI projects stall at the prototype stage — not because the models don't work, but because the infrastructure can't support production traffic, costs spiral out of control, and the ops team doesn't know how to manage GPU clusters.
+
+We build AI infrastructure that bridges the gap between "works in a notebook" and "serves 10,000 requests per second." Our team designs GPU cluster architectures that maximize utilization, implements model serving pipelines that auto-scale with demand, and deploys vector databases that return results in milliseconds at enterprise scale.
+
+Cost optimization is built in from day one. GPU compute is expensive — we implement spot instance strategies, model quantization, and intelligent batching that can cut inference costs by 60-80% without sacrificing quality. Your AI team focuses on models while we handle the infrastructure.`,
+    features: [
+      'GPU cluster design and orchestration',
+      'Model serving and inference optimization',
+      'Vector database deployment and scaling',
+      'LLM ops and monitoring',
+      'AI infrastructure cost optimization',
+    ],
+    metrics: [
+      { value: '60-80%', label: 'Cost Reduction' },
+      { value: '< 100 ms', label: 'Inference Latency' },
+      { value: '99.9%', label: 'Platform Uptime' },
+      { value: '10x', label: 'Throughput Gains' },
+    ],
+    technicalCapabilities: [
+      'GPU cluster orchestration (Kubernetes + NVIDIA GPU Operator)',
+      'Model serving platforms (vLLM, TensorRT-LLM, Triton Inference Server)',
+      'Vector database deployment (Pinecone, Weaviate, Milvus, pgvector)',
+      'RAG pipeline architecture and optimization',
+      'LLM gateway and routing (load balancing across models)',
+      'Model quantization and optimization (GPTQ, AWQ, GGUF)',
+      'Spot/preemptible GPU instance strategies',
+      'Training infrastructure (distributed training, checkpointing)',
+      'ML pipeline orchestration (Kubeflow, MLflow, Weights & Biases)',
+      'Embedding pipeline design and batch processing',
+    ],
+    useCases: [
+      'Scaling LLM application from prototype to production traffic',
+      'Building internal AI platform for engineering teams',
+      'Deploying RAG system over enterprise knowledge base',
+      'Optimizing GPU costs that are growing unsustainably',
+      'Setting up fine-tuning infrastructure for custom models',
+      'Migrating AI workloads from cloud APIs to self-hosted models',
+    ],
+    ctaText: 'Build Your AI Platform',
+    relatedServices: ['ai-security', 'high-availability', 'cloud-migration'],
+  },
+  {
+    id: 'prompting-parties',
+    slug: 'prompting-parties',
+    title: 'Prompting Parties',
+    tagline: 'We fix your systems. Then we make your team 10x better.',
+    headline: 'Hands-On AI Workshops That Turn Your Team Into Incident Response Machines',
+    description: 'When Red-Leader rescues your infrastructure, we don\'t just fix the problem and leave. We run hands-on AI prompting workshops with your engineers, SREs, and DevOps teams — teaching them to use AI tools to solve the exact types of problems we just fixed. Your team leaves 10x more capable.',
+    longDescription: `Every Red-Leader engagement includes something no other infrastructure consultancy offers: we make your team dramatically better at handling incidents themselves.
+
+After we resolve your crisis — whether it's a corrupted database, a collapsed Kubernetes cluster, or a network meltdown — we run hands-on "Prompting Parties" with your technical team. These aren't generic AI training sessions. We use the actual incident we just resolved as the teaching material, showing your engineers exactly how to use AI tools to diagnose, troubleshoot, and recover from the same classes of problems.
+
+Your DBAs learn to use AI for query optimization and recovery planning. Your SREs learn prompt patterns for faster incident triage and root cause analysis. Your DevOps engineers learn to generate runbooks, debug Kubernetes manifests, and automate post-mortems — all with AI. We're not teaching theory. We're teaching your team to solve real problems faster, using the crisis they just lived through as the curriculum. The goal is simple: the next time something breaks at 3 AM, your team handles it before you even think about calling us.`,
+    features: [
+      'Hands-on workshops using your real incidents as curriculum',
+      'AI-powered incident response and triage techniques',
+      'Database recovery and optimization with AI tools',
+      'Kubernetes debugging and troubleshooting prompts',
+      'Custom runbook generation and automation',
+    ],
+    metrics: [
+      { value: '10x', label: 'Team Capability Boost' },
+      { value: '70%', label: 'Faster Incident Triage' },
+      { value: 'Included', label: 'With Every Engagement' },
+      { value: '< 1 day', label: 'Workshop Duration' },
+    ],
+    technicalCapabilities: [
+      'AI-assisted incident triage and root cause analysis',
+      'Prompt engineering for infrastructure debugging',
+      'Database recovery prompt patterns (PostgreSQL, MySQL, MongoDB)',
+      'Kubernetes troubleshooting with AI copilots',
+      'AI-generated runbooks and playbooks',
+      'Automated post-mortem and incident report generation',
+      'Infrastructure-as-code generation and review with AI',
+      'Log analysis and anomaly detection prompting',
+      'Capacity planning and cost optimization with AI',
+      'Custom prompt libraries for your team\'s specific stack',
+    ],
+    useCases: [
+      'Post-incident engagement — turn the crisis into a learning opportunity',
+      'SRE team wanting to reduce mean time to resolution',
+      'DevOps teams adopting AI tools for infrastructure management',
+      'Engineering leadership investing in team capability',
+      'On-call teams struggling with incident fatigue',
+      'Organizations building internal AI-assisted operations practices',
+    ],
+    ctaText: 'Level Up Your Team',
+    relatedServices: ['emergency-recovery', 'ai-security', 'disaster-prevention'],
   },
 ]
 

@@ -107,6 +107,12 @@ export const certifications: Certification[] = [
     logoUrl: '/images/certs/soc2.svg',
     description: 'Audited security controls for handling sensitive data',
   },
+  {
+    name: 'AI/ML Infrastructure',
+    issuer: 'NVIDIA',
+    logoUrl: '/images/certs/nvidia.svg',
+    description: 'Certified expertise in GPU computing, model serving, and AI infrastructure',
+  },
 ]
 
 // TRUST-04: Success metrics (EMER-03: response time prominently displayed)

@@ -6,7 +6,7 @@ export const dynamic = 'force-static'
 
 export const metadata: Metadata = {
   title: 'Services - Red Leader',
-  description: 'Emergency infrastructure rescue, cloud migration, DevOps, and high-availability solutions. 24/7 expert support for enterprise systems.',
+  description: 'Emergency infrastructure rescue, cloud migration, AI security, LLM infrastructure, DevOps, and high-availability solutions. 24/7 expert support for enterprise systems.',
 }
 
 // Service icons by slug
@@ -44,6 +44,21 @@ const serviceIcons: Record<string, React.ReactNode> = {
   'disaster-prevention': (
     <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+    </svg>
+  ),
+  'ai-security': (
+    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+    </svg>
+  ),
+  'ai-infrastructure': (
+    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+    </svg>
+  ),
+  'prompting-parties': (
+    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
     </svg>
   ),
 }
@@ -182,6 +197,107 @@ const serviceIllustrations: Record<string, React.ReactNode> = {
       <line x1="198" y1="28" x2="212" y2="42" stroke="#9ca3af" strokeWidth="1.5"/>
     </svg>
   ),
+  'ai-security': (
+    <svg viewBox="0 0 240 180" className="w-full max-w-xs" fill="none">
+      {/* Shield */}
+      <path d="M120 20l55 22v48c0 32-22 58-55 72-33-14-55-40-55-72V42l55-22z" fill="#fef2f2" stroke="#dc2626" strokeWidth="2"/>
+      {/* AI brain icon inside shield */}
+      <circle cx="120" cy="75" r="22" fill="#fee2e2" stroke="#dc2626" strokeWidth="1.5"/>
+      <path d="M108 75c0-6.6 5.4-12 12-12s12 5.4 12 12" stroke="#dc2626" strokeWidth="2" fill="none"/>
+      <circle cx="112" cy="72" r="2.5" fill="#dc2626"/>
+      <circle cx="128" cy="72" r="2.5" fill="#dc2626"/>
+      <circle cx="120" cy="82" r="2.5" fill="#dc2626"/>
+      <line x1="112" y1="72" x2="120" y2="82" stroke="#dc2626" strokeWidth="1.5"/>
+      <line x1="128" y1="72" x2="120" y2="82" stroke="#dc2626" strokeWidth="1.5"/>
+      <line x1="112" y1="72" x2="128" y2="72" stroke="#dc2626" strokeWidth="1.5"/>
+      {/* Lock */}
+      <rect x="111" y="100" width="18" height="14" rx="2" fill="#dc2626" opacity="0.8"/>
+      <path d="M115 100v-4a5 5 0 0110 0v4" stroke="#dc2626" strokeWidth="2" fill="none"/>
+      <circle cx="120" cy="108" r="2" fill="white"/>
+      {/* Prompt injection blocks */}
+      <rect x="25" y="50" width="40" height="12" rx="2" fill="#fee2e2" stroke="#dc2626" strokeWidth="1" opacity="0.6"/>
+      <line x1="25" y1="50" x2="65" y2="62" stroke="#dc2626" strokeWidth="1.5" opacity="0.5"/>
+      <rect x="175" y="50" width="40" height="12" rx="2" fill="#fee2e2" stroke="#dc2626" strokeWidth="1" opacity="0.6"/>
+      <line x1="175" y1="50" x2="215" y2="62" stroke="#dc2626" strokeWidth="1.5" opacity="0.5"/>
+      {/* Data flow lines */}
+      <path d="M30 140h180" stroke="#dc2626" strokeWidth="1" opacity="0.3" strokeDasharray="4 3"/>
+      <path d="M30 150h180" stroke="#dc2626" strokeWidth="1" opacity="0.3" strokeDasharray="4 3"/>
+    </svg>
+  ),
+  'prompting-parties': (
+    <svg viewBox="0 0 240 180" className="w-full max-w-xs" fill="none">
+      {/* People around a table */}
+      <rect x="60" y="90" width="120" height="8" rx="4" fill="#dc2626" opacity="0.2"/>
+      {/* Laptop screens on table */}
+      <rect x="75" y="70" width="30" height="22" rx="2" fill="#1f2937" stroke="#374151" strokeWidth="1.5"/>
+      <rect x="78" y="73" width="24" height="14" rx="1" fill="#111827"/>
+      <rect x="81" y="76" width="18" height="2" rx="1" fill="#dc2626" opacity="0.7"/>
+      <rect x="81" y="80" width="14" height="2" rx="1" fill="#4ade80" opacity="0.6"/>
+      <rect x="135" y="70" width="30" height="22" rx="2" fill="#1f2937" stroke="#374151" strokeWidth="1.5"/>
+      <rect x="138" y="73" width="24" height="14" rx="1" fill="#111827"/>
+      <rect x="141" y="76" width="18" height="2" rx="1" fill="#dc2626" opacity="0.7"/>
+      <rect x="141" y="80" width="14" height="2" rx="1" fill="#4ade80" opacity="0.6"/>
+      {/* Person 1 - instructor (Red-Leader) */}
+      <circle cx="120" cy="45" r="14" fill="#dc2626"/>
+      <circle cx="120" cy="41" r="9" fill="#fecaca"/>
+      <rect x="108" y="55" width="24" height="25" rx="6" fill="#dc2626"/>
+      {/* Person 2 - learner left */}
+      <circle cx="75" cy="50" r="12" fill="#6b7280"/>
+      <circle cx="75" cy="47" r="8" fill="#e5e7eb"/>
+      <rect x="65" y="58" width="20" height="22" rx="5" fill="#6b7280"/>
+      {/* Person 3 - learner right */}
+      <circle cx="165" cy="50" r="12" fill="#6b7280"/>
+      <circle cx="165" cy="47" r="8" fill="#e5e7eb"/>
+      <rect x="155" y="58" width="20" height="22" rx="5" fill="#6b7280"/>
+      {/* AI sparkle above instructor */}
+      <path d="M120 20l2 6 6 2-6 2-2 6-2-6-6-2 6-2 2-6z" fill="#dc2626" opacity="0.8">
+        <animate attributeName="opacity" values="0.8;0.3;0.8" dur="2s" repeatCount="indefinite"/>
+      </path>
+      {/* 10x badge */}
+      <rect x="170" y="25" width="40" height="20" rx="10" fill="#fee2e2" stroke="#dc2626" strokeWidth="1.5"/>
+      <text x="190" y="39" textAnchor="middle" fontSize="11" fill="#dc2626" fontWeight="bold">10x</text>
+      {/* Chat bubbles representing prompts */}
+      <rect x="30" y="110" width="50" height="16" rx="8" fill="#fee2e2" stroke="#dc2626" strokeWidth="1"/>
+      <text x="55" y="121" textAnchor="middle" fontSize="7" fill="#dc2626">prompt &gt;</text>
+      <rect x="160" y="110" width="50" height="16" rx="8" fill="#fee2e2" stroke="#dc2626" strokeWidth="1"/>
+      <text x="185" y="121" textAnchor="middle" fontSize="7" fill="#dc2626">prompt &gt;</text>
+      {/* Arrow showing knowledge transfer */}
+      <path d="M120 140v15" stroke="#dc2626" strokeWidth="2" strokeDasharray="4 3"/>
+      <text x="120" y="168" textAnchor="middle" fontSize="9" fill="#dc2626" fontWeight="bold">Your Team, Leveled Up</text>
+    </svg>
+  ),
+  'ai-infrastructure': (
+    <svg viewBox="0 0 240 180" className="w-full max-w-xs" fill="none">
+      {/* GPU cluster - 3 cards */}
+      <rect x="30" y="30" width="50" height="70" rx="4" fill="#fef2f2" stroke="#dc2626" strokeWidth="2"/>
+      <rect x="38" y="40" width="34" height="20" rx="2" fill="#fee2e2" stroke="#dc2626" strokeWidth="1"/>
+      <rect x="38" y="66" width="34" height="6" rx="1" fill="#dc2626" opacity="0.3"/>
+      <rect x="38" y="76" width="34" height="6" rx="1" fill="#dc2626" opacity="0.3"/>
+      <text x="55" y="54" textAnchor="middle" fontSize="8" fill="#dc2626" fontWeight="bold">GPU</text>
+      <rect x="95" y="30" width="50" height="70" rx="4" fill="#fef2f2" stroke="#dc2626" strokeWidth="2"/>
+      <rect x="103" y="40" width="34" height="20" rx="2" fill="#fee2e2" stroke="#dc2626" strokeWidth="1"/>
+      <rect x="103" y="66" width="34" height="6" rx="1" fill="#dc2626" opacity="0.3"/>
+      <rect x="103" y="76" width="34" height="6" rx="1" fill="#dc2626" opacity="0.3"/>
+      <text x="120" y="54" textAnchor="middle" fontSize="8" fill="#dc2626" fontWeight="bold">GPU</text>
+      <rect x="160" y="30" width="50" height="70" rx="4" fill="#fef2f2" stroke="#dc2626" strokeWidth="2"/>
+      <rect x="168" y="40" width="34" height="20" rx="2" fill="#fee2e2" stroke="#dc2626" strokeWidth="1"/>
+      <rect x="168" y="66" width="34" height="6" rx="1" fill="#dc2626" opacity="0.3"/>
+      <rect x="168" y="76" width="34" height="6" rx="1" fill="#dc2626" opacity="0.3"/>
+      <text x="185" y="54" textAnchor="middle" fontSize="8" fill="#dc2626" fontWeight="bold">GPU</text>
+      {/* Connection bus */}
+      <line x1="55" y1="100" x2="55" y2="120" stroke="#dc2626" strokeWidth="2"/>
+      <line x1="120" y1="100" x2="120" y2="120" stroke="#dc2626" strokeWidth="2"/>
+      <line x1="185" y1="100" x2="185" y2="120" stroke="#dc2626" strokeWidth="2"/>
+      <line x1="40" y1="120" x2="200" y2="120" stroke="#dc2626" strokeWidth="2.5"/>
+      {/* Model serving */}
+      <rect x="75" y="130" width="90" height="30" rx="6" fill="#fee2e2" stroke="#dc2626" strokeWidth="2"/>
+      <text x="120" y="149" textAnchor="middle" fontSize="10" fill="#dc2626" fontWeight="bold">LLM Inference</text>
+      {/* Throughput indicator */}
+      <path d="M30 155l-8 8m0-8l8 8" stroke="#dc2626" strokeWidth="1.5" strokeLinecap="round" opacity="0.5"/>
+      <path d="M210 145l8-8m-8 0l0 0" stroke="#dc2626" strokeWidth="1.5" strokeLinecap="round" opacity="0.5"/>
+      <circle cx="215" cy="150" r="3" fill="#22c55e"><animate attributeName="opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite"/></circle>
+    </svg>
+  ),
 }
 
 export default function ServicesPage() {
@@ -196,7 +312,7 @@ export default function ServicesPage() {
             Our Services
           </h1>
           <p className="mt-4 text-xl text-gray-300 max-w-2xl mx-auto">
-            From emergency rescue to long-term transformation.
+            From emergency rescue to AI infrastructure and LLM security.
             We handle the infrastructure so you can focus on your business.
           </p>
         </div>

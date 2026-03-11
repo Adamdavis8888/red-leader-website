@@ -1,1119 +1,538 @@
-# Architecture Research: Next.js 14+ Marketing Website
+# Architecture Research: Visual Redesign Integration
 
-**Project:** Red Leader Website
-**Researched:** 2026-01-31
-**Confidence:** HIGH
-
-## Executive Summary
-
-Next.js 14+ marketing websites in 2026 follow a **server-first architecture** with strategic client interactivity. The App Router provides file-system routing, React Server Components by default, and hierarchical layouts that eliminate duplication. For Red Leader's tech consulting site, this means:
-
-- **Fast initial loads** via server-rendered content (critical for lead generation)
-- **Minimal JavaScript** sent to clients (only contact forms, Calendly embed need client-side code)
-- **SEO-optimized by default** through server rendering and metadata API
-- **Organized by intent** using route groups (marketing pages share common layout)
-
-The architecture emphasizes **progressive enhancement**: forms work without JavaScript, images lazy-load automatically, and metadata composes hierarchically from root to page level.
+**Domain:** Visual redesign of existing Next.js 16 + Tailwind v4 marketing site
+**Researched:** 2026-03-10
+**Confidence:** HIGH (based on direct codebase audit + confirmed architecture patterns)
 
 ---
 
-## Recommended Directory Structure
+## Context: What Already Exists
 
-Based on [Next.js official project structure](https://nextjs.org/docs/app/getting-started/project-structure) and [2026 best practices](https://dev.to/bajrayejoon/best-practices-for-organizing-your-nextjs-15-2025-53ji), here's the recommended organization:
+This is a **subsequent milestone** research document. The site is fully built and working. The question is not "how to build" but "how to integrate visual redesign features without breaking what exists."
 
-```
-red-leader-website/
-├── app/                          # App Router (all routes)
-│   ├── layout.tsx                # Root layout (global wrapper)
-│   ├── page.tsx                  # Home page (/)
-│   ├── globals.css               # Global styles + Tailwind
-│   │
-│   ├── (marketing)/              # Route group (doesn't affect URLs)
-│   │   ├── layout.tsx            # Marketing layout (header, footer, CTA)
-│   │   ├── services/
-│   │   │   └── page.tsx          # /services
-│   │   ├── case-studies/
-│   │   │   ├── page.tsx          # /case-studies (list)
-│   │   │   └── [slug]/
-│   │   │       └── page.tsx      # /case-studies/acme-rescue (dynamic)
-│   │   ├── about/
-│   │   │   └── page.tsx          # /about
-│   │   └── contact/
-│   │       └── page.tsx          # /contact
-│   │
-│   ├── blog/
-│   │   ├── page.tsx              # /blog (list)
-│   │   └── [slug]/
-│   │       └── page.tsx          # /blog/post-title (dynamic)
-│   │
-│   └── api/                      # API routes (optional)
-│       └── contact/
-│           └── route.ts          # POST /api/contact (if not using Server Actions)
-│
-├── components/
-│   ├── ui/                       # Reusable UI components
-│   │   ├── button.tsx
-│   │   ├── card.tsx
-│   │   ├── navigation.tsx
-│   │   └── footer.tsx
-│   ├── forms/
-│   │   ├── contact-form.tsx      # Client Component for contact
-│   │   └── calendly-embed.tsx    # Client Component for Calendly
-│   └── marketing/
-│       ├── hero.tsx
-│       ├── services-grid.tsx
-│       ├── testimonials.tsx
-│       └── case-study-card.tsx
-│
-├── lib/
-│   ├── actions/                  # Server Actions
-│   │   └── contact.ts            # Form submission handler
-│   ├── utils/
-│   │   ├── metadata.ts           # SEO metadata helpers
-│   │   └── cn.ts                 # Tailwind class merging
-│   └── constants.ts              # Site config, nav items
-│
-├── content/                      # Markdown/MDX content
-│   ├── case-studies/
-│   │   ├── acme-rescue.mdx
-│   │   └── startup-infrastructure.mdx
-│   └── blog/
-│       └── emergency-response.mdx
-│
-├── public/                       # Static assets
-│   ├── images/
-│   │   ├── logo.svg
-│   │   ├── hero-bg.jpg
-│   │   └── case-studies/
-│   └── favicon.ico
-│
-├── types/
-│   └── index.ts                  # TypeScript definitions
-│
-└── tailwind.config.ts            # Tailwind configuration
-```
+**Existing architecture facts (confirmed by codebase audit):**
 
-### Rationale
-
-**Route groups `(marketing)/`**: Organizes pages by intent without affecting URLs. All marketing pages share a common layout (header, footer, CTA sections) while blog might have a different layout. [Source](https://nextjs.org/docs/app/api-reference/file-conventions/route-groups)
-
-**Components by feature**: UI components in `components/ui/`, marketing-specific in `components/marketing/`, forms in `components/forms/`. This follows [scalable component organization patterns](https://thiraphat-ps-dev.medium.com/mastering-next-js-app-router-best-practices-for-structuring-your-application-3f8cf0c76580).
-
-**Server Actions in `lib/actions/`**: Modern Next.js 14+ pattern for form submissions without API routes. [Official approach](https://nextjs.org/docs/app/getting-started/updating-data).
-
-**Content separation**: MDX files in `content/` directory, keeping prose separate from code. Enables non-technical team members to edit case studies and blog posts.
+- Next.js 16.1.6 with App Router, React 19.2.4
+- Tailwind v4 with CSS-variables-based `@theme {}` in `app/globals.css` (no `tailwind.config.ts`)
+- All marketing pages use `export const dynamic = 'force-static'`
+- Route group `app/(marketing)/` with shared layout: `Header` + `Footer` + `EmergencyBadge`
+- Server Components by default; only `MobileNav`, `EmergencyBadge`, `ContactForm`, `CalendlyEmbed` are `'use client'`
+- Brand tokens defined in `globals.css @theme {}`: `--color-brand-red`, `--color-brand-dark`, `--color-brand-gray`, `--font-sans`
+- One custom `@keyframes emergency-pulse` defined in `globals.css`
+- No animation library installed (no Framer Motion, GSAP, or similar)
+- SVG illustrations are inline JSX in page files (not separate components)
 
 ---
 
-## Component Architecture
+## System Overview
 
-### Server vs Client Component Strategy
+### Current Component Map
 
-**Default to Server Components** for performance and SEO. Only use Client Components (`'use client'`) for interactivity. [Official guidance](https://nextjs.org/docs/app/getting-started/server-and-client-components).
+```
+app/layout.tsx (Server — Root)
+├── Inter font via next/font/google → --font-inter CSS var
+├── globals.css → @theme {} brand tokens + emergency-pulse keyframe
+└── app/(marketing)/layout.tsx (Server — Marketing Shell)
+    ├── Header (Server)
+    │   └── MobileNav (Client — useState for menu open/close)
+    ├── {page content}
+    ├── Footer (Server)
+    └── EmergencyBadge (Client — fixed position, no state)
 
-| Component Type | When to Use | Examples in Red Leader |
-|----------------|-------------|------------------------|
-| **Server Component** | Static content, data fetching, SEO-critical | Hero, Services Grid, Case Study List, Testimonials |
-| **Client Component** | State, events, browser APIs | Contact Form, Calendly Embed, Mobile Menu Toggle, Click-to-Call Button |
+Page-level components (all Server, force-static):
+├── app/(marketing)/page.tsx
+│   ├── SuccessMetrics (Server — variant prop for dark/light)
+│   ├── ClientLogos (Server)
+│   ├── Testimonials (Server — limit prop)
+│   ├── Certifications (Server)
+│   └── CalendlyEmbed (Client — dynamic import, ssr:false)
+├── app/(marketing)/about/page.tsx (inline SVG illustration)
+├── app/(marketing)/services/page.tsx (inline SVG icons + illustrations per service)
+├── app/(marketing)/services/[slug]/page.tsx
+├── app/(marketing)/case-studies/page.tsx
+├── app/(marketing)/case-studies/[slug]/page.tsx
+├── app/(marketing)/blog/page.tsx + [slug]/page.tsx
+└── app/(marketing)/contact/page.tsx
+    └── ContactForm (Client — useActionState)
+```
 
-### Component Composition Pattern
+### Visual Layer Today
+
+```
+globals.css
+├── @import "tailwindcss"
+├── @theme { brand colors, spacing-section, font-sans }
+└── @keyframes emergency-pulse
+
+Every component:
+  Uses Tailwind utility classes directly (bg-brand-dark, text-brand-red, etc.)
+  No shared design tokens beyond the 4 brand colors
+  Typography: Inter only, no size scale beyond Tailwind defaults
+  Animation: Tailwind's animate-spin (CalendlyEmbed loading), custom emergency-pulse
+```
+
+---
+
+## Integration Architecture for Visual Redesign
+
+The visual redesign adds five systems on top of the existing architecture. Each has a specific integration point.
+
+### System 1: Typography System
+
+**Integration point:** `app/globals.css` and `app/layout.tsx`
+
+**What changes:**
+- Add second font (likely a display font for headings) via `next/font/google` in `layout.tsx`
+- Add the new font CSS variable to `@theme {}` in `globals.css`
+- Add a type scale if Tailwind defaults are overridden
+
+**New CSS variable pattern (Tailwind v4):**
+```css
+/* globals.css */
+@theme {
+  /* existing */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* new display font for headings */
+  --font-display: var(--font-cal-sans), var(--font-inter), ui-sans-serif, sans-serif;
+}
+```
+
+**`layout.tsx` change:**
+```tsx
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
+const calSans = CalSans({ variable: '--font-cal-sans' }) // or Geist, DM Sans, etc.
+
+// Apply both variables to <html>
+<html lang="en" className={`${inter.variable} ${calSans.variable}`}>
+```
+
+**What this unlocks:** All heading elements across all pages can then use `font-display` via Tailwind utility `font-display`. No page-level changes needed — the font is available site-wide.
+
+**Existing components affected (modification, not new):**
+- All pages: headings currently use `font-bold` with Inter — add `font-display` class to `h1`, `h2`, `h3` elements
+- The existing `h1`/`h2`/`h3` patterns are inlined in page files, not in shared components, so changes are per-page
+
+**Confidence:** HIGH — This is the standard next/font pattern used in the existing codebase.
+
+---
+
+### System 2: Color System Refinement
+
+**Integration point:** `app/globals.css @theme {}`
+
+**What changes:**
+- Add new color tokens (extended palette, potentially dark mode surface colors)
+- Potentially update existing brand token values
+- Add semantic color aliases if needed
+
+**Pattern (Tailwind v4 — confirmed from existing `globals.css`):**
+```css
+@theme {
+  /* existing tokens — may update hex values */
+  --color-brand-red: #dc2626;        /* may refine to #e63946 or similar */
+  --color-brand-red-dark: #b91c1c;
+  --color-brand-dark: #1f2937;       /* may refine to near-black */
+  --color-brand-gray: #6b7280;
+
+  /* new tokens for premium palette */
+  --color-surface-primary: #ffffff;
+  --color-surface-secondary: #f8fafc;
+  --color-surface-dark: #0f172a;     /* deeper dark for hero sections */
+  --color-accent-red: #dc2626;
+  --color-text-muted: #94a3b8;
+}
+```
+
+**Impact scope:**
+- Updating token values in `@theme {}` propagates automatically to every `text-brand-red`, `bg-brand-dark` usage across all components — no component changes needed for value updates
+- Adding new tokens requires adding new Tailwind classes to components
+- Existing `gray-50`, `gray-100`, `gray-200` usage in pages is NOT using brand tokens — would need replacement if surface colors change
+
+**Risk:** The existing codebase uses Tailwind gray utilities (`bg-gray-50`, `bg-gray-100`, `border-gray-200`) in 15+ locations across page files. These are not brand tokens — they are hardcoded Tailwind defaults. A color system refinement that changes surfaces needs to touch individual page files, not just `globals.css`.
+
+---
+
+### System 3: Animation System
+
+**Integration point:** New — requires decision on approach.
+
+**The core constraint:** All marketing pages are `force-static`. Animation cannot depend on data from server at render time. But client-side animations triggered by browser events (scroll, hover, mount) work fine because they run after hydration.
+
+**Three approaches for this stack:**
+
+**Approach A: CSS-only via Tailwind v4 (recommended for most animations)**
+
+Tailwind v4 exposes animation via `@theme {}` and standard `@keyframes`. No new dependency.
+
+```css
+/* globals.css */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@theme {
+  --animate-fade-up: fade-up 0.6s ease-out;
+  --animate-slide-in: slide-in-right 0.5s ease-out;
+}
+```
+
+Usage in Server Components: `<div className="animate-fade-up">` — works without 'use client'.
+
+**Approach B: Intersection Observer via shared Client Component (for scroll-triggered)**
+
+For scroll-triggered animations, a thin wrapper Client Component is needed:
 
 ```tsx
-// app/(marketing)/layout.tsx (Server Component)
-import Navigation from '@/components/ui/navigation' // Server Component
-import Footer from '@/components/ui/footer'         // Server Component
-
-export default function MarketingLayout({ children }) {
-  return (
-    <>
-      <Navigation />
-      <main>{children}</main>
-      <Footer />
-    </>
-  )
-}
-
-// app/(marketing)/page.tsx (Server Component)
-import Hero from '@/components/marketing/hero'             // Server
-import ServicesGrid from '@/components/marketing/services' // Server
-import ContactCTA from '@/components/marketing/contact'    // Contains Client Component
-
-export default function HomePage() {
-  return (
-    <>
-      <Hero />
-      <ServicesGrid />
-      <ContactCTA /> {/* Wraps client-side contact form */}
-    </>
-  )
-}
-
-// components/marketing/contact.tsx (Server wrapper)
-import ContactForm from '@/components/forms/contact-form' // Client Component
-
-export default function ContactCTA() {
-  return (
-    <section className="bg-slate-900 py-16">
-      <div className="container">
-        <h2>Ready to Rescue Your Infrastructure?</h2>
-        <ContactForm /> {/* Only this is client-side */}
-      </div>
-    </section>
-  )
-}
-
-// components/forms/contact-form.tsx (Client Component)
+// app/components/AnimateOnScroll.tsx
 'use client'
+import { useEffect, useRef, useState } from 'react'
 
-import { useState } from 'react'
-import { submitContact } from '@/lib/actions/contact'
+export function AnimateOnScroll({ children, className }: Props) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [visible, setVisible] = useState(false)
 
-export default function ContactForm() {
-  const [pending, setPending] = useState(false)
-
-  async function handleSubmit(formData: FormData) {
-    setPending(true)
-    await submitContact(formData)
-    setPending(false)
-  }
-
-  return (
-    <form action={handleSubmit}>
-      <input name="email" type="email" required />
-      <button disabled={pending}>
-        {pending ? 'Sending...' : 'Contact Us'}
-      </button>
-    </form>
-  )
-}
-```
-
-**Key principle**: Keep Server Components at the top, only mark as Client Component at the "leaves" where interactivity is needed. This minimizes JavaScript sent to browser.
-
-### Layout Hierarchy
-
-Layouts compose from root → route group → page. [Metadata merges hierarchically](https://nextjs.org/docs/app/api-reference/functions/generate-metadata).
-
-```
-app/layout.tsx (Root)
-├── Metadata: title template, description, OG image
-├── <html> and <body> tags
-├── Google Analytics
-└── Font loading
-
-app/(marketing)/layout.tsx (Route Group)
-├── Extends root metadata
-├── Marketing header (nav, logo, CTA)
-├── Marketing footer (links, contact info)
-└── {children} rendered here
-
-app/(marketing)/services/page.tsx (Page)
-├── Metadata: specific title "Services | Red Leader"
-└── Page content
-```
-
-This prevents duplication: header/footer defined once in `(marketing)/layout.tsx`, inherited by all marketing pages.
-
----
-
-## Data Flow Architecture
-
-### SEO Metadata Flow
-
-**Hierarchical composition** from root → layout → page using [Next.js Metadata API](https://nextjs.org/docs/app/api-reference/functions/generate-metadata):
-
-```tsx
-// app/layout.tsx (Root)
-import type { Metadata } from 'next'
-
-export const metadata: Metadata = {
-  title: {
-    template: '%s | Red Leader',
-    default: 'Red Leader - Emergency Infrastructure Rescue',
-  },
-  description: 'Tech consulting specializing in emergency infrastructure rescue',
-  metadataBase: new URL('https://redleader.com'),
-  openGraph: {
-    images: ['/og-image.jpg'],
-  },
-}
-
-// app/(marketing)/services/page.tsx
-export const metadata: Metadata = {
-  title: 'Services', // Becomes "Services | Red Leader"
-  description: 'Emergency infrastructure rescue, cloud migration, disaster recovery',
-}
-```
-
-**For dynamic pages** (case studies, blog posts):
-
-```tsx
-// app/case-studies/[slug]/page.tsx
-import type { Metadata } from 'next'
-
-export async function generateMetadata({ params }): Promise<Metadata> {
-  const caseStudy = await getCaseStudy(params.slug)
-
-  return {
-    title: caseStudy.title,
-    description: caseStudy.excerpt,
-    openGraph: {
-      images: [caseStudy.image],
-    },
-  }
-}
-```
-
-Metadata is **automatically rendered** in `<head>` by Next.js. No manual manipulation needed.
-
-### Form Submission Flow (Server Actions)
-
-**Modern 2026 pattern**: Server Actions eliminate API routes for form handling. [Official Next.js approach](https://nextjs.org/docs/app/guides/forms).
-
-```
-User fills form
-    ↓
-Client Component calls Server Action
-    ↓
-Server Action runs on server (validates, sends email, logs to DB)
-    ↓
-Returns success/error to client
-    ↓
-Client updates UI
-```
-
-```tsx
-// lib/actions/contact.ts
-'use server'
-
-import { z } from 'zod'
-
-const contactSchema = z.object({
-  name: z.string().min(1),
-  email: z.string().email(),
-  message: z.string().min(10),
-})
-
-export async function submitContact(formData: FormData) {
-  const parsed = contactSchema.safeParse({
-    name: formData.get('name'),
-    email: formData.get('email'),
-    message: formData.get('message'),
-  })
-
-  if (!parsed.success) {
-    return { error: 'Invalid form data' }
-  }
-
-  // Send email via API (Resend, SendGrid, etc.)
-  await sendEmail(parsed.data)
-
-  return { success: true }
-}
-```
-
-**Benefits**:
-- No separate API route needed
-- Type-safe with Zod validation
-- Runs on server (keeps API keys secure)
-- Works without JavaScript (progressive enhancement)
-
-### Content Flow (Blog & Case Studies)
-
-**MDX-based content** for rich formatting. [Next.js MDX guide](https://nextjs.org/docs/app/guides/mdx).
-
-```
-Markdown files in content/
-    ↓
-Read with Node.js fs (server-side only)
-    ↓
-Parse frontmatter (title, date, author)
-    ↓
-Render MDX to React components
-    ↓
-Server Component displays content
-```
-
-```tsx
-// app/blog/[slug]/page.tsx
-import { getPostBySlug } from '@/lib/mdx'
-
-export default async function BlogPost({ params }) {
-  const post = await getPostBySlug(params.slug)
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisible(true) },
+      { threshold: 0.1 }
+    )
+    if (ref.current) observer.observe(ref.current)
+    return () => observer.disconnect()
+  }, [])
 
   return (
-    <article>
-      <h1>{post.frontmatter.title}</h1>
-      <div className="prose">{post.content}</div>
-    </article>
-  )
-}
-```
-
-**Alternative**: Use [Velite](https://github.com/zce/velite) for type-safe content collections with Zod schemas.
-
-### Analytics Flow
-
-**Google Analytics via `@next/third-parties`**: [Official Next.js integration](https://nextjs.org/docs/messages/next-script-for-ga).
-
-```tsx
-// app/layout.tsx
-import { GoogleAnalytics } from '@next/third-parties/google'
-
-export default function RootLayout({ children }) {
-  return (
-    <html>
-      <body>
-        {children}
-        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
-      </body>
-    </html>
-  )
-}
-```
-
-**Benefits over manual gtag.js**:
-- Optimized script loading (deferred after hydration)
-- TypeScript support
-- Better Core Web Vitals (doesn't block rendering)
-
-### Image Optimization Flow
-
-**Automatic via Next.js `<Image>` component**: [Official image optimization guide](https://nextjs.org/docs/app/getting-started/images).
-
-```
-Developer uses <Image> component
-    ↓
-Next.js generates optimized sizes at build time
-    ↓
-Serves WebP/AVIF to modern browsers
-    ↓
-Lazy-loads below-the-fold images
-    ↓
-User sees optimized image for their device
-```
-
-```tsx
-import Image from 'next/image'
-
-<Image
-  src="/hero-bg.jpg"
-  alt="Emergency infrastructure rescue"
-  width={1200}
-  height={600}
-  priority // For above-the-fold (hero images)
-  placeholder="blur" // Shows blur while loading
-/>
-```
-
----
-
-## Build Order Recommendations
-
-### Phase 1: Foundation (Week 1)
-**What to build:**
-1. Next.js project scaffolding with Tailwind
-2. Root layout with fonts, analytics, global styles
-3. Basic component structure (Button, Card, Container)
-4. Route groups `(marketing)/` with shared layout
-5. Static home page (no forms yet)
-
-**Rationale:**
-- Establishes architecture before adding complexity
-- Validates design system (colors, typography, spacing)
-- Tests deployment pipeline early
-
-**Dependencies:**
-- None (greenfield project)
-
-**Critical files:**
-```
-app/layout.tsx           # Root layout
-app/(marketing)/layout.tsx  # Marketing layout
-components/ui/           # UI primitives
-tailwind.config.ts       # Design tokens
-```
-
-### Phase 2: Static Marketing Pages (Week 1-2)
-**What to build:**
-1. Services page (grid layout)
-2. About page (team, mission)
-3. Navigation component
-4. Footer component
-5. SEO metadata per page
-
-**Rationale:**
-- Server Components only (no client complexity)
-- Builds content structure before dynamic features
-- Enables early stakeholder review
-
-**Dependencies:**
-- Phase 1 (foundation)
-
-**Critical patterns:**
-```tsx
-// Each page exports metadata
-export const metadata = { title: '...', description: '...' }
-
-// Uses shared layout from (marketing)/layout.tsx
-// Composes UI components from components/ui/
-```
-
-### Phase 3: Contact Forms (Week 2)
-**What to build:**
-1. Contact form Client Component
-2. Server Action for form submission
-3. Form validation with Zod
-4. Email integration (Resend/SendGrid)
-5. Click-to-call button component
-
-**Rationale:**
-- First Client Component introduction
-- Tests Server Actions pattern
-- Critical for lead generation (business value)
-
-**Dependencies:**
-- Phase 2 (Contact page exists)
-
-**Critical files:**
-```
-components/forms/contact-form.tsx  # Client Component
-lib/actions/contact.ts             # Server Action
-```
-
-### Phase 4: Dynamic Content (Week 2-3)
-**What to build:**
-1. Case studies list page
-2. Case studies dynamic route `[slug]/page.tsx`
-3. MDX integration for rich content
-4. Case study cards/grid component
-5. Blog list and blog post pages
-
-**Rationale:**
-- Demonstrates technical expertise (case studies)
-- Dynamic routing for scalable content
-- MDX enables non-technical content editing
-
-**Dependencies:**
-- Phase 2 (static pages as template)
-
-**Critical patterns:**
-```tsx
-// Dynamic metadata
-export async function generateMetadata({ params }) { ... }
-
-// Dynamic params
-export async function generateStaticParams() { ... }
-```
-
-### Phase 5: Integrations (Week 3)
-**What to build:**
-1. Calendly embed component (Client Component)
-2. Google Analytics setup
-3. Image optimization for case study images
-4. Open Graph images for social sharing
-
-**Rationale:**
-- Calendly enables appointment booking (lead conversion)
-- Analytics tracks visitor behavior
-- Images optimized for performance (Core Web Vitals)
-
-**Dependencies:**
-- Phase 3 (Contact flow established)
-- Phase 4 (Case studies with images)
-
-**Critical files:**
-```
-components/forms/calendly-embed.tsx  # Client Component
-app/layout.tsx                       # GA integration
-public/og-images/                    # Social sharing images
-```
-
-### Phase 6: Performance & SEO Polish (Week 3-4)
-**What to build:**
-1. Loading states for dynamic routes
-2. Error boundaries
-3. 404 page
-4. Sitemap generation
-5. Robots.txt
-6. Structured data (JSON-LD) for case studies
-
-**Rationale:**
-- Professional error handling
-- SEO completeness (sitemap, robots)
-- Structured data improves search visibility
-
-**Dependencies:**
-- Phase 4 (all content exists)
-- Phase 5 (analytics tracking errors)
-
-**Critical files:**
-```
-app/sitemap.ts           # Dynamic sitemap
-app/robots.ts            # Crawler directives
-app/loading.tsx          # Loading UI
-app/error.tsx            # Error boundary
-```
-
----
-
-## Component Boundaries & Communication
-
-### Component Hierarchy
-
-```
-Root Layout (Server)
-├── Google Analytics (Client)
-├── Marketing Layout (Server)
-│   ├── Navigation (Server)
-│   │   └── Mobile Menu Toggle (Client)
-│   ├── Page Content (Server)
-│   │   ├── Hero (Server)
-│   │   ├── Services Grid (Server)
-│   │   └── Contact CTA (Server)
-│   │       └── Contact Form (Client)
-│   └── Footer (Server)
-│       └── Newsletter Form (Client)
-```
-
-**Communication rules:**
-- **Server → Client**: Pass data as props (must be serializable)
-- **Client → Server**: Call Server Actions
-- **Client → Client**: Standard React props/context
-- **Server → Server**: Direct function calls, shared utilities
-
-### Data Fetching Boundaries
-
-**Server Components** fetch data directly (no useState, useEffect):
-
-```tsx
-// app/(marketing)/case-studies/page.tsx (Server Component)
-async function getCaseStudies() {
-  const files = await fs.readdir('./content/case-studies')
-  return files.map(file => parseMDX(file))
-}
-
-export default async function CaseStudiesPage() {
-  const caseStudies = await getCaseStudies()
-
-  return (
-    <div className="grid">
-      {caseStudies.map(study => (
-        <CaseStudyCard key={study.slug} {...study} />
-      ))}
+    <div ref={ref} className={visible ? className : 'opacity-0'}>
+      {children}
     </div>
   )
 }
 ```
 
-**Client Components** receive data from Server Components:
+Server Components import this and wrap sections — the wrapper is Client but children remain Server. This is a standard Next.js pattern.
 
-```tsx
-// components/forms/contact-form.tsx (Client Component)
-'use client'
+**Approach C: Framer Motion (for complex sequences, page transitions)**
 
-export default function ContactForm({ defaultEmail }: { defaultEmail?: string }) {
-  const [email, setEmail] = useState(defaultEmail || '')
-  // ...
-}
-```
+If the design calls for complex multi-step animations, staggered lists, or page transitions, Framer Motion is the standard library. It requires `'use client'` on components that use it.
 
----
+**Key Framer Motion + App Router constraint:** `motion.div` and all Framer components require Client Components. The Server Component tree can still pass data down to a thin `'use client'` wrapper. This is identical to the existing `CalendlyEmbed` pattern — dynamic import with SSR disabled.
 
-## Patterns to Follow
+**Recommendation:** Start with Approach A (CSS) for entrance animations and hover effects. Add Approach B (IntersectionObserver) for scroll-triggered reveals. Add Framer Motion only if the design spec explicitly requires sequenced animations or page transitions that CSS cannot deliver.
 
-### Pattern 1: Progressive Enhancement Forms
-
-**What:** Forms work without JavaScript, enhanced with client-side validation.
-
-**When:** All forms (contact, newsletter).
-
-**How:**
-```tsx
-'use client'
-
-import { useFormStatus } from 'react-dom'
-
-function SubmitButton() {
-  const { pending } = useFormStatus()
-  return <button disabled={pending}>{pending ? 'Sending...' : 'Send'}</button>
-}
-
-export default function ContactForm() {
-  return (
-    <form action={submitContact}>
-      <input name="email" type="email" required />
-      <SubmitButton />
-    </form>
-  )
-}
-```
-
-**Why:** Accessible, works with JavaScript disabled, better UX with JavaScript enabled.
-
-### Pattern 2: Metadata Composition
-
-**What:** Define metadata at layout level, override at page level.
-
-**When:** All pages for SEO.
-
-**How:**
-```tsx
-// app/layout.tsx
-export const metadata = {
-  title: { template: '%s | Red Leader', default: 'Red Leader' },
-}
-
-// app/(marketing)/services/page.tsx
-export const metadata = {
-  title: 'Services', // Becomes "Services | Red Leader"
-}
-```
-
-**Why:** DRY, consistent branding, easy per-page customization.
-
-### Pattern 3: Lazy-Loaded Client Components
-
-**What:** Load heavy Client Components only when needed.
-
-**When:** Calendly embed, chat widgets, complex forms.
-
-**How:**
-```tsx
-import dynamic from 'next/dynamic'
-
-const CalendlyEmbed = dynamic(() => import('@/components/forms/calendly-embed'), {
-  loading: () => <p>Loading calendar...</p>,
-  ssr: false, // Don't render on server
-})
-
-export default function ContactPage() {
-  return (
-    <>
-      <h1>Contact Us</h1>
-      <CalendlyEmbed />
-    </>
-  )
-}
-```
-
-**Why:** Reduces initial bundle size, improves Time to Interactive.
-
-### Pattern 4: Colocation of Related Code
-
-**What:** Keep component-specific utilities, types, and tests together.
-
-**When:** Complex features with multiple files.
-
-**How:**
-```
-components/forms/
-├── contact-form.tsx
-├── contact-form.test.tsx
-├── contact-form.types.ts
-└── contact-form.utils.ts
-```
-
-**Why:** Easier to find related code, better encapsulation.
-
-### Pattern 5: Server-Only Utilities
-
-**What:** Mark server-only code to prevent client-side imports.
-
-**When:** Database queries, API key usage, sensitive logic.
-
-**How:**
-```tsx
-// lib/email.ts
-import 'server-only'
-
-export async function sendEmail(to: string, subject: string, body: string) {
-  // Uses process.env.EMAIL_API_KEY
-}
-```
-
-**Why:** Build-time error if accidentally imported in Client Component.
+**New component needed:** `AnimateOnScroll` wrapper (Client Component, ~30 lines) if scroll animations are required. This is the only new shared component the animation system needs.
 
 ---
 
-## Anti-Patterns to Avoid
+### System 4: Layout Changes
 
-### Anti-Pattern 1: Over-Using Client Components
+**Integration point:** Individual page files + `app/(marketing)/layout.tsx`
 
-**What:** Marking entire page as `'use client'` when only small part needs interactivity.
+**Layout-level changes (layout.tsx):**
+- Header redesign: Currently `bg-white border-b sticky top-0` — may become transparent/blur on scroll (requires `'use client'` addition to Header, or a wrapper)
+- Header scroll behavior is the only layout shell change that requires architecture decision
 
-**Why bad:** Sends unnecessary JavaScript to browser, slower initial load.
+**Page-level layout changes:**
+- All section padding, grid patterns, and container widths are inlined per page
+- No shared "section" component exists — the `--spacing-section: 5rem` token exists but each page uses its own `py-16 sm:py-20` pattern
+- Layout changes require touching each page file individually
 
-**Instead:** Keep Server Components at top, mark only interactive leaves as Client Components.
+**Container pattern audit:**
+- Home, About, Services use `max-w-7xl mx-auto px-4 sm:px-6 lg:px-8` — consistent
+- `max-w-4xl` used for Calendly section, `max-w-3xl` for CTA sections
+- `container mx-auto` used in Header and Footer (inherits Tailwind's default container breakpoints)
 
-```tsx
-// ❌ Bad
-'use client'
-export default function ServicesPage() {
-  const [expanded, setExpanded] = useState(false)
-  return (
-    <>
-      <Hero />
-      <Services />
-      <Accordion expanded={expanded} setExpanded={setExpanded} />
-    </>
-  )
-}
-
-// ✅ Good
-export default function ServicesPage() {
-  return (
-    <>
-      <Hero /> {/* Server Component */}
-      <Services /> {/* Server Component */}
-      <Accordion /> {/* Only this is Client Component */}
-    </>
-  )
-}
-```
-
-### Anti-Pattern 2: Client-Side Data Fetching
-
-**What:** Using useEffect to fetch data in Client Components.
-
-**Why bad:** Slower (waits for JavaScript), not SEO-friendly, waterfall requests.
-
-**Instead:** Fetch in Server Components, pass as props.
-
-```tsx
-// ❌ Bad
-'use client'
-export default function CaseStudies() {
-  const [studies, setStudies] = useState([])
-
-  useEffect(() => {
-    fetch('/api/case-studies').then(r => r.json()).then(setStudies)
-  }, [])
-
-  return <div>{studies.map(...)}</div>
-}
-
-// ✅ Good
-async function getCaseStudies() {
-  return await readMDXFiles('./content/case-studies')
-}
-
-export default async function CaseStudies() {
-  const studies = await getCaseStudies()
-  return <div>{studies.map(...)}</div>
-}
-```
-
-### Anti-Pattern 3: Duplicating Layout Code
-
-**What:** Copy-pasting header/footer into every page.
-
-**Why bad:** Maintenance nightmare, inconsistent UI.
-
-**Instead:** Use layouts with route groups.
-
-```tsx
-// ❌ Bad
-export default function ServicesPage() {
-  return (
-    <>
-      <Header />
-      <main>Services content</main>
-      <Footer />
-    </>
-  )
-}
-
-// ✅ Good
-// app/(marketing)/layout.tsx
-export default function MarketingLayout({ children }) {
-  return (
-    <>
-      <Header />
-      <main>{children}</main>
-      <Footer />
-    </>
-  )
-}
-
-// app/(marketing)/services/page.tsx
-export default function ServicesPage() {
-  return <div>Services content</div> // Header/Footer automatic
-}
-```
-
-### Anti-Pattern 4: Ignoring Image Optimization
-
-**What:** Using `<img>` instead of Next.js `<Image>`.
-
-**Why bad:** Large file sizes, no lazy loading, poor Core Web Vitals.
-
-**Instead:** Always use `<Image>` for performance.
-
-```tsx
-// ❌ Bad
-<img src="/hero.jpg" alt="Hero" />
-
-// ✅ Good
-<Image
-  src="/hero.jpg"
-  alt="Hero"
-  width={1200}
-  height={600}
-  priority
-/>
-```
-
-### Anti-Pattern 5: Manual Meta Tag Management
-
-**What:** Manually adding `<meta>` tags with `next/head` or React Helmet.
-
-**Why bad:** Doesn't compose properly, verbose, not type-safe.
-
-**Instead:** Use Metadata API.
-
-```tsx
-// ❌ Bad
-import Head from 'next/head'
-export default function Page() {
-  return (
-    <>
-      <Head>
-        <title>Services | Red Leader</title>
-        <meta name="description" content="..." />
-      </Head>
-      <div>Content</div>
-    </>
-  )
-}
-
-// ✅ Good
-export const metadata = {
-  title: 'Services',
-  description: '...',
-}
-
-export default function Page() {
-  return <div>Content</div>
-}
-```
+**Opportunity:** Extract a `<Section>` and `<Container>` component to centralize layout control. This is not required but makes systematic layout changes easier. If extracted, it's a new shared Server Component.
 
 ---
 
-## Scalability Considerations
+### System 5: Micro-Interactions
 
-### At Launch (100-1000 visitors/month)
+**Integration point:** Existing components + CSS `@theme` additions
 
-**Focus:** Core functionality, basic performance.
+**Already present in codebase:**
+- `hover:shadow-md transition-shadow` on service cards, testimonial cards
+- `hover:text-brand-red transition-colors` on nav links
+- `group-hover:translate-x-1 transition-transform` on arrow icon in service links
+- `grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all` on client logos
+- `animate-spin` on Calendly loading spinner
+- `animate-[emergency-pulse_2s_ease-in-out_infinite]` on EmergencyBadge pulse dot
 
-**Architecture:**
-- Static generation for all marketing pages (SSG)
-- Server Components for all non-interactive content
-- Minimal Client Components (contact form, Calendly)
-- MDX files in repository
+**Pattern: Tailwind v4 arbitrary animation syntax** is already used (`animate-[emergency-pulse_2s...]`). This pattern works for custom keyframes defined in `globals.css`.
 
-**Performance targets:**
-- Lighthouse score: 90+
-- First Contentful Paint: <1.5s
-- Time to Interactive: <3s
+**What micro-interactions need:**
+- More refined hover states on buttons (scale, shadow, color transitions) — CSS only
+- Card hover lifts with border glow — CSS only
+- Button press states — CSS `active:` modifier, no JS needed
+- Focus-visible rings for accessibility — CSS, already supported by Tailwind
 
-**Deployment:** Vercel/Netlify with automatic static optimization.
-
-### At Growth (10K-50K visitors/month)
-
-**Focus:** Content scalability, performance optimization.
-
-**Architecture:**
-- Consider headless CMS (Sanity, Contentful) for case studies/blog
-- Add Incremental Static Regeneration (ISR) for frequently updated content
-- Image CDN for case study images (Cloudinary, imgix)
-- Add caching headers for static assets
-
-**Performance targets:**
-- Lighthouse score: 95+
-- First Contentful Paint: <1s
-- Time to Interactive: <2s
-
-**Deployment:** CDN-backed (Vercel Edge, Cloudflare Pages).
-
-### At Scale (100K+ visitors/month)
-
-**Focus:** Advanced optimization, A/B testing, analytics depth.
-
-**Architecture:**
-- Headless CMS with webhook-triggered revalidation
-- Edge middleware for A/B testing, personalization
-- Advanced image optimization (AVIF format, responsive srcsets)
-- Database for form submissions (replace email notifications)
-- Analytics pipeline (segment, mixpanel, custom events)
-
-**Performance targets:**
-- Lighthouse score: 95+
-- First Contentful Paint: <0.8s
-- Time to Interactive: <1.5s
-- Core Web Vitals: all green
-
-**Deployment:** Multi-region edge deployment, advanced caching strategies.
+**No new architecture needed** for micro-interactions. They extend what's already working.
 
 ---
 
-## Technology-Specific Decisions
+## New Components Needed
 
-### Why Next.js 14+ App Router (Not Pages Router)
+| Component | Type | Purpose | Location |
+|-----------|------|---------|----------|
+| `AnimateOnScroll` | Client Component | Intersection Observer wrapper for scroll-triggered CSS animations | `app/components/AnimateOnScroll.tsx` |
+| `Section` | Server Component | Centralized section padding/spacing (optional, reduces duplication) | `app/components/Section.tsx` |
+| `Container` | Server Component | Centralized max-width + horizontal padding (optional) | `app/components/Container.tsx` |
 
-**App Router benefits:**
-- React Server Components (less JavaScript to browser)
-- Nested layouts (DRY header/footer)
-- Built-in loading/error states
-- Streaming for faster perceived performance
-- Better TypeScript support
+These are the only new shared components the visual redesign needs. If the design opts for purely CSS animations (no scroll triggers), even `AnimateOnScroll` is unnecessary.
 
-**Pages Router deprecated:** Official Next.js recommendation is App Router for new projects. [Source](https://nextjs.org/docs/app).
-
-### Why Tailwind CSS (Not CSS Modules or styled-components)
-
-**Tailwind benefits for marketing sites:**
-- Utility-first prevents CSS bloat (unused styles purged automatically)
-- Design system built-in (consistent spacing, colors)
-- No runtime cost (unlike styled-components)
-- Fast iteration (no switching between files)
-
-**For Red Leader specifically:** Tech consulting site needs rapid iteration. Tailwind enables designers to see changes quickly without touching CSS files. [2026 best practices](https://www.frontendtools.tech/blog/tailwind-css-best-practices-design-system-patterns).
-
-### Why MDX (Not API-based CMS for MVP)
-
-**MDX benefits:**
-- Zero infrastructure (files in repository)
-- Version controlled (Git tracks content changes)
-- Fast (no API calls)
-- Developer-friendly (Markdown + React components)
-
-**When to migrate to CMS:** When non-technical team members need to edit content frequently (likely post-MVP). Consider Sanity or Contentful at that point.
-
-### Why Server Actions (Not API Routes)
-
-**Server Actions benefits:**
-- Less boilerplate (no separate API route file)
-- Type-safe (no manual request parsing)
-- Progressive enhancement (works without JavaScript)
-- Better DX (collocated with components)
-
-**Tradeoff:** Requires Next.js 14+. For older versions, use API routes.
+If Framer Motion is adopted: each section that animates becomes a thin Client wrapper component. These are page-specific, not shared infrastructure.
 
 ---
 
-## Build Dependencies & Sequencing
+## Existing Components — Modification Map
 
-### Critical Path
+### Must Modify (Direct Visual Impact)
+
+| Component | File | What Changes | Architecture Risk |
+|-----------|------|-------------|------------------|
+| Header | `app/components/Header.tsx` | Typography, colors, possibly scroll behavior | If scroll behavior added: needs `'use client'` or scroll-listening wrapper |
+| Footer | `app/components/Footer.tsx` | Typography, colors, layout refinement | Server Component, low risk |
+| EmergencyBadge | `app/components/EmergencyBadge.tsx` | Visual polish, possibly animation refinement | Already Client Component |
+| MobileNav | `app/components/MobileNav.tsx` | Panel animation, transition refinement | Already Client Component |
+| Homepage hero | `app/(marketing)/page.tsx` | Full visual overhaul, animation, typography | Page file, force-static preserved |
+| About hero + sections | `app/(marketing)/about/page.tsx` | Typography, spacing, layout, illustration upgrade | Page file |
+| Services page | `app/(marketing)/services/page.tsx` | Illustration treatment, card design | Inline SVGs may move to components |
+| SuccessMetrics | `app/components/SuccessMetrics.tsx` | Counter animation (needs Client if animated) | Currently Server Component |
+| Testimonials | `app/components/Testimonials.tsx` | Card design, typography | Server Component, low risk |
+| ClientLogos | `app/components/ClientLogos.tsx` | Possibly marquee animation (needs Client if animated scroll) | Currently Server Component |
+
+### Header Scroll Behavior — Architecture Decision Required
+
+If the design calls for a transparent header that becomes opaque/blurred on scroll (common in premium sites like Linear, Vercel):
+
+**Option A: Keep Server Component, use CSS scroll-timeline (no JS)**
+```css
+/* globals.css */
+@keyframes header-scroll {
+  from { background: transparent; }
+  to   { background: rgba(255,255,255,0.9); backdrop-filter: blur(12px); }
+}
+
+header {
+  animation: header-scroll linear both;
+  animation-timeline: scroll(root);
+  animation-range: 0px 80px;
+}
+```
+CSS Scroll-Driven Animations are supported in Chrome 115+, Firefox 110+, Safari 18+. Coverage is sufficient for target audience (CTOs at tech companies). No JS needed.
+
+**Option B: Convert Header to Client Component**
+Add `'use client'`, use `useScrollPosition` hook, conditionally apply classes. Simple but adds JavaScript.
+
+**Recommendation:** Option A (CSS scroll-timeline) if cross-browser coverage is acceptable. Option B if Safari 17 and below must be supported.
+
+### SuccessMetrics — Counter Animation Decision
+
+If animated number counting is part of the redesign (common in agency/consulting sites):
+- `SuccessMetrics` must become a Client Component
+- Intersection Observer triggers count-up animation on scroll
+- Values in `app/data/trust.ts` remain as-is
+
+If no counter animation: stays Server Component, only visual changes needed.
+
+### ClientLogos — Marquee Decision
+
+If the design adds a horizontal scrolling marquee for client logos (common in modern sites):
+- `ClientLogos` must become a Client Component, OR
+- Use CSS animation marquee (pure CSS, stays Server Component):
+```css
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+```
+CSS marquee keeps the component as a Server Component — recommended.
+
+---
+
+## Data Flow — What Does Not Change
+
+The visual redesign does not touch:
+- `app/data/` files (content unchanged)
+- `app/actions/contact.ts` (form handling unchanged)
+- `app/lib/structured-data.tsx` (SEO unchanged)
+- `app/lib/schemas.ts` (validation unchanged)
+- `force-static` exports on all pages (static generation preserved)
+- `app/sitemap.ts`, `app/robots.ts` (SEO infrastructure unchanged)
+
+The visual layer sits entirely above the data and business logic layers.
+
+---
+
+## Architecture Patterns for This Redesign
+
+### Pattern 1: CSS-First Animation
+
+**What:** Define all animations in `globals.css @keyframes` and `@theme`. Use Tailwind utility classes to apply them. Server Components can use animations without becoming Client Components.
+
+**When:** Entrance animations, hover effects, micro-interactions, marquee scrolls.
+
+**Trade-off:** Cannot trigger animations based on JavaScript events (scroll position, click sequences). For scroll-triggered reveals, needs either CSS scroll-timeline (modern browsers) or `AnimateOnScroll` wrapper (universal support).
+
+### Pattern 2: Thin Client Wrapper
+
+**What:** Keep Server Components for content and data. Wrap only the animation trigger in a Client Component that children pass through as `{children}`.
+
+**When:** Scroll-triggered section reveals, counter animations on SuccessMetrics, any interaction that needs `useEffect` or `useRef`.
+
+**Example:**
+```tsx
+// Server Component page
+<AnimateOnScroll className="animate-fade-up">
+  <SuccessMetrics variant="dark" />  {/* stays Server Component */}
+</AnimateOnScroll>
+```
+
+**Trade-off:** One extra DOM wrapper per animated section. Negligible performance impact.
+
+### Pattern 3: CSS Variable Token Extension
+
+**What:** Add new tokens to `globals.css @theme {}`. Tailwind v4 generates utility classes for all CSS variables in `@theme`. No config file changes needed.
+
+**When:** Any new color, spacing, font, or animation token.
+
+**Example:**
+```css
+@theme {
+  --color-surface-hero: #0a0a0b;     /* generates bg-surface-hero */
+  --font-display: var(--font-cal-sans), sans-serif;  /* generates font-display */
+  --animate-reveal: fade-up 0.6s ease-out;           /* generates animate-reveal */
+}
+```
+
+**Trade-off:** All tokens are global. Naming collisions with Tailwind built-in tokens are possible — use `surface-`, `brand-`, `animate-` prefixes.
+
+---
+
+## Anti-Patterns for This Redesign
+
+### Anti-Pattern 1: Converting Server Components to Client for Styling
+
+**What:** Adding `'use client'` to components just to use `useState` for hover effects or CSS class toggles.
+
+**Why wrong:** CSS handles hover and focus states natively. Converting breaks static rendering optimizations and increases JavaScript bundle.
+
+**Instead:** Use Tailwind `hover:`, `focus:`, `group-hover:`, `active:` modifiers. Only add `'use client'` when browser APIs (scroll position, IntersectionObserver, timers) are genuinely needed.
+
+### Anti-Pattern 2: Inline Style Animations
+
+**What:** Using `style={{ animation: '...' }}` props for dynamic animations rather than CSS classes.
+
+**Why wrong:** Not purgeable by Tailwind, not composable, harder to maintain. Bypasses the established token system.
+
+**Instead:** Define `@keyframes` and `@theme` tokens in `globals.css`. Apply via Tailwind class or `className`.
+
+### Anti-Pattern 3: Per-Page Font Loading
+
+**What:** Loading the display font separately in each page file.
+
+**Why wrong:** Results in duplicate font requests, FOUT on navigation between pages.
+
+**Instead:** Load all fonts in `app/layout.tsx` (root layout), apply variables to `<html>` element. Available everywhere without re-loading.
+
+### Anti-Pattern 4: Removing force-static
+
+**What:** Dropping `export const dynamic = 'force-static'` to enable dynamic features during redesign.
+
+**Why wrong:** The static generation is what gives the site its performance profile. No visual redesign feature requires dynamic rendering.
+
+**Instead:** All visual redesign features (animations, typography, layout, color) are static HTML+CSS with optional client-side JavaScript enhancement.
+
+### Anti-Pattern 5: Bloating globals.css
+
+**What:** Adding hundreds of lines of custom CSS to `globals.css` as the redesign progresses.
+
+**Why wrong:** Tailwind v4 is designed to handle design tokens via `@theme` and utility composition. Custom CSS beyond `@keyframes` and `@theme` tokens fights the framework.
+
+**Instead:** Use `@theme` for tokens. Use `@utility` for reusable utility patterns if Tailwind's built-in utilities don't cover a case. Keep component-specific styles in the component via Tailwind classes.
+
+---
+
+## Build Order for Visual Redesign
+
+The order is dictated by dependency and risk. Foundation systems must be stable before components are redesigned.
 
 ```
-Foundation (Tailwind, layouts)
-    ↓
-Static pages (Server Components only)
-    ↓
-Forms & Client Components
-    ↓
-Dynamic routes (case studies, blog)
-    ↓
-Integrations (analytics, Calendly)
-    ↓
-Performance polish
+Step 1: Design Token Foundation
+  globals.css @theme {} — colors, fonts, animation keyframes
+  app/layout.tsx — add display font loading
+  ↓ (all subsequent work depends on tokens being stable)
+
+Step 2: Typography Pass (pages, lowest risk, no JS)
+  h1/h2/h3 elements in all pages get font-display class
+  Body text spacing and size refinements
+  ↓
+
+Step 3: Global Shell (Header, Footer, EmergencyBadge)
+  Highest visibility, affects every page
+  Header scroll behavior decision made here
+  ↓
+
+Step 4: Homepage (most complex, most impact)
+  Hero section full redesign
+  Animations on hero content
+  Section-by-section visual upgrade
+  ↓
+
+Step 5: Interior Pages
+  Services page, About page
+  Case studies listing/detail
+  Blog listing/detail
+  ↓ (parallel work possible across pages)
+
+Step 6: Shared Component Polish
+  SuccessMetrics — counter animation if required
+  Testimonials — card design
+  ClientLogos — marquee if required
+  Certifications — layout refinement
+  ↓
+
+Step 7: Micro-Interaction Pass
+  Button hover states
+  Card hover lifts
+  Link transitions
+  Focus states audit
 ```
 
-### Parallel Work Opportunities
+**Parallelization opportunity:** Steps 4 and 5 can run in parallel once Step 3 (shell) is complete. Individual interior pages are independent.
 
-After foundation is complete, these can be built in parallel:
+---
 
-**Track 1 (Content):**
-- Static marketing pages
-- MDX case studies
-- Blog posts
+## Integration Points Summary
 
-**Track 2 (Interactivity):**
-- Contact form
-- Server Actions
-- Calendly embed
-
-**Track 3 (Design System):**
-- UI components library
-- Tailwind configuration
-- Component documentation
-
-### Blocking Dependencies
-
-| Feature | Blocked By | Reason |
-|---------|-----------|--------|
-| Contact form | Foundation | Needs layout, design system |
-| Case studies | Static pages | Template for content structure |
-| Blog | Case studies | Same dynamic routing pattern |
-| Calendly embed | Contact form | Same Client Component pattern |
-| Analytics | Root layout | Needs layout structure |
-| SEO metadata | All pages | Each page defines metadata |
+| Feature | Integration Point | New/Modified | Architecture Change? |
+|---------|------------------|--------------|---------------------|
+| Typography system | `globals.css @theme`, `layout.tsx` | Modified | No — adds font variable |
+| Color system | `globals.css @theme` | Modified | No — adds/updates tokens |
+| CSS animations | `globals.css @keyframes + @theme` | Modified | No |
+| Scroll animations | New `AnimateOnScroll` component | New Client Component | Minimal — thin wrapper |
+| Framer Motion | Per-component 'use client' wrappers | New Client Components | Only if adopted |
+| Header scroll behavior | `Header.tsx` + CSS or Client | Modified | If JS scroll: adds 'use client' |
+| Layout components | Optional `Section`, `Container` | New Server Components | Optional refactor |
+| Counter animation | `SuccessMetrics.tsx` → Client | Modified | Converts Server → Client |
+| CSS marquee (logos) | `ClientLogos.tsx` | Modified | No — stays Server |
+| Micro-interactions | All components, CSS only | Modified | No |
 
 ---
 
 ## Sources
 
-**Official Next.js Documentation (HIGH confidence):**
-- [Next.js Project Structure](https://nextjs.org/docs/app/getting-started/project-structure)
-- [Server and Client Components](https://nextjs.org/docs/app/getting-started/server-and-client-components)
-- [Metadata API](https://nextjs.org/docs/app/api-reference/functions/generate-metadata)
-- [Forms and Server Actions](https://nextjs.org/docs/app/guides/forms)
-- [Route Groups](https://nextjs.org/docs/app/api-reference/file-conventions/route-groups)
-- [Image Optimization](https://nextjs.org/docs/app/getting-started/images)
-- [MDX Integration](https://nextjs.org/docs/app/guides/mdx)
-- [Google Analytics via @next/third-parties](https://nextjs.org/docs/messages/next-script-for-ga)
-
-**2026 Best Practices (MEDIUM confidence):**
-- [Next.js 14 Project Structure Best Practices](https://nextjsstarter.com/blog/nextjs-14-project-structure-best-practices/)
-- [Best Practices for Organizing Your Next.js 15 2025](https://dev.to/bajrayejoon/best-practices-for-organizing-your-nextjs-15-2025-53ji)
-- [Mastering Next.js App Router](https://thiraphat-ps-dev.medium.com/mastering-next-js-app-router-best-practices-for-structuring-your-application-3f8cf0c76580)
-- [Next.js Architecture in 2026 — Server-First](https://www.yogijs.tech/blog/nextjs-project-architecture-app-router)
-- [Next.js Server Actions Complete Guide 2026](https://dev.to/marufrahmanlive/nextjs-server-actions-complete-guide-with-examples-for-2026-2do0)
-- [Tailwind CSS Best Practices 2025-2026](https://www.frontendtools.tech/blog/tailwind-css-best-practices-design-system-patterns)
-
-**Community Examples (MEDIUM confidence):**
-- [How I Built my Blog using MDX, Next.js](https://www.joshwcomeau.com/blog/how-i-built-my-blog/)
-- [Building a Modern Blog with Next.js, MDX, and Tailwind](https://dev.to/gerryleonugroho/building-a-modern-blog-with-nextjs-mdx-and-tailwind-css-a24)
+- Direct codebase audit of all files in `app/` (HIGH confidence — actual code)
+- Tailwind v4 `@theme` documentation pattern (confirmed from existing `globals.css` usage)
+- Next.js 16 App Router Server/Client Component boundary rules (HIGH confidence — established pattern)
+- CSS Scroll-Driven Animations MDN compatibility data (MEDIUM confidence — browser support evolves)
+- next/font/google multi-font pattern (HIGH confidence — standard pattern, matches existing codebase usage)
 
 ---
 
-## Confidence Assessment
-
-| Area | Confidence | Reason |
-|------|-----------|--------|
-| Directory Structure | HIGH | Official Next.js docs + verified with WebFetch |
-| Server/Client Components | HIGH | Official docs, verified 2026 patterns |
-| Metadata Implementation | HIGH | Verified with official Metadata API docs |
-| Server Actions | HIGH | Official Next.js forms guide, verified examples |
-| Route Groups | HIGH | Official Next.js docs, verified patterns |
-| Image Optimization | HIGH | Official Next.js Image component docs |
-| MDX Integration | MEDIUM | Official docs + community examples |
-| Tailwind Organization | MEDIUM | Community best practices, not official standard |
-| Analytics Integration | HIGH | Official @next/third-parties package |
-
----
-
-## Summary for Roadmap Creation
-
-**Recommended phase structure** based on dependencies:
-
-1. **Foundation** (Week 1): Project setup, layouts, design system
-2. **Static Content** (Week 1-2): Marketing pages, navigation, footer
-3. **Forms** (Week 2): Contact form, Server Actions, lead capture
-4. **Dynamic Content** (Week 2-3): Case studies, blog with MDX
-5. **Integrations** (Week 3): Calendly, analytics, social sharing
-6. **Polish** (Week 3-4): Performance optimization, SEO completion
-
-**Critical architectural decisions:**
-- Server Components by default (less JavaScript)
-- Route groups for layout organization
-- Server Actions for forms (no API routes)
-- MDX for content (migrate to CMS post-MVP if needed)
-- Metadata API for SEO (hierarchical composition)
-
-**Build order rationale:**
-- Foundation enables all other work
-- Static pages before dynamic (simpler, establishes patterns)
-- Forms after layouts (needs design system)
-- Integrations after core functionality (additive, not blocking)
+*Architecture research for: Red Leader v2.0 Visual Redesign*
+*Researched: 2026-03-10*

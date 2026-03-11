@@ -1,302 +1,179 @@
 # Project Research Summary
 
-**Project:** Red Leader Tech Consulting Website
-**Domain:** B2B Lead-Generation Marketing Website (Tech Consulting)
-**Researched:** 2026-01-31
-**Confidence:** HIGH
+**Project:** Red Leader Website — v2.0 Visual Redesign
+**Domain:** Premium dark-first marketing site for emergency infrastructure services
+**Researched:** 2026-03-10
+**Confidence:** HIGH (stack and architecture verified against official docs and direct codebase audit; features and design patterns at MEDIUM due to training data)
 
 ## Executive Summary
 
-Red Leader needs a high-converting marketing website targeting CTOs and engineering leaders for emergency infrastructure rescue services. Based on comprehensive research, the optimal approach is a **Next.js 16 App Router architecture** with server-first rendering, combined with Tailwind v4 for rapid iteration, shadcn/ui for conversion-optimized components, and privacy-focused analytics (Plausible over Google Analytics). This stack prioritizes fast load times (critical for conversion), SEO excellence (organic lead generation), and professional UI that builds trust with skeptical enterprise buyers.
+Red Leader's v2.0 milestone is a visual redesign of a fully functional Next.js 16 + Tailwind v4 marketing site — not a rebuild. The goal is to eliminate the "agency template" aesthetic and replace it with the visual language used by Linear, Vercel, Render, and Tailscale: near-black backgrounds, gradient text headlines, backdrop blur navigation, border-based card systems, and scroll-triggered entrance animations. The existing technical foundation (App Router, force-static pages, server components, Tailwind v4 `@theme`) is correct and remains unchanged. All redesign work is additive: new CSS tokens, refined component styles, and a minimal animation layer on top of the existing structure.
 
-The site architecture follows a **progressive enhancement model** where static server-rendered content forms the foundation, with strategic client-side interactivity only for forms, booking (Calendly), and mobile navigation. Content lives in MDX files for version control and developer productivity, with migration to headless CMS (Sanity) only if non-technical team members need publishing access. Core conversion path is: Value Prop > Case Studies (proof) > Booking/Contact (minimum friction).
+The recommended approach is CSS-first throughout. Tailwind v4's `@theme` directive handles the entire color and typography token system. The `motion` npm package (formerly Framer Motion) covers the narrow set of scroll-triggered and sequenced animations that CSS cannot express. The critical constraint is that animated elements must be isolated into thin `'use client'` wrapper components — page-level Server Components and `force-static` exports must not be touched. This pattern is already established in the codebase (CalendlyEmbed, MobileNav) and is not novel.
 
-The critical risk is **App Router complexity** surfacing as production bugs - only 6% of Next.js sites pass Core Web Vitals thresholds, 82% fail basic 404 handling, and App Router has documented stability issues. Mitigation requires disciplined architecture decisions early (explicit static/dynamic rendering), thorough production build testing, and mobile-first responsive design since 63% of B2B buyers research on mobile. The highest-impact pitfall to avoid is **contact forms asking too much** - optimal is 4 fields maximum vs typical 12+ field enterprise forms that kill conversions.
+The primary risks are color system fragmentation (mixing raw Tailwind utilities with design tokens), accidental Server Component conversion when adding animations, and Tailwind v4 class name renames silently breaking styles. All three are preventable by establishing a complete design token system in `globals.css` before touching any component, and by maintaining a v4 class name reference throughout implementation. The upside is substantial: the redesign delivers a premium visual impression at dramatically lower cost than a rebuild, with no changes to SEO infrastructure, data layer, or form handling.
 
 ## Key Findings
 
 ### Recommended Stack
 
-Next.js 16 provides the performance foundation with Turbopack (5-10x faster builds), Partial Pre-Rendering for instant navigation, and built-in SEO via Metadata API. Tailwind v4 offers 5x faster builds and zero configuration while eliminating runtime CSS-in-JS overhead. The stack minimizes JavaScript sent to browsers (critical for mobile CTOs) while maintaining developer velocity.
+The existing stack (Next.js 16.1.6, React 19.2.4, Tailwind v4) requires only two new runtime dependencies: `motion` (^12.x, import from `motion/react`) for scroll-triggered entrance animations and `lucide-react` for icon additions. Utility helpers `clsx` and `tailwind-merge` are needed if not already installed. The typography upgrade requires no new packages — `next/font/google` is already available in Next.js 16 and handles self-hosting, font subsetting, FOUT prevention, and CLS elimination automatically. The full color system and all micro-interaction hover effects are pure CSS via `@theme` extension.
+
+See `.planning/research/STACK.md` for full version compatibility matrix, installation commands, and alternatives considered.
 
 **Core technologies:**
-- **Next.js 16** (framework) - SSR/SSG for SEO, App Router for layouts, Server Components by default
-- **Tailwind CSS v4** (styling) - 5x faster builds, zero config, utility-first prevents bloat
-- **TypeScript 5.9** (language) - Type safety for forms, IntelliSense for APIs, production stable
-- **React Hook Form + Zod** (forms/validation) - Performance (uncontrolled), type-safe validation, minimal bundle
-- **shadcn/ui** (components) - Copy-paste ownership, marketing blocks, built on Radix (accessible)
-- **MDX + next-mdx-remote** (content) - Blog/case studies without CMS overhead, version controlled
-- **Resend + React Email** (email) - Form submissions to sales, Next.js-native, free tier (3K emails/mo)
-- **Plausible Analytics** (analytics) - Privacy-first (GDPR compliant), 75x lighter than GA4, no cookie consent needed
-- **Vercel** (hosting) - Next.js creators, edge network, preview deployments, generous free tier
-
-**Version considerations:**
-- Motion (formerly Framer Motion) - MEDIUM confidence due to recent name change, verify package
-- Next.js 16 is production-ready but monitor App Router stability issues
-- Avoid TypeScript 7.0 (Go-based preview) for production, use stable 5.9
+- `motion` (^12.x): Scroll-triggered reveals, staggered children, AnimatePresence for mobile menu — required only where CSS cannot express the behavior. Verify exact version with `npm view motion version` before installing.
+- `next/font/google` (built-in): Display font loading — no package install needed; upgrade font pairing by editing `layout.tsx` only.
+- Tailwind v4 `@theme` (existing): Full color system, type scale, animation tokens — zero new packages.
+- `lucide-react` (^0.511.x): Tree-shakeable icon system for navigation and card micro-interactions.
 
 ### Expected Features
 
-Research identified clear tiers for a tech consulting marketing site targeting CTOs.
+The feature gap between v1.1 and the reference sites (Linear, Render, Tailscale) is significant but well-defined. The redesign has two distinct tiers. Phase 1 features are mandatory to eliminate "agency template" perception; without them the redesign has not happened. Phase 2 features add meaningful polish at low cost. Nothing in the anti-features list should be built.
 
-**Must have (table stakes):**
-- Clear value proposition above fold - CTOs scan in under 3 seconds, outcome-focused messaging converts 47% better
-- Mobile-responsive design - 50%+ B2B research on mobile, 53% abandon if load takes over 3 seconds
-- Embedded scheduling (Calendly) - Converts 3x better than contact forms, 24/7 self-service booking
-- Service area overview - Engineering leaders need quick capability assessment
-- Case studies with metrics - Table stakes for B2B consulting, quantifiable results required
-- Fast page load (under 3 seconds) - Technical audiences especially impatient
-- Professional design (not flashy) - Technical buyers value clarity over creativity, dark mode signals sophistication
-- Security indicators - SSL, privacy policy, secure forms (security is top-of-mind for engineering leaders)
+See `.planning/research/FEATURES.md` for full prioritization matrix, reference site analysis, and existing component inventory.
 
-**Should have (differentiators):**
-- Emergency response availability badge - 24/7 capability visual signal differentiates from typical consulting
-- Response time metrics display - "Average response: 2 hours" addresses urgency pain point
-- Filtered case studies by industry/crisis - Allows CTOs to find relevant proof points quickly
-- Technical blog with post-mortems - Demonstrates expertise, builds SEO and thought leadership
-- Infrastructure health assessment tool - Free diagnostic quiz provides value while qualifying leads
-- Incident response playbook (lead magnet) - Gated content nurtures leads not ready for immediate engagement
+**Must have (table stakes — Phase 1):**
+- Near-black background system (`#09090b`) cascading to all sections — every other visual feature depends on this
+- Typography system with display font (Inter Display or Geist) and tight heading tracking (`-0.03em` to `-0.05em`)
+- Backdrop blur navigation (`bg-black/80 backdrop-blur-xl border-b border-white/10`)
+- Gradient text on hero headline (`bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent`)
+- Ambient radial glow behind hero (CSS radial-gradient, red-tinted, zero performance cost)
+- Border-based card system (replaces all `shadow-sm hover:shadow-md` cards site-wide)
+- Button system redesign: primary (red + red glow on hover), secondary (transparent + border), ghost
+- Section spacing uplift to `py-24 sm:py-32`
 
-**Defer (v2+):**
-- Live incident availability indicator - High complexity, backend status system required
-- Interactive ROI calculator - Requires industry benchmarks, JavaScript framework
-- Full headless CMS - Use MDX initially, migrate to Sanity only if marketing team needs publishing access
-- Extensive resource library - Start with 3-5 highest-value assets, quality over quantity
+**Should have (Phase 2 differentiators):**
+- Oversized stat display (64–80px numbers in SuccessMetrics)
+- Animated stat counters (scroll-triggered, SuccessMetrics only)
+- Scroll-triggered fade/slide-up reveals on all major sections
+- Bento grid services layout (replaces equal 3-column grid)
+- Pull-quote testimonial restyling (oversized quotation marks, large quote text)
+- Red glow hover states on nav links and emergency CTA
+- Glassmorphism treatment on EmergencyBadge component
+- Background noise texture (SVG at ~3% opacity)
 
-**Anti-features (deliberately avoid):**
-- Generic stock photos of "teamwork" - Undermines credibility with technical audience
-- Lengthy contact forms (over 5 fields) - Every field = 10-20% drop-off, critical conversion killer
-- Vague "solutions" descriptions - Technical buyers need specifics like "Kubernetes cluster recovery" not "synergy"
-- Live chat popups - Interrupts flow, technical audiences prefer async communication initially
-- Autoplaying video/carousels - "Carousel of doom" annoys users, accessibility nightmare
+**Defer (v2.x or later):**
+- Terminal/code accent elements — needs content decisions; execution risk is high
+- Full-screen mobile nav drawer — current nav works; premium treatment can follow Phase 2
+- Dark/light mode toggle — only if explicitly requested; doubles CSS complexity and should never be built
 
 ### Architecture Approach
 
-Next.js 14+ marketing sites follow a **server-first architecture** with strategic client interactivity. App Router provides file-system routing, React Server Components by default, and hierarchical layouts that eliminate header/footer duplication. For Red Leader specifically: fast initial loads via server-rendered content, minimal JavaScript (only forms/Calendly need client-side), SEO-optimized by default.
+The visual redesign integrates as five additive systems layered onto the existing architecture without changing its structure. Integration points are: `globals.css @theme` (color tokens, font tokens, animation keyframes), `app/layout.tsx` (display font loading), individual page files (heading class additions, section spacing updates), existing components (restyle in-place), and one new shared component (`AnimateOnScroll` — a ~30-line Intersection Observer wrapper that lets Server Component children receive scroll-triggered CSS animations). No page-level files become Client Components. No `force-static` exports are removed. The data layer (`app/data/`), SEO infrastructure, and form handling are untouched.
 
-**Major components:**
-1. **Route groups for layout organization** - `(marketing)/` groups pages sharing header/footer without affecting URLs
-2. **Server Components by default** - Hero, services, case studies, testimonials all server-rendered (no JavaScript to browser)
-3. **Client Components at the leaves** - Only contact form, Calendly embed, mobile menu toggle marked `'use client'`
-4. **Server Actions for forms** - Modern Next.js 14+ pattern eliminates API routes, type-safe with Zod, progressive enhancement
-5. **MDX content layer** - Case studies and blog posts as MDX files in `content/` directory, parsed server-side
-6. **Metadata API for SEO** - Hierarchical composition from root → layout → page, automatic `<head>` rendering
-7. **Image optimization via `<Image>`** - Automatic WebP/AVIF, lazy loading, reserved space prevents CLS
+See `.planning/research/ARCHITECTURE.md` for full component map, integration point details, anti-patterns, and recommended build order.
 
-**Build order dependencies:**
-- Foundation (layouts, design system) enables all other work
-- Static pages before dynamic (simpler, establishes patterns)
-- Forms after layouts (needs design system)
-- Dynamic content (case studies, blog) reuses static page patterns
-- Integrations (Calendly, analytics) after core functionality
+**Major integration points:**
+1. `globals.css @theme` — Design token foundation: colors (full surface system in OKLCH), fonts (display font variable), animation keyframes, z-index scale. Must be complete and stable before any component work.
+2. `app/layout.tsx` — Add display font via `next/font/google`, expose as CSS variable, apply to `<html>`.
+3. `app/(marketing)/` pages — Add `font-display` to headings, update section padding, replace raw gray utility classes with brand tokens.
+4. Existing shared components (`Header`, `Footer`, `SuccessMetrics`, `Testimonials`, `EmergencyBadge`, `MobileNav`) — Restyle without architectural changes; `SuccessMetrics` converts to Client Component only if counter animation is included.
+5. `AnimateOnScroll` (new) — Single new shared Client Component for scroll-triggered reveals; children remain Server Components.
 
 ### Critical Pitfalls
 
-Research across 50+ Next.js sites and B2B marketing best practices identified predictable failure modes.
+See `.planning/research/PITFALLS.md` for full details, warning signs, recovery strategies, and a "Looks Done But Isn't" checklist.
 
-1. **Missing 404 status codes (SEO)** - 82% of Next.js sites fail to return proper 404s, search engines index error pages. Requires explicit `not-found.tsx` and `notFound()` calls.
+1. **Animation library converts entire page to Client Component** — Never add `'use client'` or import `motion` at the page level (`page.tsx`). Extract all animated elements into dedicated `'use client'` wrapper components with Server Component children passed through as `{children}`. Verify `force-static` is still honored in `next build` output after every animation addition.
 
-2. **Client-side rendering for critical content (SEO)** - Marking components `'use client'` without server fallback makes content invisible to crawlers. Use Server Components by default, only mark interactive leaves as Client.
+2. **Font loaded outside `next/font` causes FOUT and CLS** — Every font must go through `next/font/google` in `layout.tsx`. Never copy a `<link>` from Google Fonts CDN. After font changes, run Lighthouse on a production build and confirm CLS < 0.1 and no requests to `fonts.googleapis.com`.
 
-3. **Poor Core Web Vitals (Performance)** - Only 6% of Next.js sites pass LCP/TBT thresholds. Causes: using `<img>` instead of `<Image>`, no `priority` on above-fold images, barrel file imports adding 200-800ms overhead, synchronous third-party scripts.
+3. **Color token drift from mixing raw Tailwind utilities with design tokens** — Define the complete new token system in `globals.css @theme` in the very first phase. After each subsequent phase, grep for raw `bg-slate-*`, `bg-gray-*`, `text-zinc-*` in component files — none should exist in production code.
 
-4. **Contact forms asking too much (Conversion)** - Forms requesting 12+ fields (company size, budget, timeline) before prospects understand value. Optimal is 4 fields maximum (name, email, company optional, message).
+4. **Tailwind v4 class renames silently break styles** — Key renames: `shadow-sm` is now `shadow-xs`, `shadow` is now `shadow-sm`, `outline-none` is now `outline-hidden`, `focus:ring` is now `focus:ring-3`. No TypeScript error surfaces these. Establish a v4 class reference in Phase 1 and verify shadows, rings, and rounded corners visually after each component pass.
 
-5. **Vague value proposition above fold (Conversion)** - Generic taglines like "We transform businesses through technology" tell CTOs nothing. Need specific problem, for whom, proof point, immediate next step.
-
-6. **Missing trust signals (Conversion)** - Outdated testimonials, stock photos pretending to be team, fake client logos destroy credibility with skeptical B2B buyers who consume 15+ content pieces before contact. Need recent testimonials (under 6 months), real team photos, specific verifiable results, client logos ONLY with permission.
-
-7. **App Router production stability (Technical)** - App Router complexity surfaces as production bugs: crashes, cryptic build errors, memory leaks, infinite loop vulnerabilities. Requires thorough testing with `next build && next start` in staging, explicit static/dynamic rendering configuration.
-
-8. **Font loading FOUT/FOIT (Performance)** - Using traditional `<link>` for Google Fonts instead of `next/font` causes flash of invisible text (FOIT) or unstyled text (FOUT). Next.js `next/font` preloads at build time with zero FOIT/FOUT.
+5. **Missing `prefers-reduced-motion` breaks accessibility and WCAG AA compliance** — Wrap all CSS animations with `motion-safe:` Tailwind variant. Use `useReducedMotion()` hook in any motion components. Test with reduced motion enabled in macOS System Preferences before shipping any phase. Enterprise clients have ADA compliance requirements.
 
 ## Implications for Roadmap
 
-Based on combined research, suggested 6-phase structure balancing dependencies, conversion impact, and risk mitigation:
+The feature dependency graph is unambiguous: the dark color system is the foundation that all other visual features depend on. It must be Phase 1. Typography is parallel-safe with color but also foundational. The shell components (Header, Footer, EmergencyBadge) affect every page and should come after tokens are stable. The homepage is the highest-impact individual deliverable. Interior pages and shared component polish can run in parallel once the shell is done. Animation is best applied as a dedicated pass after visual design is stable, ensuring `prefers-reduced-motion` is handled consistently site-wide.
 
-### Phase 1: Foundation & Core Conversion Path (Week 1-2)
-**Rationale:** Establish architecture before adding complexity. Fastest path to lead capture.
-**Delivers:** Functional marketing site with booking capability
-**Addresses:**
-- Clear value proposition homepage (outcome-focused messaging for CTOs)
-- Mobile-responsive design (50%+ B2B research on mobile)
-- Embedded Calendly scheduling (converts 3x better than forms)
-- Services overview page (capability assessment)
-- Contact form (4 fields max: name, email, company optional, message)
-- Emergency response badge (differentiator)
-**Avoids:**
-- App Router complexity - make Pages vs App Router decision explicitly, plan import strategy
-- Font loading issues - implement `next/font` from start
-- Missing 404 handling - implement `not-found.tsx` early
-**Stack elements:** Next.js 16, Tailwind v4, TypeScript, React Hook Form + Zod, shadcn/ui basics
-**Research flag:** LOW - well-documented patterns, minimal unknowns
+### Phase 1: Design Token Foundation
 
-### Phase 2: Trust Building & Proof (Week 2-3)
-**Rationale:** Case studies provide social proof needed to convert skeptical enterprise buyers
-**Delivers:** Portfolio of client success demonstrating expertise
-**Addresses:**
-- 3-5 case studies with quantifiable results (table stakes for B2B consulting)
-- Filtered by crisis type (database failure, cloud outage, performance collapse)
-- About/team section (real photos, credentials, expertise areas)
-- Security documentation (privacy policy, SSL basics)
-**Avoids:**
-- Missing trust signals - real testimonials (under 6 months old), full attribution, client logos ONLY with permission
-- Vague results - quantitative metrics ("Reduced recovery time from 48 hours to 2 hours" not "much faster")
-- Stock photos - use real team photos even if informal
-**Stack elements:** MDX + next-mdx-remote for rich case study content
-**Architecture component:** Dynamic routes `[slug]/page.tsx` pattern, `generateMetadata` for SEO
-**Research flag:** LOW - standard Next.js dynamic routing patterns
+**Rationale:** The entire redesign depends on a stable, complete token system. Color drift (Pitfall 7), z-index wars (Pitfall 6), and font CLS (Pitfall 2) are all prevented here. No component work should start until tokens are committed and visually reviewed.
+**Delivers:** Complete `globals.css @theme` with near-black surface system, refined brand palette in OKLCH, display font variable, animation keyframes, z-index scale. Updated `layout.tsx` with display font loading.
+**Addresses:** Dark color system (P1 feature), typography system (P1 feature), section spacing token
+**Avoids:** Color token drift, FOUT/CLS from improper font loading, z-index wars before animated components are added
 
-### Phase 3: SEO & Content Foundation (Week 3)
-**Rationale:** Organic lead generation requires complete SEO implementation
-**Delivers:** Search-optimized site with blog capability
-**Addresses:**
-- Technical blog with 2-3 initial posts (demonstrates expertise, builds thought leadership)
-- Response time metrics display ("Average response: 2 hours" differentiator)
-- Transparent pricing/engagement models (reduces friction, qualifies leads faster)
-**Avoids:**
-- Client-side rendering for content - Server Components for blog posts/case studies
-- Missing canonical tags - implement via Metadata API for all pages
-- No dynamic sitemap - use `sitemap.ts` with `lastModified` dates
-- Missing structured data - OrganizationJsonLd, ServiceJsonLd, ArticleJsonLd via next-seo
-**Stack elements:** MDX for blog, next-seo for JSON-LD structured data
-**Research flag:** LOW - Next.js Metadata API is well-documented
+### Phase 2: Global Shell Redesign
 
-### Phase 4: Analytics & Email Integration (Week 3-4)
-**Rationale:** Can't optimize what isn't measured. Email enables lead nurturing.
-**Delivers:** Conversion tracking and automated lead notifications
-**Addresses:**
-- Plausible Analytics integration (privacy-focused, GDPR compliant, 75x lighter than GA4)
-- Resend email integration for form submissions to sales team
-- Auto-responders to leads
-- Click-to-call tracking (if phone number prominent)
-**Avoids:**
-- Google Analytics GDPR violations - use Plausible instead (no cookie consent needed, accurate tracking)
-- Synchronous third-party scripts - use `next/script` with `strategy="lazyOnload"`
-- Environment variable exposure - server-only vars for API keys, `NEXT_PUBLIC_` only for intentionally public
-**Stack elements:** next-plausible, Resend, React Email
-**Research flag:** LOW - straightforward integrations with clear documentation
+**Rationale:** Header and EmergencyBadge appear on every page. Getting them right first means all subsequent page work inherits correct navigation and brand baseline. The header scroll behavior architecture decision (CSS scroll-timeline vs. `'use client'` scroll listener) must be made here before it cascades through every page.
+**Delivers:** Backdrop blur Header, redesigned three-tier button system, EmergencyBadge glassmorphism treatment, Footer refinement
+**Addresses:** Backdrop blur navigation (P1), button system redesign (P1), glassmorphism on EmergencyBadge (P2)
+**Avoids:** Pitfall 6 (z-index wars) — header z-index scale is established before animated components are added; emergency phone number CTA remains fully visible at all times
 
-### Phase 5: Performance Optimization (Week 4)
-**Rationale:** Core Web Vitals directly impact rankings and conversions
-**Delivers:** Site passing all Core Web Vitals thresholds
-**Addresses:**
-- Image optimization (all images using `<Image>` component with WebP/AVIF)
-- Loading states for dynamic routes
-- Error boundaries for graceful degradation
-- Cumulative Layout Shift fixes (width/height on all images, skeleton states)
-**Avoids:**
-- Poor LCP - use `priority` prop on above-fold images, optimize hero image
-- TBT/INP issues - avoid barrel file imports, use direct imports, lazy-load heavy components
-- CLS from images - always specify dimensions, use `placeholder="blur"`
-- Third-party script blocking - defer analytics/widgets with proper `strategy`
-**Stack elements:** Next.js `<Image>`, dynamic imports for heavy components
-**Research flag:** MEDIUM - requires measurement and iteration with Lighthouse
+### Phase 3: Homepage Redesign
 
-### Phase 6: Lead Nurturing & Advanced Differentiation (Week 4-5)
-**Rationale:** Nurture leads not ready for immediate engagement
-**Delivers:** Lead magnets and qualification tools
-**Addresses:**
-- Infrastructure health assessment tool (interactive quiz, collects qualification data)
-- Incident response playbook (gated PDF, email capture, nurture campaign)
-- Client logo wall (recognizable brands for social proof, ONLY with permission)
-- 404 page, robots.txt, sitemap polish
-**Avoids:**
-- Weak CTAs - action-oriented language ("Schedule 30-Min Strategy Call" not "Learn More")
-- One-size-fits-all messaging - offer content for different buyer journey stages (exploring, evaluating, deciding)
-- Forms asking too much - assessment tool should be progressive, not overwhelming
-**Stack elements:** Form logic for assessment, email automation for playbook delivery
-**Research flag:** MEDIUM - assessment tool scoring logic needs design, drip campaign strategy
+**Rationale:** The homepage is the highest-traffic page and the strongest signal to the target audience (CTOs evaluating Red Leader for the first time). It requires the most visual work (hero, services grid, SuccessMetrics, Testimonials) and benefits from having Phase 1 tokens and Phase 2 shell stable first.
+**Delivers:** Full hero redesign (radial glow, gradient text, badge overline), bento grid services layout, SuccessMetrics oversized stats, Testimonials pull-quote restyling
+**Addresses:** Gradient text on hero headline (P1), ambient hero glow (P1), bento grid (P2), oversized stat display (P2), pull-quote testimonials (P2)
+**Avoids:** Pitfall 1 (animations breaking Server Components) — AnimateOnScroll pattern established here as the standard; Pitfall 8 (LCP degradation) — CSS-only hero background with zero HTTP requests
+
+### Phase 4: Animation and Motion Layer
+
+**Rationale:** Adding scroll reveals and animated counters as a dedicated pass — rather than per-component during earlier phases — ensures `prefers-reduced-motion` is applied consistently site-wide and the `AnimateOnScroll` component is built once correctly. Doing this after visual design is stable means animations reveal polished content, not interim styles.
+**Delivers:** `AnimateOnScroll` component, scroll-triggered fade/slide reveals on all major sections, animated stat counters in SuccessMetrics, red glow hover states, micro-interaction polish site-wide
+**Addresses:** Scroll-triggered reveals (P2), animated stat counters (P2), red glow hover states (P2)
+**Avoids:** Pitfall 1 (Server Component conversion), Pitfall 4 (layout/paint-triggering animations — use only `transform` and `opacity`), Pitfall 5 (prefers-reduced-motion — applied to all animations in one pass)
+
+### Phase 5: Interior Pages and Final Polish
+
+**Rationale:** Services, About, case studies, blog, and contact pages all apply the same token system and component patterns established in Phases 1–4. Work is largely mechanical and pages can be executed in parallel. This phase ends with a full accessibility and performance audit.
+**Delivers:** All interior pages updated to match dark design system; background noise texture applied; typography scale verified at all breakpoints (375px, 768px, 1440px); Lighthouse LCP under 2.5s; WCAG AA compliance confirmed
+**Addresses:** All remaining page-level visual debt; background noise texture (P2); terminal accent elements if time permits (P3)
+**Avoids:** Pitfall 3 (Tailwind v4 class renames) — final QA pass with v4 reference; Pitfall 5 (prefers-reduced-motion) — final accessibility audit with reduced motion enabled
 
 ### Phase Ordering Rationale
 
-- **Foundation first** because all other work depends on working layouts, design system, and core stack configuration
-- **Conversion path in Phase 1** because booking capability = immediate business value, validates architecture before adding complexity
-- **Trust building in Phase 2** because case studies are table stakes for consulting, needed before driving traffic
-- **SEO in Phase 3** because blog content takes time to rank, start early for organic lead generation
-- **Analytics in Phase 4** because need measurement infrastructure before optimization efforts
-- **Performance in Phase 5** because requires all content/images to exist before optimization
-- **Lead nurturing in Phase 6** because advanced tools require working conversion funnel to optimize against
-
-This ordering follows dependency chain (foundation → static → forms → dynamic → integrations → optimization) while prioritizing business value (booking in Phase 1) and risk mitigation (SEO before traffic, performance before scale).
+- Token foundation first because the dark color system is a hard dependency for gradient text, border cards, glassmorphism, noise texture, glow effects, and hover states — confirmed by the explicit dependency graph in FEATURES.md.
+- Shell before homepage because header z-index and button system must be stable before they appear on redesigned pages; the emergency phone number CTA must remain functional throughout.
+- Animation as a dedicated phase because `prefers-reduced-motion`, compositor-safe animation properties (`transform` and `opacity` only), and Server Component boundaries are cross-cutting concerns easier to apply correctly in one pass than to retrofit per component.
+- Interior pages last because they apply established patterns from earlier phases with no remaining architectural decisions.
 
 ### Research Flags
 
-**Phases likely needing deeper research during planning:**
-- **Phase 5 (Performance)** - Core Web Vitals optimization requires measurement-driven iteration, may need Vercel Analytics or similar RUM (real user monitoring) to identify actual bottlenecks vs synthetic Lighthouse scores
-- **Phase 6 (Lead Nurturing)** - Assessment tool scoring logic and email drip campaign strategy not well-documented for this niche, may need marketing automation research
+Phases with standard patterns (research-phase not needed):
+- **Phase 1 (Design Tokens):** CSS custom properties in Tailwind v4 `@theme` and `next/font` multi-font pattern are thoroughly documented with confirmed examples in the existing codebase.
+- **Phase 2 (Shell):** Header backdrop blur and button system are pure CSS/Tailwind patterns with no novel integrations.
+- **Phase 5 (Interior Pages):** Mechanical application of established patterns from Phases 1–4.
 
-**Phases with standard patterns (skip research-phase):**
-- **Phase 1 (Foundation)** - Next.js App Router setup, Tailwind configuration, shadcn/ui initialization all well-documented
-- **Phase 2 (Trust Building)** - MDX integration, dynamic routing patterns standard Next.js
-- **Phase 3 (SEO)** - Metadata API, sitemap.ts, robots.ts official Next.js patterns
-- **Phase 4 (Analytics)** - Plausible and Resend integrations straightforward with clear docs
+Phases that may benefit from a quick validation step:
+- **Phase 3 (Homepage — Bento Grid):** CSS Grid bento layout with mixed span sizes and the exact animation sequence for the hero entrance are design-judgment decisions that may require iteration. Not a research problem — a design decision problem requiring visual review at the start of the phase.
+- **Phase 4 (Animation Layer):** The `motion` package exact version and API for `whileInView` with Next.js 16 App Router should be confirmed with `npm view motion version` and a smoke test before committing to the full implementation. LOW confidence on exact version per STACK.md research.
 
 ## Confidence Assessment
 
 | Area | Confidence | Notes |
 |------|------------|-------|
-| Stack | HIGH | All technologies verified with official docs, npm package verification, 2026-current sources |
-| Features | HIGH | Multiple B2B consulting website sources agree, table stakes vs differentiators clearly delineated |
-| Architecture | HIGH | Official Next.js docs, verified 2026 App Router patterns, clear community consensus |
-| Pitfalls | HIGH | SALT Agency 50-site study, multiple performance guides, official Next.js guidance |
+| Stack | HIGH | Core recommendations (Tailwind v4 `@theme`, `next/font`, `motion/react`) verified against official Next.js 16.1.6 and Tailwind v4 docs. One gap: `motion` exact version number unverified (npm registry unavailable during research). |
+| Features | MEDIUM | Design patterns (dark themes, gradient text, backdrop blur, border cards, section spacing) are fundamental and stable across the industry. Reference site exact color tokens not verified against current live sites. Font pairing is a design judgment call requiring brand guidelines validation. |
+| Architecture | HIGH | Based on direct codebase audit of all files in `app/`. Integration patterns (CSS-first animation, thin Client wrapper, token extension via `@theme`) are confirmed against the existing codebase structure and official Next.js documentation. |
+| Pitfalls | HIGH | Critical pitfalls verified against Next.js 16.1.6 official docs, Tailwind v4 upgrade guide, and WCAG 2.1. The Tailwind v4 class rename table is confirmed from the official upgrade guide. The Server Component boundary pitfall is confirmed against existing codebase patterns. |
 
 **Overall confidence:** HIGH
 
-Research drew from official documentation (Next.js, Tailwind, TypeScript), industry studies (SALT Agency 50-site SEO audit, Rise Marketing Core Web Vitals analysis), and B2B marketing research (Martal Group conversion statistics, Forrester 2026 predictions). All core recommendations verified with multiple independent sources.
-
 ### Gaps to Address
 
-**Medium-priority gaps needing validation during implementation:**
-
-1. **App Router production stability** - App Router documented issues (crashes, memory leaks, infinite loop vulnerabilities) are rapidly evolving. Confidence is HIGH that patterns are correct, but MEDIUM that specific issues won't surface in production. Mitigation: thorough testing with `next build && next start` in staging environment before launch, monitor Next.js security updates.
-
-2. **Calendly vs alternatives** - Research focused on general booking system benefits (3x conversion improvement) and Calendly integration pitfalls, but didn't compare alternatives like HubSpot Meetings, Acuity, or custom-built. For MVP, Calendly is safe default. If complex scheduling needs emerge (team routing, payment collection, custom workflows), revisit.
-
-3. **Motion package name** - Framer Motion recently renamed to Motion. Package name change creates uncertainty about which npm package to install. Before Phase 5, verify correct package and API stability.
-
-4. **Assessment tool complexity** - Infrastructure health assessment tool (Phase 6) scoring logic and form flow not deeply researched. May need UX research or A/B testing to optimize question sequence and result presentation for CTO audience.
-
-**Low-priority gaps (monitor, not blocking):**
-
-5. **A/B testing framework** - Conversion optimization assumptions (4-field forms, specific CTAs, value prop messaging) based on general B2B research. For Red Leader's specific audience (CTOs in emergency situations), may benefit from A/B testing. Not blocking for MVP, add post-launch.
-
-6. **Error monitoring solution** - Recommendation is to use Sentry or LogRocket for production error tracking, but didn't research specific tool comparison. Standard tools will work, choose based on pricing/features during Phase 7 (post-launch monitoring).
+- **`motion` exact version:** Run `npm view motion version` before Phase 4. Expected `^11.x` or `^12.x`. Import path `motion/react` (not `framer-motion`) is confirmed correct regardless of version.
+- **Font pairing final selection:** Inter + Fraunces is the research recommendation for a premium tech brand with bold hero treatment. Final choice must be validated against Red Leader's brand guidelines before Phase 1 is considered complete.
+- **Hero background dark shade:** `#09090b` (Vercel-style near-black) vs. `#0e0e10` (Render-style slightly warmer near-black) is a design decision. The cooler near-black is recommended but needs visual validation against the red accent color before locking in the token.
+- **Header scroll behavior browser support floor:** CSS scroll-timeline (no JS) is supported in Chrome 115+, Firefox 110+, Safari 18+. If Safari 17 support is required, use the `'use client'` scroll listener approach. Confirm target browser support floor before Phase 2.
 
 ## Sources
 
-### Primary (HIGH confidence - official documentation)
-- [Next.js 16 Release](https://nextjs.org/blog/next-16)
-- [Next.js App Router Documentation](https://nextjs.org/docs/app)
-- [Next.js Metadata API](https://nextjs.org/docs/app/api-reference/functions/generate-metadata)
-- [Next.js Image Optimization](https://nextjs.org/docs/app/getting-started/images)
-- [Next.js Server Actions](https://nextjs.org/docs/app/guides/forms)
-- [Tailwind CSS v4.0 Release](https://tailwindcss.com/blog/tailwindcss-v4)
-- [TypeScript 5.9 npm](https://www.npmjs.com/package/typescript)
-- [React Hook Form Official](https://react-hook-form.com/)
-- [Zod Documentation](https://zod.dev/)
-- [shadcn/ui](https://ui.shadcn.com/)
+### Primary (HIGH confidence)
+- Next.js 16.1.6 official docs (`/docs/app/getting-started/fonts`, `/docs/app/api-reference/components/font`) — `next/font` API, variable font configuration, Tailwind v4 integration pattern. Fetched 2026-03-10.
+- Tailwind CSS v4 official docs (`/docs/animation`, `/docs/transition-property`, `/docs/customizing-colors`, `/docs/upgrade-guide`) — `@theme` directive, OKLCH colors, animation utilities, v3→v4 breaking changes and class renames. Fetched 2026-03-10.
+- Direct codebase audit (`app/`, `app/globals.css`, `app/layout.tsx`, all component files) — existing architecture, current token system, existing `'use client'` boundaries. Read 2026-03-10.
+- WCAG 2.1 Success Criterion 2.3.3 — `prefers-reduced-motion` Level AA requirement for animation accessibility.
 
-### Secondary (MEDIUM-HIGH confidence - industry studies and verified sources)
-- [SALT Agency: Common SEO Issues on Next.js Websites (50-site study)](https://salt.agency/blog/common-seo-issues-on-next-js-websites/)
-- [Rise Marketing: Core Web Vitals for React + Next.js Sites](https://rise.co/blog/core-web-vitals-for-react-next.js-sites-real-fixes-that-cut-lcp-by-50percent)
-- [Patterns.dev: Optimize Next.js for Core Web Vitals](https://www.patterns.dev/react/nextjs-vitals/)
-- [Martal Group: Conversion Rate Statistics 2026](https://martal.ca/conversion-rate-statistics-lb/)
-- [Trajectory Web Design: B2B Website Conversion Optimization](https://www.trajectorywebdesign.com/blog/b2b-website-conversion-optimization)
-- [Forrester: Predictions 2026 - Trust Will Be The Ultimate Currency For B2B Buyers](https://www.forrester.com/blogs/predictions-2026-trust-will-be-the-ultimate-currency-for-b2b-buyers/)
-- [FocusReactive: Typical Next.js SEO Pitfalls to Avoid](https://focusreactive.com/typical-next-js-seo-pitfalls-to-avoid-in-2024/)
-- [Plausible Analytics](https://plausible.io/)
-- [Resend](https://resend.com/)
-- [Vercel](https://vercel.com/)
+### Secondary (MEDIUM confidence)
+- Reference site design systems (Linear, Vercel, Stripe, Tailscale, Render) — training data through August 2025; fundamental design patterns (dark themes, gradient text, backdrop blur, border cards, radial glows, section spacing) are stable and widely documented across the design community; exact current color tokens unverified against live sites.
 
-### Tertiary (MEDIUM confidence - best practices and community patterns)
-- [Next.js 14 Project Structure Best Practices](https://nextjsstarter.com/blog/nextjs-14-project-structure-best-practices/)
-- [Best Practices for Organizing Your Next.js 15 2025](https://dev.to/bajrayejoon/best-practices-for-organizing-your-nextjs-15-2025-53ji)
-- [Best Consulting Websites: 17 Examples with Key Features](https://wpminds.com/best-consultant-websites/)
-- [Best IT Consulting Websites To Follow in 2026](https://www.booknetic.com/blog/best-it-consulting-websites)
-- [Flightcontrol: Next.js App Router Migration - the good, bad, and ugly](https://www.flightcontrol.dev/blog/nextjs-app-router-migration-the-good-bad-and-ugly)
-- [Calendly Consulting: Top 10 Costly Mistakes](https://calendlyconsulting.com/top-10-costly-mistakes-for-calendly-integration/)
+### Tertiary (LOW confidence)
+- `motion` package exact current version — npm registry unavailable during research; version `^12.x` based on training data (package renamed from `framer-motion` to `motion` in 2024); verify with `npm view motion version` before installing.
 
 ---
-*Research completed: 2026-01-31*
+*Research completed: 2026-03-10*
 *Ready for roadmap: yes*

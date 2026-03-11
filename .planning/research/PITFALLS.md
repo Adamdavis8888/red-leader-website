@@ -1,1505 +1,437 @@
-# Pitfalls Research: Next.js Marketing Website for Tech Consulting
+# Pitfalls Research: Visual Redesign of Existing Next.js Marketing Site
 
-**Domain:** Tech consulting lead-generation website
-**Target Audience:** CTOs and engineering leaders
-**Stack:** Next.js 14+ with Tailwind CSS
-**Researched:** 2026-01-31
-**Overall Confidence:** MEDIUM-HIGH (verified with multiple sources, some technical details from official docs)
-
----
-
-## Executive Summary
-
-Next.js marketing sites face predictable failure modes across four critical dimensions: **SEO misconfiguration** (82% of sites fail basic 404 handling), **performance degradation** (only 6% pass LCP thresholds), **conversion friction** (forms asking too much too soon), and **technical debt** (App Router complexity). For tech consulting targeting CTOs, trust signal mistakes compound these issues - skeptical buyers notice outdated testimonials, stock photos, and exaggerated claims.
-
-**Critical finding:** Most pitfalls stem from incomplete utilization of Next.js's built-in capabilities, not framework limitations. The App Router introduces complexity that requires disciplined architecture decisions early.
+**Domain:** Visual redesign — animations, typography, color system, layout restructuring on existing production site
+**Stack:** Next.js 16 (App Router), Tailwind CSS v4, React 19
+**Researched:** 2026-03-10
+**Confidence:** HIGH (critical pitfalls verified against Next.js 16.1.6 official docs and Tailwind v4 upgrade guide)
 
 ---
 
-## SEO Pitfalls
+## Critical Pitfalls
 
-### CRITICAL: Missing 404 Status Codes
+### Pitfall 1: Animation Library Forces Entire Page Into Client Component
 
 **What goes wrong:**
-82% of Next.js sites fail to return proper 404 status codes for non-existent URLs. Instead, they return 200 status codes or redirects, causing search engines to index error pages and dilute crawl budget.
+Adding Framer Motion or similar animation libraries to a page-level component requires `'use client'`, which converts the entire page from a Server Component to a Client Component. All data-fetching, static optimization (`force-static`), and RSC streaming benefits disappear. The homepage currently uses `export const dynamic = 'force-static'` — adding animation at the wrong level silently removes this optimization.
 
 **Why it happens:**
-Developers rely on default Next.js routing without implementing custom error handling. The App Router requires explicit `not-found.tsx` files and proper `notFound()` calls.
+Developers reach for `import { motion } from 'framer-motion'` at the page level (e.g., `app/(marketing)/page.tsx`) without isolating the animated elements. Once any hook or browser API is used in a file, the entire file becomes a Client Component, pulling every import with it.
 
-**Consequences:**
-- Search engines waste crawl budget on invalid URLs
-- Indexing confusion when combined with missing canonical tags
-- Potential duplicate content penalties
-- Lost ranking opportunities
+**How to avoid:**
+Extract animated elements into dedicated, minimal `'use client'` wrapper components. The page itself stays a Server Component. Pattern:
 
-**Prevention:**
-```typescript
-// app/[...not-found]/page.tsx
-import { notFound } from 'next/navigation'
-
-export default function CatchAll() {
-  notFound()
-}
-
-// app/not-found.tsx
-export default function NotFound() {
-  return <div>404 - Page Not Found</div>
-}
-```
-
-**Detection:**
-- Test made-up URLs and inspect HTTP response headers
-- Use Screaming Frog or similar crawler to identify status code issues
-- Check Google Search Console for unexpected indexed pages
-
-**Phase to address:** Foundation/Setup (before content creation)
-
-**Source confidence:** HIGH (verified by [SALT Agency 50-site study](https://salt.agency/blog/common-seo-issues-on-next-js-websites/))
-
----
-
-### CRITICAL: Client-Side Rendering for Critical Content
-
-**What goes wrong:**
-Developers use correct data loading methods but render content client-side. Search engines receive empty markup with no page information. Content loaded via `useEffect` or client components without server fallbacks is invisible to crawlers.
-
-**Why it happens:**
-- Marking components as `'use client'` without considering SEO impact
-- Direct dependency on browser objects (`window`, `document`) breaking pre-rendering
-- Confusion between App Router SSR defaults and actual implementation
-
-**Consequences:**
-- Zero SEO value for primary content
-- Poor Core Web Vitals (LCP, INP)
-- Lower search rankings despite technical setup
-- AI search agents (Gemini, Perplexity) completely miss your content
-
-**Prevention:**
-```typescript
-// ❌ BAD: Client-side only
+```tsx
+// AnimatedHero.tsx
 'use client'
-export default function Services() {
-  const [data, setData] = useState([])
-  useEffect(() => {
-    fetch('/api/services').then(r => setData(r))
-  }, [])
-  return <div>{data.map(...)}</div>
+import { motion } from 'framer-motion'
+export function AnimatedHero({ children }) {
+  return <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>{children}</motion.div>
 }
 
-// ✅ GOOD: Server component with streaming
-export default async function Services() {
-  const data = await fetch('/api/services')
-  return <div>{data.map(...)}</div>
+// page.tsx — stays Server Component
+import { AnimatedHero } from './AnimatedHero'
+export default function HomePage() {
+  return <AnimatedHero><h1>Static content passed as children</h1></AnimatedHero>
 }
 ```
 
-**Detection:**
-- View page source (Ctrl+U) - if content is missing, it's client-rendered
-- Use "Fetch as Google" in Search Console
-- Check Lighthouse SEO score
+The `children` pattern lets Server-rendered content pass through Client Component wrappers without becoming client-side code.
 
-**Phase to address:** Architecture/Component Design (early)
+**Warning signs:**
+- `'use client'` appearing at the top of any page-level file (`page.tsx`)
+- `export const dynamic = 'force-static'` silently ignored (Next.js won't error)
+- Bundle size growing unexpectedly large for a static marketing page
 
-**Source confidence:** HIGH ([FocusReactive SEO guide](https://focusreactive.com/typical-next-js-seo-pitfalls-to-avoid-in-2024/), [Next.js official docs](https://nextjs.org/docs/architecture/accessibility))
-
----
-
-### CRITICAL: Missing or Incomplete Canonical Tags
-
-**What goes wrong:**
-Only 50% of Next.js sites implement canonical tags. This limits crawl efficiency and creates duplicate content issues, especially for dynamically-generated pages.
-
-**Why it happens:**
-Developers assume Next.js automatically configures canonicals correctly. It doesn't - you must implement them manually via Metadata API.
-
-**Consequences:**
-- Duplicate content penalties
-- Inefficient crawl budget usage
-- Lost ranking for preferred URLs
-- Confusion when pages accessible via multiple paths
-
-**Prevention:**
-```typescript
-// app/services/[slug]/page.tsx
-export async function generateMetadata({ params }) {
-  return {
-    alternates: {
-      canonical: `https://redleader.com/services/${params.slug}`
-    }
-  }
-}
-```
-
-**Detection:**
-- Inspect HTML `<head>` for `<link rel="canonical">`
-- Check crawl reports for duplicate content warnings
-- Use Ahrefs or Screaming Frog to audit canonicals
-
-**Phase to address:** SEO Implementation (during template development)
-
-**Source confidence:** HIGH ([SALT Agency study](https://salt.agency/blog/common-seo-issues-on-next-js-websites/), [FocusReactive guide](https://focusreactive.com/typical-next-js-seo-pitfalls-to-avoid-in-2024/))
+**Phase to address:** Typography & Motion Foundation phase (first phase introducing animations)
 
 ---
 
-### MODERATE: Missing Dynamic Sitemap
+### Pitfall 2: New Font Pair Loaded Outside `next/font` Causes FOUT and CLS
 
 **What goes wrong:**
-Static sitemaps become outdated immediately. Missing `lastModified` dates prevent search engines from prioritizing fresh content.
+Premium redesigns typically swap Inter for a more distinctive font pair (e.g., Cal Sans + Inter, Geist + Geist Mono). If the new font is loaded via a `<link>` tag in the HTML head, or via a CSS `@import` in `globals.css`, Next.js cannot optimize it. The result is a Flash of Unstyled Text (FOUT) and measurable Cumulative Layout Shift (CLS) as the web font loads and reflows the page.
 
 **Why it happens:**
-Developers create static `sitemap.xml` files instead of using Next.js's dynamic sitemap generation.
+Designers reference Google Fonts CDN URLs. Developers copy those link tags directly rather than using `next/font/google`, which self-hosts fonts at build time with zero runtime requests and uses `size-adjust` fallback metrics to eliminate CLS.
 
-**Consequences:**
-- Slow indexing of new content
-- Crawlers waste time on unchanged pages
-- Manual maintenance burden
+**How to avoid:**
+Every font must be loaded through `next/font`. For a two-font system with Tailwind v4:
 
-**Prevention:**
-```typescript
-// app/sitemap.ts
-export default async function sitemap() {
-  const services = await getServices()
-
-  return [
-    {
-      url: 'https://redleader.com',
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 1,
-    },
-    ...services.map(s => ({
-      url: `https://redleader.com/services/${s.slug}`,
-      lastModified: s.updatedAt,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    }))
-  ]
-}
-```
-
-**Detection:**
-- Visit `/sitemap.xml` and check if content is dynamic
-- Verify `lastModified` dates are current
-- Check Google Search Console for sitemap errors
-
-**Phase to address:** SEO Implementation (during template development)
-
-**Source confidence:** MEDIUM ([Dave Gray tutorial](https://www.davegray.codes/posts/nextjs-how-to-build-sitemap-robots-txt), WebSearch results)
-
----
-
-### MODERATE: Improper robots.txt Configuration
-
-**What goes wrong:**
-Using `output: "export"` config breaks robots.txt generation. Incorrect rules block important assets (CSS, JS) or accidentally block entire sections.
-
-**Why it happens:**
-Mixing static export with dynamic metadata generation requires explicit `export const dynamic = "force-static"` configuration.
-
-**Consequences:**
-- Build failures in production
-- Assets blocked from crawling
-- Entire site accidentally de-indexed
-
-**Prevention:**
-```typescript
-// app/robots.ts
-export const dynamic = 'force-static'
-
-export default function robots() {
-  return {
-    rules: {
-      userAgent: '*',
-      allow: '/',
-      disallow: ['/api/', '/admin/'],
-    },
-    sitemap: 'https://redleader.com/sitemap.xml',
-  }
-}
-```
-
-**Detection:**
-- Test build process locally and on CI
-- Visit `/robots.txt` in browser
-- Use Google's robots.txt Tester
-
-**Phase to address:** Foundation/Setup
-
-**Source confidence:** MEDIUM ([Next.js GitHub issue #68667](https://github.com/vercel/next.js/issues/68667), official docs)
-
----
-
-### MODERATE: Missing Localization Tags
-
-**What goes wrong:**
-Multi-language or multi-region sites without `hreflang` or alternate tags confuse search engines about which version to serve.
-
-**Why it happens:**
-Not considering internationalization from the start, or assuming Next.js handles it automatically.
-
-**Consequences:**
-- Wrong language version shown in search results
-- Reduced visibility in regional searches
-- Duplicate content issues across regions
-
-**Prevention:**
-```typescript
-export async function generateMetadata({ params }) {
-  return {
-    alternates: {
-      canonical: `https://redleader.com/services`,
-      languages: {
-        'en-US': 'https://redleader.com/en/services',
-        'en-GB': 'https://redleader.com/uk/services',
-      }
-    }
-  }
-}
-```
-
-**Detection:**
-- Check HTML for `<link rel="alternate" hreflang="...">`
-- Use Google Search Console International Targeting reports
-
-**Phase to address:** Architecture (if multi-region is planned)
-
-**Source confidence:** MEDIUM ([Strapi Next.js SEO Guide](https://strapi.io/blog/nextjs-seo), WebSearch results)
-
----
-
-## Performance Pitfalls
-
-### CRITICAL: Poor Largest Contentful Paint (LCP)
-
-**What goes wrong:**
-Only 6% of Next.js sites pass LCP thresholds (<2.5s). Marketing sites with hero images/videos frequently score 4+ seconds.
-
-**Why it happens:**
-- Using standard `<img>` tags instead of Next.js `<Image>`
-- Not using `priority` prop on above-fold images
-- Loading high-resolution images without WebP/AVIF conversion
-- Slow server-side rendering
-- Blocking resources in critical path
-
-**Consequences:**
-- 38% bounce rate at 5s load time vs 9% at 2s
-- Direct ranking penalty from Google
-- Lost conversions from impatient CTOs
-- Poor mobile experience
-
-**Prevention:**
-```typescript
-// ✅ GOOD: Optimized hero image
-import Image from 'next/image'
-
-export default function Hero() {
-  return (
-    <Image
-      src="/hero.jpg"
-      alt="Red Leader Consulting"
-      width={1920}
-      height={1080}
-      priority // Preload above-fold images
-      quality={85}
-      placeholder="blur"
-      blurDataURL="..." // Low-res preview
-    />
-  )
-}
-```
-
-**Additional strategies:**
-- Use Static Site Generation (SSG) for marketing pages
-- Enable image optimization in `next.config.js`
-- Serve images as WebP/AVIF with `<Image>` component
-- Preload critical fonts and assets
-- Minimize JavaScript bundle size
-
-**Detection:**
-- Run Lighthouse in Chrome DevTools
-- Use PageSpeed Insights
-- Monitor Core Web Vitals in Search Console
-- Check real user metrics via Vercel Analytics
-
-**Phase to address:** Foundation (image strategy) + Optimization (ongoing)
-
-**Source confidence:** HIGH ([Rise Marketing case study](https://rise.co/blog/core-web-vitals-for-react-next.js-sites-real-fixes-that-cut-lcp-by-50percent), [DebugBear guide](https://www.debugbear.com/blog/nextjs-performance))
-
----
-
-### CRITICAL: Total Blocking Time (TBT) / Interaction to Next Paint (INP)
-
-**What goes wrong:**
-Only 6% of Next.js sites meet TBT "good" thresholds. Interaction to Next Paint (INP) replaced First Input Delay as Core Web Vital in March 2024. INP measures full interaction responsiveness, making JavaScript execution efficiency critical.
-
-**Why it happens:**
-- Massive JavaScript bundles from barrel file imports
-- Third-party scripts blocking main thread
-- Using `click` listeners instead of optimized `touchstart` or passive event listeners (adds 300ms lag)
-- No code splitting or lazy loading
-- Analytics/tracking scripts loaded synchronously
-
-**Consequences:**
-- "Poor" INP score (>500ms) vs "Good" (<200ms)
-- Buttons/forms feel sluggish
-- High bounce rates on mobile
-- Direct ranking impact
-
-**Prevention:**
-```typescript
-// ❌ BAD: Barrel import processing thousands of unused modules
-import { Icon } from '@/components' // Adds 200-800ms overhead
-
-// ✅ GOOD: Direct import
-import { Icon } from '@/components/Icon'
-
-// ❌ BAD: Synchronous third-party script
-<script src="analytics.js" />
-
-// ✅ GOOD: Next.js Script component with strategy
-import Script from 'next/script'
-<Script src="analytics.js" strategy="lazyOnload" />
-
-// Dynamic imports for heavy components
-const HeavyChart = dynamic(() => import('./HeavyChart'), {
-  loading: () => <Skeleton />
-})
-```
-
-**Detection:**
-- Lighthouse TBT metric
-- Chrome DevTools Performance tab
-- Web Vitals extension showing INP
-- Real user monitoring (RUM)
-
-**Phase to address:** Architecture (import strategy) + Optimization (script loading)
-
-**Source confidence:** HIGH ([Patterns.dev guide](https://www.patterns.dev/react/nextjs-vitals/), [Zumeirah JS SEO guide](https://zumeirah.com/javascript-seo-in-2026/))
-
----
-
-### CRITICAL: Unoptimized Images Hurting Core Web Vitals
-
-**What goes wrong:**
-Using standard `<img>` tags without optimization. Large images slow LCP and hurt CLS (Cumulative Layout Shift).
-
-**Why it happens:**
-Developers unfamiliar with Next.js `<Image>` component or importing images from design tools without compression.
-
-**Consequences:**
-- Slow page loads (LCP penalty)
-- Layout shift as images load (CLS penalty)
-- Excessive bandwidth usage
-- Poor mobile experience
-
-**Prevention:**
-```typescript
-// Always use Next.js Image component
-import Image from 'next/image'
-
-<Image
-  src="/team-photo.jpg"
-  alt="Red Leader team"
-  width={800}
-  height={600}
-  sizes="(max-width: 768px) 100vw, 800px"
-  quality={85}
-  priority={isAboveFold}
-/>
-
-// Configure next.config.js
-module.exports = {
-  images: {
-    formats: ['image/avif', 'image/webp'],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
-  }
-}
-```
-
-**Detection:**
-- Lighthouse "Properly size images" and "Serve images in next-gen formats"
-- Network tab showing large image downloads
-- CLS score >0.1
-
-**Phase to address:** Foundation (configure) + Development (enforce)
-
-**Source confidence:** HIGH ([Next.js official docs](https://nextjs.org/docs/14/app/building-your-application/optimizing/fonts), [Contentful guide](https://www.contentful.com/blog/next-js-fonts/))
-
----
-
-### CRITICAL: Font Loading FOUT/FOIT Issues
-
-**What goes wrong:**
-FOIT (flash of invisible text) hides content until fonts load. FOUT (flash of unstyled text) shows fallback font then swaps. Both harm UX and Core Web Vitals.
-
-**Why it happens:**
-Using traditional `<link>` or `@import` for Google Fonts instead of `next/font`. External network requests to font CDNs.
-
-**Consequences:**
-- Text invisible during load (FOIT)
-- Jarring font swap (FOUT)
-- Layout shift (CLS penalty)
-- Poor perceived performance
-
-**Prevention:**
-```typescript
-// ✅ GOOD: next/font automatically prevents FOUT/FOIT
-import { Inter, Roboto_Mono } from 'next/font/google'
-
-const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-inter',
-})
-
-const robotoMono = Roboto_Mono({
-  subsets: ['latin'],
-  variable: '--font-roboto-mono',
-})
-
-export default function RootLayout({ children }) {
-  return (
-    <html className={`${inter.variable} ${robotoMono.variable}`}>
-      <body>{children}</body>
-    </html>
-  )
-}
-```
-
-**How Next.js solves this:**
-- Fonts preloaded at build time
-- No FOIT or FOUT
-- Uses CSS `size-adjust` for matching proportions
-- Eliminates external network requests
-
-**Detection:**
-- Visual regression testing
-- Lighthouse font-display warnings
-- Network tab showing font request timing
-
-**Phase to address:** Foundation/Setup
-
-**Source confidence:** HIGH ([Lydia Hallie guide](https://www.lydiahallie.com/blog/optimizing-webfonts-in-nextjs13), [Next.js official docs](https://nextjs.org/docs/14/app/building-your-application/optimizing/fonts))
-
----
-
-### MODERATE: Third-Party Script Performance Impact
-
-**What goes wrong:**
-Analytics, chat widgets, and tracking scripts loaded synchronously block rendering. Sites loading many third-party scripts have significantly lower INP and LCP pass rates.
-
-**Why it happens:**
-Copying script tags from documentation without using Next.js `<Script>` component with proper strategy.
-
-**Consequences:**
-- Delayed page interactivity
-- Slower LCP
-- JavaScript bloat
-- Privacy/GDPR issues if not managed
-
-**Prevention:**
-```typescript
-import Script from 'next/script'
-import { GoogleAnalytics } from '@next/third-parties/google'
-
-export default function RootLayout({ children }) {
-  return (
-    <html>
-      <body>
-        {children}
-
-        {/* Use @next/third-parties for GA */}
-        <GoogleAnalytics gaId="G-XXXXXXXXXX" />
-
-        {/* Or manual Script with strategy */}
-        <Script
-          src="https://widget.intercom.io/widget/xxx"
-          strategy="lazyOnload" // Loads after page interactive
-        />
-      </body>
-    </html>
-  )
-}
-```
-
-**Strategy options:**
-- `beforeInteractive`: Critical scripts only
-- `afterInteractive`: Default, good for analytics
-- `lazyOnload`: Non-critical widgets, chat
-
-**Detection:**
-- Lighthouse "Reduce JavaScript execution time"
-- Chrome DevTools Coverage tab
-- Network waterfall showing blocking scripts
-
-**Phase to address:** Integration (when adding analytics/tracking)
-
-**Source confidence:** HIGH ([Chrome Developers guide](https://developer.chrome.com/blog/script-component), [Next.js official docs](https://nextjs.org/docs/pages/guides/analytics))
-
----
-
-### MODERATE: Cumulative Layout Shift (CLS) from Images/Ads
-
-**What goes wrong:**
-Content jumps as images, ads, or dynamic content loads without reserved space. Twobird example showed 1.12 CLS score vs recommended 0.1.
-
-**Why it happens:**
-Not specifying width/height on images, loading dynamic content without skeleton states, banner/notification insertions.
-
-**Consequences:**
-- Frustrating user experience (content shifts while reading)
-- Accidental clicks on wrong elements
-- Core Web Vitals penalty
-- Conversion drop-off
-
-**Prevention:**
-```typescript
-// ✅ Always specify dimensions
-<Image
-  src="/logo.png"
-  width={200}
-  height={50}
-  alt="Red Leader"
-/>
-
-// ✅ Reserve space for dynamic content
-<div className="min-h-[400px]">
-  <Suspense fallback={<Skeleton height={400} />}>
-    <DynamicContent />
-  </Suspense>
-</div>
-
-// ✅ Avoid layout-shifting banners
-// Use fixed/sticky positioning instead of inserting into flow
-```
-
-**Detection:**
-- Lighthouse CLS score
-- DevTools Layout Shift Regions
-- Real user monitoring (RUM)
-
-**Phase to address:** Development (enforce skeleton states, image dimensions)
-
-**Source confidence:** HIGH ([SALT Agency study](https://salt.agency/blog/common-seo-issues-on-next-js-websites/), [Patterns.dev guide](https://www.patterns.dev/react/nextjs-vitals/))
-
----
-
-### MODERATE: Tailwind CSS Bundle Size Bloat
-
-**What goes wrong:**
-Misconfigured Tailwind includes unused utility classes or developers dynamically build classes incorrectly, increasing CSS bundle size.
-
-**Why it happens:**
-Not configuring `content` array properly in `tailwind.config.js` or using string concatenation to build class names (breaks purging).
-
-**Consequences:**
-- Larger CSS bundles (though Tailwind purging usually results in <10kB)
-- Slower initial page load
-- Lost performance gains
-
-**Prevention:**
-```typescript
-// tailwind.config.js
-module.exports = {
-  content: [
-    './app/**/*.{js,ts,jsx,tsx}',
-    './components/**/*.{js,ts,jsx,tsx}',
-  ],
-  // JIT mode (default in Tailwind 3+)
-}
-
-// ❌ BAD: String concatenation breaks purging
-const textColor = `text-${color}` // Don't do this
-
-// ✅ GOOD: Full class names or safelist
-const colorClasses = {
-  blue: 'text-blue-600',
-  red: 'text-red-600',
-}
-```
-
-**Results when done right:**
-- 90% reduction from full Tailwind library
-- Netflix Top 10 delivers only 6.5kB CSS over network
-- No runtime cost (compile-time only)
-
-**Detection:**
-- Check CSS bundle size in build output
-- Network tab showing CSS transfer size
-- Lighthouse "Reduce unused CSS"
-
-**Phase to address:** Foundation/Setup
-
-**Source confidence:** MEDIUM ([FAB Web Studio guide](https://fabwebstudio.com/blog/react-nextjs-best-practices-2026-performance-scale), [Tailwind docs](https://v3.tailwindcss.com/docs/optimizing-for-production))
-
----
-
-## Conversion Pitfalls
-
-### CRITICAL: Contact Forms Asking Too Much
-
-**What goes wrong:**
-Forms requesting full company details, budget, revenue ranges, job titles, and decision timelines before prospects understand value. Nothing kills conversions faster.
-
-**Why it happens:**
-Sales teams want qualifying information upfront. Copying enterprise SaaS patterns for simpler consulting services.
-
-**Consequences:**
-- Form abandonment (22% cite "too long/complicated")
-- Lost leads who would engage with simpler form
-- Impression of bureaucracy (opposite of agile consulting)
-- Mobile abandonment especially high
-
-**Prevention:**
-```typescript
-// ❌ BAD: 12 fields including budget, company size, timeline
-<form>
-  <input name="firstName" required />
-  <input name="lastName" required />
-  <input name="email" required />
-  <input name="phone" required />
-  <input name="company" required />
-  <input name="jobTitle" required />
-  <select name="companySize" required />
-  <select name="budget" required />
-  <select name="timeline" required />
-  <textarea name="challenges" required />
-  {/* ... 2 more fields */}
-</form>
-
-// ✅ GOOD: 4 fields maximum for initial contact
-<form>
-  <input name="name" required placeholder="Your name" />
-  <input name="email" required placeholder="Email address" />
-  <input name="company" placeholder="Company (optional)" />
-  <textarea name="message" placeholder="What can we help with?" />
-  <button>Get in Touch</button>
-</form>
-```
-
-**Best practice:** 31% of marketers say 4 fields is optimal for conversions.
-
-**Detection:**
-- Analytics showing form start vs completion
-- Heatmaps showing field abandonment
-- A/B testing different field counts
-
-**Phase to address:** Design/UX (before development)
-
-**Source confidence:** HIGH ([Martal Group statistics](https://martal.ca/conversion-rate-statistics-lb/), [Trajectory Web Design guide](https://www.trajectorywebdesign.com/blog/b2b-website-conversion-optimization))
-
----
-
-### CRITICAL: Weak or Buried CTAs
-
-**What goes wrong:**
-CTAs using generic language ("Submit", "Learn More") don't spark excitement. CTAs buried below fold reduce conversions dramatically.
-
-**Why it happens:**
-Not prioritizing conversion in design. Copying B2C patterns for B2B audience.
-
-**Consequences:**
-- Moving CTA above fold can boost conversions 317%
-- Generic CTAs reduce click-through
-- Lost opportunities from busy executives who won't scroll
-
-**Prevention:**
-```typescript
-// ❌ BAD: Generic, below fold
-<section className="mt-[100vh]">
-  <button>Learn More</button>
-</section>
-
-// ✅ GOOD: Specific, above fold, value-focused
-<section className="h-screen flex items-center">
-  <div>
-    <h1>Scale Your Engineering Team Without the Headcount</h1>
-    <p>CTOs at Series B startups trust Red Leader for...</p>
-    <div className="flex gap-4">
-      <button className="bg-blue-600">
-        Schedule 30-Min Strategy Call
-      </button>
-      <button className="border">
-        See Case Studies
-      </button>
-    </div>
-  </div>
-</section>
-```
-
-**Best practices:**
-- Primary CTA above fold
-- Action-oriented language ("Schedule", "Get", "Start")
-- Specific value proposition
-- Multiple CTAs for different buyer stages
-
-**Detection:**
-- Heatmaps showing scroll depth
-- Click tracking on CTAs
-- A/B testing CTA placement and copy
-
-**Phase to address:** Design/UX + Copywriting
-
-**Source confidence:** MEDIUM ([Unbounce CRO guide](https://unbounce.com/conversion-rate-optimization/b2b-conversion-rates/), [Shopify B2B guide](https://www.shopify.com/enterprise/blog/b2b-conversion-rate-optimization))
-
----
-
-### CRITICAL: Missing Trust Signals for Skeptical B2B Buyers
-
-**What goes wrong:**
-Outdated testimonials, stock photos of "team", fake client logos, exaggerated claims. B2B buyers in 2026 are deeply skeptical - they spend 75% of buying journey researching anonymously, consuming 15+ content pieces before contact.
-
-**Why it happens:**
-Pressure to look established before having substantial client base. Using design templates with placeholder content. Copying competitor websites.
-
-**Consequences:**
-- **Trust deficit:** Buyers don't believe ROI claims, case studies, or engagement authenticity
-- **Immediate distrust:** Stock photos visitors recognize from other sites
-- **Legal problems:** Using client logos without permission
-- **Credibility loss:** Everything else becomes suspect
-
-**Prevention:**
-```markdown
-✅ DO:
-- Recent testimonials (within 6 months) with full names, titles, companies
-- Real team photos (even if informal)
-- Specific, verifiable results ("Reduced deployment time 43%" not "Much faster")
-- Client logos ONLY with written permission
-- Easy-to-find contact information (phone, email, address)
-- Recent blog posts showing current activity
-- Security/compliance badges that link to verification pages
-
-❌ DON'T:
-- Stock photos pretending to be team
-- Client logos you've never worked with
-- Vague claims ("Industry-leading", "Best-in-class")
-- Testimonials from years ago
-- Wall of certification badges (looks desperate)
-- Hidden contact information
-- Broken links or outdated content
-```
-
-**Specific to CTOs:**
-- Technical depth in case studies (not just business outcomes)
-- GitHub contributions, open source involvement
-- Conference talks, technical blog posts
-- Technology certifications (AWS, Google Cloud, etc.)
-
-**Detection:**
-- Google reverse image search on team photos
-- Check client websites for reciprocal mentions
-- Verify certification badges link to validation pages
-- Review testimonial dates
-
-**Phase to address:** Content Strategy (ongoing)
-
-**Source confidence:** MEDIUM ([Trajectory trust signals guide](https://www.trajectorywebdesign.com/blog/b2b-website-trust-signals), [Forrester 2026 predictions](https://www.forrester.com/blogs/predictions-2026-trust-will-be-the-ultimate-currency-for-b2b-buyers/), [SlashExperts guide](https://www.slashexperts.com/post/website-trust-signals-the-hidden-elements-costing-you-sales))
-
----
-
-### CRITICAL: Vague Value Proposition Above Fold
-
-**What goes wrong:**
-Hero sections with generic taglines, buzzwords, or vague promises. "We help companies transform" or "Innovation through technology" tell CTOs nothing.
-
-**Why it happens:**
-Fear of being too narrow. Trying to appeal to everyone. Copying competitor messaging.
-
-**Consequences:**
-- Immediate exit (executives don't have time to figure out what you do)
-- Lost opportunity to differentiate
-- Looks like every other consulting firm
-
-**Prevention:**
-```typescript
-// ❌ BAD: Generic, could apply to any tech firm
-<h1>We Transform Businesses Through Technology</h1>
-<p>Innovation, Excellence, Partnership</p>
-
-// ✅ GOOD: Specific, speaks to CTO pain points
-<h1>Rescue Stalled Migrations to Kubernetes</h1>
-<p>Your team started the move to K8s 8 months ago.
-   It's still not in production. We've done this 47 times.</p>
-<button>See How We Do It</button>
-
-// Or alternative:
-<h1>Staff Augmentation That Actually Ships</h1>
-<p>Senior engineers who join your team Monday,
-   commit code Tuesday. No 3-month ramp-up.</p>
-```
-
-**Best practices:**
-- Specific problem you solve
-- For whom (CTO, VP Eng, etc.)
-- Proof point (number, timeframe)
-- Immediate next step
-
-**Detection:**
-- 5-second test (user sees page 5 seconds, can they explain what you do?)
-- Bounce rate on homepage
-- Time on page metrics
-
-**Phase to address:** Copywriting (before design)
-
-**Source confidence:** MEDIUM ([GemPages B2B CRO guide](https://gempages.net/blogs/shopify/b2b-conversion-rate-optimization), [Market Vantage](https://marketvantage.com/blog/common-b2b-website-conversion-problems-and-solutions/))
-
----
-
-### MODERATE: One-Size-Fits-All Messaging
-
-**What goes wrong:**
-Treating all leads the same with generic messaging, not considering buyer journey stage. Someone researching options needs different content than someone ready to buy.
-
-**Why it happens:**
-Not mapping content to buyer journey. Assuming everyone who visits is ready to contact sales.
-
-**Consequences:**
-- Disengaged prospects
-- Longer sales cycles
-- Fewer conversions
-- Premature sales contact
-
-**Prevention:**
-```typescript
-// Offer content for different stages
-<section>
-  <h2>Choose Your Path</h2>
-
-  {/* Early stage: Education */}
-  <div>
-    <h3>Just Exploring?</h3>
-    <a href="/guides/kubernetes-migration-checklist">
-      Free Migration Checklist
-    </a>
-  </div>
-
-  {/* Mid stage: Evaluation */}
-  <div>
-    <h3>Comparing Options?</h3>
-    <a href="/case-studies">
-      See How We Helped Acme Corp
-    </a>
-  </div>
-
-  {/* Late stage: Decision */}
-  <div>
-    <h3>Ready to Start?</h3>
-    <a href="/contact">
-      Schedule Strategy Call
-    </a>
-  </div>
-</section>
-```
-
-**Detection:**
-- Content engagement by stage
-- Conversion rates by traffic source
-- Sales feedback on lead quality
-
-**Phase to address:** Content Strategy
-
-**Source confidence:** MEDIUM ([ScoreApp lead gen mistakes](https://www.scoreapp.com/b2b-lead-generation-mistakes/), [Leads at Scale guide](https://leadsatscale.com/insights/8-common-b2b-lead-generation-mistakes-to-avoid/))
-
----
-
-### MODERATE: Calendly Integration Mistakes
-
-**What goes wrong:**
-Using default Calendly booking URL instead of embedding. Poor availability configuration signals desperation (too open) or unavailability (no slots). Page load speed impact from widget. Not customizing appearance to match brand.
-
-**Why it happens:**
-Taking Calendly setup at face value without optimization. Not treating scheduling page as sales tool.
-
-**Consequences:**
-- Traffic directed away from your site
-- Looks generic, not professional
-- Duplicate calendar events
-- Slow page load
-- Lost conversions from availability perception
-
-**Prevention:**
-```typescript
-// ✅ GOOD: Embedded with lazy loading
-'use client'
-import Script from 'next/script'
-import { useState } from 'react'
-
-export default function ScheduleButton() {
-  const [showCalendly, setShowCalendly] = useState(false)
-
-  return (
-    <>
-      <button onClick={() => setShowCalendly(true)}>
-        Schedule Strategy Call
-      </button>
-
-      {showCalendly && (
-        <>
-          <Script
-            src="https://assets.calendly.com/assets/external/widget.js"
-            strategy="lazyOnload"
-          />
-          <div
-            className="calendly-inline-widget"
-            data-url="https://calendly.com/redleader/strategy?hide_gdpr_banner=1&primary_color=1d4ed8"
-            style={{ minWidth: '320px', height: '700px' }}
-          />
-        </>
-      )}
-    </>
-  )
-}
-```
-
-**Best practices:**
-- Embed instead of external URL
-- Customize colors to match brand
-- Set buffer times between meetings
-- Limit daily meetings (availability strategy)
-- Use minimum scheduling notice
-- Load widget on click, not on page load
-- Use Calendly API v2 (v1 deprecated August 2025)
-
-**Detection:**
-- Page load speed with/without widget
-- Conversion rate from page to scheduled call
-- Calendar checking for duplicates
-
-**Phase to address:** Integration (when adding booking)
-
-**Source confidence:** MEDIUM ([Calendly Consulting guide](https://calendlyconsulting.com/top-10-costly-mistakes-for-calendly-integration/), [Zeeg integration guide](https://zeeg.me/en/blog/calendly-integrations))
-
----
-
-### MODERATE: Click-to-Call Implementation Issues
-
-**What goes wrong:**
-Call tracking not configured, so can't attribute calls to marketing. Running call ads outside business hours. Using desktop strategies for mobile (wrong keywords, not optimizing for calls). Technical setup missing Google forwarding number.
-
-**Why it happens:**
-Not treating phone calls as conversion funnel. Copying desktop campaigns to mobile without modification.
-
-**Consequences:**
-- Can't measure ROI on paid ads driving calls
-- Wasted ad spend on closed hours
-- Wrong keywords optimized for CTR not calls
-- Lost conversions from poor mobile UX
-
-**Prevention:**
-```typescript
-// ✅ Click-to-call with tracking
-<a
-  href="tel:+15551234567"
-  className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3"
-  onClick={() => {
-    // Track call attempt
-    gtag('event', 'call_click', {
-      phone_number: '+15551234567',
-      source: 'hero_cta'
-    })
-  }}
->
-  <PhoneIcon />
-  <span className="hidden sm:inline">Call us:</span>
-  <span className="font-semibold">(555) 123-4567</span>
-</a>
-
-// Conditional rendering by business hours
-{isBusinessHours ? (
-  <CallButton />
-) : (
-  <div>
-    <p>We're currently closed</p>
-    <CalendlyButton />
-  </div>
-)}
-```
-
-**Best practices:**
-- Implement call tracking (CallRail, etc.)
-- Use Google forwarding numbers for attribution
-- Bid on high-intent keywords that drive calls
-- Optimize landing pages for mobile call action
-- Show business hours next to phone number
-- A/B test call vs form CTAs
-
-**Detection:**
-- Call volume tracking
-- Source attribution for calls
-- Mobile vs desktop conversion rates
-
-**Phase to address:** Integration + Analytics Setup
-
-**Source confidence:** MEDIUM ([DBS Interactive guide](https://www.dbswebsite.com/blog/increase-conversions-mobile-click-to-call/), [Search Engine Land strategies](https://searchengineland.com/stop-using-desktop-conversions-mobile-search-6-strategies-help-drive-mobile-calls-237228))
-
----
-
-## Technical Pitfalls
-
-### CRITICAL: App Router Production Stability Issues
-
-**What goes wrong:**
-App Router introduces complexity that surfaces as production bugs: crashes, cryptic build errors, pages statically generated in production behaving differently than dev, memory leaks, infinite loop vulnerabilities.
-
-**Why it happens:**
-App Router maturity curve - took nearly a year after "production ready" to be truly stable. Switching Next versions solves one problem but creates another. Too many rendering methods and runtimes to consider.
-
-**Consequences:**
-- Production-only bugs (build succeeds, runtime fails)
-- Dev server crashes (less frequent in v14, still occurs)
-- Security vulnerabilities (infinite loop exploit from crafted HTTP requests)
-- Performance regressions (App Router 80-130ms vs Pages Router 14ms)
-- Wasted engineering time debugging framework issues
-
-**Prevention:**
-```typescript
-// Explicitly mark dynamic pages
-// app/blog/[slug]/page.tsx
-import { connection } from 'next/server'
-
-export default async function BlogPost({ params }) {
-  // Force dynamic rendering
-  await connection()
-
-  const post = await fetchPost(params.slug)
-  return <article>{post.content}</article>
-}
-
-// Or force static when appropriate
-export const dynamic = 'force-static'
-```
-
-**Mitigation strategies:**
-- Start with Pages Router if App Router complexity isn't needed
-- Thoroughly test production builds locally
-- Use `next build && next start` in staging environment
-- Monitor error rates closely after deployments
-- Have rollback plan ready
-- Keep Next.js updated for security patches
-
-**Detection:**
-- Different behavior between `next dev` and `next build && next start`
-- Cryptic TypeScript errors during build
-- Memory usage growth over time
-- Error monitoring tools (Sentry, etc.)
-
-**Phase to address:** Architecture Decision (very early) + Ongoing Monitoring
-
-**Source confidence:** MEDIUM-HIGH ([Flightcontrol migration experience](https://www.flightcontrol.dev/blog/nextjs-app-router-migration-the-good-bad-and-ugly), [GitHub discussion #59373](https://github.com/vercel/next.js/discussions/59373), [Next.js security update Dec 2025](https://nextjs.org/blog/security-update-2025-12-11))
-
----
-
-### CRITICAL: Breaking Hydration
-
-**What goes wrong:**
-Hydration errors occur when server-rendered HTML doesn't match client-side React. Console fills with warnings, interactive elements break, visual glitches appear.
-
-**Why it happens:**
-- Using `Date.now()` or `Math.random()` during render (different on server/client)
-- Browser-only APIs (`window`, `localStorage`) accessed during render
-- Third-party scripts modifying DOM before hydration
-- Incorrectly nesting HTML (e.g., `<p>` inside `<p>`)
-
-**Consequences:**
-- Broken interactivity
-- Visual glitches
-- Poor user experience
-- React re-renders entire tree (performance hit)
-
-**Prevention:**
-```typescript
-// ❌ BAD: Different on server/client
-export default function Component() {
-  const id = Math.random() // Different every render
-  return <div id={id}>...</div>
-}
-
-// ✅ GOOD: Consistent or client-only
-'use client'
-import { useEffect, useState } from 'react'
-
-export default function Component() {
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  if (!mounted) return null
-
-  // Now safe to use browser APIs
-  return <div>{window.innerWidth}</div>
-}
-
-// Or use dynamic import with ssr: false
-import dynamic from 'next/dynamic'
-
-const ClientOnly = dynamic(() => import('./ClientOnly'), {
-  ssr: false
-})
-```
-
-**Detection:**
-- Console warnings: "Text content did not match"
-- Visual content flickering
-- React DevTools highlighting hydration errors
-
-**Phase to address:** Development (code review standards)
-
-**Source confidence:** HIGH ([Upsun App Router mistakes guide](https://upsun.com/blog/avoid-common-mistakes-with-next-js-app-router/), Next.js official docs)
-
----
-
-### MODERATE: Accessibility Issues Caught Too Late
-
-**What goes wrong:**
-Missing alt text on images, missing `lang` attribute on `<html>`, improper ARIA usage, missing page titles, poor color contrast, animations without `prefers-reduced-motion`.
-
-**Why it happens:**
-Accessibility treated as final polish instead of built-in. Ignoring ESLint warnings. Not testing with screen readers.
-
-**Consequences:**
-- Legal liability (ADA compliance)
-- Lost users with disabilities
-- Poor SEO (screen reader problems often correlate with crawler problems)
-- Failed audits late in project
-
-**Prevention:**
-```typescript
+```tsx
 // app/layout.tsx
+import { Geist, Geist_Mono } from 'next/font/google'
+
+const geist = Geist({ subsets: ['latin'], variable: '--font-sans', display: 'swap' })
+const geistMono = Geist_Mono({ subsets: ['latin'], variable: '--font-mono', display: 'swap' })
+
 export default function RootLayout({ children }) {
-  return (
-    <html lang="en"> {/* Don't forget lang attribute */}
-      <body>{children}</body>
-    </html>
-  )
-}
-
-// Always alt text
-<Image
-  src="/diagram.png"
-  alt="System architecture showing microservices communicating via message queue"
-  width={800}
-  height={600}
-/>
-
-// Respect motion preferences
-// globals.css
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-// Enable ESLint accessibility rules (default in Next.js)
-// .eslintrc.json
-{
-  "extends": "next/core-web-vitals" // Includes eslint-plugin-jsx-a11y
+  return <html className={`${geist.variable} ${geistMono.variable}`}>{children}</html>
 }
 ```
 
-**Tools:**
-- ESLint warnings (don't ignore them)
-- Lighthouse accessibility audit
-- WAVE browser extension
-- axe DevTools
-- Manual screen reader testing
+```css
+/* globals.css */
+@theme {
+  --font-sans: var(--font-sans);  /* references the CSS variable from next/font */
+  --font-mono: var(--font-mono);
+}
+```
 
-**Detection:**
-- Lighthouse accessibility score <90
-- ESLint warnings in build output
-- User complaints
-- WCAG audit
+**Warning signs:**
+- Any `<link rel="stylesheet" href="https://fonts.googleapis.com/...">` in layout or head
+- Any `@import url('https://fonts.googleapis.com/...')` in CSS files
+- Lighthouse CLS score above 0.1 after font change
+- Visible text reflow on first load in Chrome DevTools slow network simulation
 
-**Phase to address:** Foundation (setup) + Development (enforce)
-
-**Source confidence:** HIGH ([Next.js Accessibility docs](https://nextjs.org/docs/architecture/accessibility), [Prismic accessibility guide](https://prismic.io/blog/nextjs-accessibility))
+**Phase to address:** Typography & Font System phase
 
 ---
 
-### MODERATE: Mobile Responsive Breakpoint Issues
+### Pitfall 3: Tailwind v4 Class Renames Break Existing Component Styles Silently
 
 **What goes wrong:**
-Site looks perfect on desktop, breaks on mobile. Content overlaps, buttons too small, horizontal scroll, touch targets too close.
+The project already uses Tailwind v4. However, adding new components during redesign using "known" v3 class names that were renamed in v4 produces broken styles without compilation errors. The HTML renders with the class applied but the CSS rule doesn't exist. This is particularly dangerous because it appears to work in dev if any cached styles are present.
+
+**Critical v4 renames that affect this redesign:**
+
+| Intended effect | v3 class | v4 class |
+|----------------|----------|----------|
+| Small shadow | `shadow-sm` | `shadow-xs` |
+| Default shadow | `shadow` | `shadow-sm` |
+| Small rounded | `rounded-sm` | `rounded-xs` |
+| Remove outline | `outline-none` | `outline-hidden` |
+| Focus ring (3px) | `focus:ring` | `focus:ring-3` |
+| Small blur | `blur-sm` | `blur-xs` |
+
+Additionally, `ring` now defaults to 1px (was 3px) and uses `currentColor` (was blue-500). Any focus ring styles on CTAs and form elements need explicit `ring-3 ring-blue-500` to match v3 visual behavior.
 
 **Why it happens:**
-Designing desktop-first. Not testing on real devices. Tailwind breakpoints used incorrectly.
+Developers (and AI code generation tools) write v3 class names from muscle memory. The design reference sites (Linear, Vercel, Stripe) have documentation using v3 syntax. No TypeScript error surfaces this — it silently fails.
 
-**Consequences:**
-- 63% of B2B buyers prefer mobile for research
-- High bounce rate on mobile
-- Lost conversions from CTOs checking site on phone
-- Poor mobile Core Web Vitals
+**How to avoid:**
+- Run `npx @tailwindcss/upgrade` on any large blocks of class additions
+- Keep the Tailwind v4 upgrade guide open during component authoring
+- Add a linting rule or visual regression test for shadow/ring utilities specifically
+- Review the v4 class name changes before starting each component
 
-**Prevention:**
-```typescript
-// Use Tailwind mobile-first approach
-<div className="
-  px-4 py-6          // Mobile default
-  md:px-8 md:py-12   // Tablet
-  lg:px-16 lg:py-16  // Desktop
-">
-  <h1 className="
-    text-2xl          // Mobile
-    md:text-4xl       // Tablet
-    lg:text-5xl       // Desktop
-  ">
-    Title
-  </h1>
+**Warning signs:**
+- Shadows look different than expected on cards
+- Focus rings missing or wrong color on interactive elements
+- Rounded corners appear too sharp or too large vs. designs
+
+**Phase to address:** All phases — establish v4 class name reference in Phase 1, verify in each subsequent phase
+
+---
+
+### Pitfall 4: CSS Animations That Trigger Layout or Paint Destroy Performance
+
+**What goes wrong:**
+Animating properties that trigger browser layout recalculation (width, height, top, left, margin, padding, font-size) or paint (background, color, box-shadow) on every animation frame causes jank. On low-end devices common in the target audience (CTO on a plane, crisis scenario), this renders the site unusable during the exact moment they need it most.
+
+**Properties safe to animate (compositor only — no layout/paint):**
+- `transform` (translate, scale, rotate) — YES
+- `opacity` — YES
+
+**Properties that trigger paint (avoid in continuous animations):**
+- `box-shadow` — paint trigger
+- `background-color` — paint trigger (acceptable for hover transitions, not loops)
+- `color` — paint trigger
+
+**Properties that trigger layout (never animate):**
+- `width`, `height`, `margin`, `padding`, `top`, `left`, `font-size`
+
+**Why it happens:**
+Designers spec "grow on hover" or "pulse" effects using width/height. Developers implement faithfully without knowing the rendering cost. The existing `emergency-pulse` animation in globals.css correctly uses `opacity` — new animations must follow this pattern.
+
+**How to avoid:**
+- Scale animations: use `transform: scale()` not width/height changes
+- Position animations: use `transform: translateY()` not `top`/`margin` changes
+- Glow effects: use `filter: drop-shadow()` (compositor) not `box-shadow` changes in loops
+- Wrap all animated elements in `will-change: transform` or `will-change: opacity` when hover animations are anticipated — but sparingly (it consumes GPU memory)
+
+**Warning signs:**
+- Chrome DevTools Performance panel shows purple "Layout" blocks during animation
+- Green "Paint" flashes during scrolling in DevTools paint flashing mode
+- Animation stutters on phones in browser preview tools
+
+**Phase to address:** Motion & Micro-interactions phase
+
+---
+
+### Pitfall 5: `prefers-reduced-motion` Not Respected Breaks Accessibility and May Cause Physical Harm
+
+**What goes wrong:**
+Users with vestibular disorders, epilepsy, or motion sensitivity have `prefers-reduced-motion: reduce` set in their OS. If all animations run regardless, this is a WCAG 2.1 Level AA violation (Success Criterion 2.3.3) and can cause genuine physical discomfort or seizures. Emergency infrastructure clients include enterprises with ADA compliance requirements — a violating site is a liability.
+
+**Why it happens:**
+Animations are built and tested by developers who don't have reduced motion enabled. The effect is invisible during development and only surfaces in accessibility audits or user complaints.
+
+**How to avoid:**
+Tailwind v4 provides `motion-safe:` and `motion-reduce:` variants natively. Use `motion-safe:` as the default gate for ALL non-trivial animations:
+
+```html
+<!-- Correct: animation only fires when user has not requested reduced motion -->
+<div class="motion-safe:animate-fade-in motion-safe:transition-transform motion-safe:hover:-translate-y-1">
+  Card content
 </div>
-
-// Touch targets minimum 44x44px
-<button className="min-h-[44px] min-w-[44px] px-6 py-3">
-  Contact
-</button>
-
-// Test viewport meta tag exists
-// app/layout.tsx (Next.js adds automatically)
-<meta name="viewport" content="width=device-width, initial-scale=1" />
 ```
 
-**Testing strategy:**
-- Chrome DevTools device emulation
-- Real device testing (iPhone, Android)
-- BrowserStack for multiple devices
-- Lighthouse mobile audit
+For JavaScript animations (Framer Motion), use the `useReducedMotion` hook:
 
-**Detection:**
-- Horizontal scrolling on mobile
-- Analytics showing high mobile bounce rate
-- Touch target warnings in Lighthouse
-
-**Phase to address:** Design + Development
-
-**Source confidence:** MEDIUM ([GitHub issue #5122](https://github.com/vercel/next.js/issues/5122), [Prateeksha mobile-first guide](https://prateeksha.com/blog/how-program-geeks-master-mobile-first-web-design-with-next-js))
-
----
-
-### MODERATE: Missing Error Boundaries
-
-**What goes wrong:**
-Component error crashes entire page with white screen. No graceful degradation or user-friendly error messages.
-
-**Why it happens:**
-Not implementing error boundaries. Assuming code won't fail in production.
-
-**Consequences:**
-- Complete page failure from single component bug
-- Lost conversion opportunities
-- Poor user experience
-- Difficult debugging in production
-
-**Prevention:**
-```typescript
-// app/error.tsx (App Router error boundary)
+```tsx
 'use client'
+import { useReducedMotion } from 'framer-motion'
 
-export default function Error({
-  error,
-  reset,
-}: {
-  error: Error & { digest?: string }
-  reset: () => void
-}) {
+export function AnimatedSection({ children }) {
+  const shouldReduce = useReducedMotion()
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="text-center">
-        <h2 className="text-2xl font-bold mb-4">
-          Something went wrong
-        </h2>
-        <p className="text-gray-600 mb-6">
-          We've been notified and are working on it.
-        </p>
-        <button
-          onClick={reset}
-          className="bg-blue-600 text-white px-6 py-3"
-        >
-          Try again
-        </button>
-      </div>
-    </div>
+    <motion.div
+      initial={{ opacity: 0, y: shouldReduce ? 0 : 20 }}
+      animate={{ opacity: 1, y: 0 }}
+    >
+      {children}
+    </motion.div>
   )
 }
-
-// For specific components
-import { ErrorBoundary } from 'react-error-boundary'
-
-<ErrorBoundary fallback={<ErrorFallback />}>
-  <RiskyComponent />
-</ErrorBoundary>
 ```
 
-**Detection:**
-- Error monitoring (Sentry, LogRocket)
-- User reports of blank pages
-- Production error logs
+**Warning signs:**
+- Any CSS animation or transition without a `motion-safe:` or `motion-reduce:` variant
+- Any Framer Motion component without `useReducedMotion` check
+- Lighthouse accessibility score drops after adding animations
+- axe DevTools flags motion-related violations
 
-**Phase to address:** Development (error handling strategy)
-
-**Source confidence:** MEDIUM (Next.js official docs, React error boundary patterns)
+**Phase to address:** Motion & Micro-interactions phase (built-in from the start, not bolted on after)
 
 ---
 
-### MODERATE: Environment Variable Exposure
+### Pitfall 6: Sticky Header Z-Index Wars With Animated Elements
 
 **What goes wrong:**
-Accidentally exposing API keys, database credentials, or internal URLs to client-side code. Using `NEXT_PUBLIC_` prefix incorrectly.
+The current header uses `z-30` and `sticky top-0`. When hero sections get animated backgrounds (gradients, mesh gradients, particle effects), scroll-linked animations, or when cards get hover elevation effects with `shadow-lg` and `transform: translateY(-4px)`, elements bleed through the header. The emergency phone number CTA in the header becomes obscured by design elements below it — catastrophic for the primary conversion goal.
 
 **Why it happens:**
-Confusion about server vs client environment variables. Not understanding Next.js prefix convention.
+Each new animated component creates a new stacking context (anything with `transform`, `opacity` < 1, `will-change`, `filter`). Developers assign `z-index` values reactively ("just add `z-10`") rather than using a system. The existing header at `z-30` and mobile menu overlay at `z-40/z-50` creates a fragile layering that breaks when redesign introduces new stacking contexts.
 
-**Consequences:**
-- Security vulnerabilities
-- API key exposure
-- Unauthorized access to services
-- Billing fraud (if API keys compromised)
+**How to avoid:**
+Define a z-index scale in `globals.css` `@theme` block before writing any animated components:
 
-**Prevention:**
-```bash
-# .env.local
-
-# ✅ Server-only (safe)
-DATABASE_URL=postgresql://...
-PRIVATE_API_KEY=sk_live_...
-
-# ✅ Client-exposed (intentional)
-NEXT_PUBLIC_GOOGLE_ANALYTICS=G-XXXXXXXXXX
-NEXT_PUBLIC_CALENDLY_URL=https://calendly.com/...
-
-# ❌ DON'T expose secrets with NEXT_PUBLIC_
-# NEXT_PUBLIC_API_SECRET=... // WRONG!
-```
-
-```typescript
-// Server component (safe to use any env var)
-export default async function ServerComponent() {
-  const data = await fetch('https://api.example.com', {
-    headers: {
-      Authorization: `Bearer ${process.env.PRIVATE_API_KEY}` // Safe
-    }
-  })
-}
-
-// Client component (only NEXT_PUBLIC_ vars available)
-'use client'
-export default function ClientComponent() {
-  // This would be undefined (server-only var)
-  console.log(process.env.PRIVATE_API_KEY) // undefined
-
-  // This works (intentionally public)
-  console.log(process.env.NEXT_PUBLIC_GA_ID) // Works
+```css
+@theme {
+  --z-base: 0;
+  --z-raised: 10;      /* cards on hover */
+  --z-sticky: 30;      /* header */
+  --z-overlay: 40;     /* backdrop */
+  --z-modal: 50;       /* mobile menu, modals */
+  --z-emergency: 60;   /* emergency badge (always on top) */
+  --z-toast: 70;       /* notifications */
 }
 ```
 
-**Detection:**
-- View page source and search for sensitive strings
-- Browser DevTools Network tab
-- Security scanning tools
-- Code review
+Any component that uses `transform` in animation must be checked against this scale.
 
-**Phase to address:** Foundation/Setup (before adding secrets)
+**Warning signs:**
+- Header navigation links click-through or obscured by section below
+- Emergency phone badge (currently `z-40`) disappearing under animated elements
+- Mobile nav overlay not covering hero animations
 
-**Source confidence:** HIGH (Next.js official docs, security best practices)
-
----
-
-## Phase-Specific Warnings
-
-| Phase | Likely Pitfall | Mitigation | Research Needed? |
-|-------|---------------|------------|------------------|
-| **Foundation/Setup** | Missing 404 handling, improper robots.txt, environment variable exposure, font loading FOUT/FOIT | Implement early with Next.js conventions | LOW - well-documented |
-| **Architecture** | App Router complexity, client vs server rendering strategy, barrel file imports | Choose Pages vs App Router deliberately, plan import strategy | MEDIUM - test on simple prototype |
-| **SEO Implementation** | Missing canonicals, no dynamic sitemap, client-side content rendering | Use Next.js Metadata API consistently | LOW - follow official patterns |
-| **Design/Development** | Poor mobile responsive, accessibility issues, CLS from missing dimensions | Mobile-first design, enable ESLint a11y rules, always specify image dimensions | LOW - standard practices |
-| **Content Strategy** | Weak value prop, missing trust signals, vague CTAs, too many form fields | CTO-specific messaging, real testimonials, 4-field forms | MEDIUM - user testing recommended |
-| **Integrations** | Third-party script performance, Calendly widget impact, click-to-call tracking | Use next/script with proper strategy, lazy-load widgets, implement call tracking | LOW - documented patterns |
-| **Optimization** | Poor Core Web Vitals (LCP, TBT, CLS), unoptimized images | Use Next.js Image, Script components, measure with Lighthouse | MEDIUM - requires measurement |
-| **Launch** | Hydration errors in production, App Router build failures, missing error boundaries | Test production build locally, implement error boundaries, monitor errors | HIGH - test thoroughly |
+**Phase to address:** Layout Restructuring phase (before any animated components are added)
 
 ---
 
-## Research Confidence Assessment
+### Pitfall 7: Color Token Drift When Mixing Tailwind CSS Variables and Hardcoded Values
 
-| Category | Confidence | Notes |
-|----------|------------|-------|
-| **SEO Pitfalls** | HIGH | Verified with SALT Agency 50-site study, FocusReactive guide, official Next.js docs |
-| **Performance Pitfalls** | HIGH | Multiple sources (Rise Marketing, DebugBear, Patterns.dev), official Chrome team guidance |
-| **Conversion Pitfalls** | MEDIUM | B2B-specific sources (Martal Group, Trajectory, Forrester), some consulting-specific items extrapolated |
-| **Technical Pitfalls** | MEDIUM-HIGH | Official Next.js docs + community GitHub discussions, some App Router issues still emerging |
+**What goes wrong:**
+The redesign introduces a refined color system (dark backgrounds, gradient surfaces, adjusted gray scale). Existing components hardcode `bg-brand-red`, `text-brand-dark`, `text-brand-gray` via the `@theme` block. New components built with different color names (e.g., `bg-slate-900` directly, or new tokens like `--color-surface-dark`) create visual inconsistency. After redesign, the site has two color systems — the old token system and the new one — with no single source of truth.
+
+**Why it happens:**
+Phases are built sequentially. Phase 1 might introduce a new dark palette. Phase 3 builds service cards. The developer working on Phase 3 uses whatever works visually in context, not checking if tokens are consistent with Phase 1 decisions.
+
+**How to avoid:**
+Define the complete new color token system in `globals.css` `@theme` block in the very first redesign phase, before touching any components. All subsequent phases only use defined tokens — never raw Tailwind color utilities like `bg-slate-950`.
+
+Example token structure for this redesign:
+```css
+@theme {
+  /* Core brand (update these, don't add alongside them) */
+  --color-brand-red: #dc2626;
+  --color-brand-red-dark: #b91c1c;
+
+  /* New surface tokens */
+  --color-surface-primary: #0a0a0a;
+  --color-surface-secondary: #111111;
+  --color-surface-card: #1a1a1a;
+
+  /* Text tokens */
+  --color-text-primary: #f5f5f5;
+  --color-text-muted: #a3a3a3;
+}
+```
+
+**Warning signs:**
+- Mix of `bg-slate-*`, `bg-gray-*`, and `bg-brand-*` in component files
+- Colors that look "close enough" but not identical across pages
+- Design review catching inconsistencies late in the project
+
+**Phase to address:** Color System phase (must be the earliest phase or a dedicated setup phase)
 
 ---
 
-## Gaps to Address
+### Pitfall 8: Hero Background Gradients and Mesh Backgrounds Become LCP Bottlenecks
 
-**Low confidence areas needing validation:**
-1. **App Router production stability** - Issues documented but rapidly evolving. Test thoroughly with your specific use case.
-2. **Consulting-specific conversion patterns** - General B2B research available, but tech consulting for CTOs may have unique patterns worth user testing.
-3. **Trust signal impact** - Clear that they matter, but specific ROI of individual signals (testimonials vs case studies vs certifications) needs A/B testing.
+**What goes wrong:**
+Modern premium sites (Linear, Vercel) use dark hero sections with complex gradient backgrounds, gradient mesh overlays, or background images. Implementing this with an `<img>` or `background-image: url(...)` that isn't properly handled causes the hero background to become the Largest Contentful Paint element. If it loads slowly (no preloading, wrong format, no next/image optimization), LCP degrades from under 2s to 4s+. For a B2B lead generation site, every second of LCP degradation reduces conversions.
 
-**Phase-specific research likely needed:**
-- **Calendly vs alternatives** - If complex scheduling needs emerge
-- **Analytics/tracking strategy** - When implementing attribution
-- **A/B testing framework** - For conversion optimization
-- **Error monitoring solution** - Before launch
+**Why it happens:**
+Background images for hero sections are often PNG/JPG files dropped in `/public/`. They don't go through `next/image` (which only handles `<img>` elements, not CSS backgrounds), so they get no optimization, no WebP conversion, and no preloading.
+
+**How to avoid:**
+- Use CSS-only gradients for hero backgrounds wherever possible — zero HTTP request, zero render blocking
+- If an image is needed (mesh texture, noise texture), implement it as a `next/image` element with `fill` and `priority` props positioned absolutely, not as a CSS background
+- Add `<link rel="preload">` manually for any hero background image that must be CSS
+- Prefer SVG for decorative graphic elements — they're tiny, infinitely scalable, and CSS-controllable
+
+**Warning signs:**
+- Chrome DevTools "Largest Contentful Paint" highlighting a hero background image
+- Lighthouse Performance score dropping after hero redesign
+- Network waterfall showing hero image blocking above-the-fold render
+
+**Phase to address:** Hero & Layout Restructuring phase
+
+---
+
+## Technical Debt Patterns
+
+Shortcuts that seem reasonable but create long-term problems specific to this redesign.
+
+| Shortcut | Immediate Benefit | Long-term Cost | When Acceptable |
+|----------|-------------------|----------------|-----------------|
+| Copy animation CSS from reference site (Linear, Vercel) | Fast implementation, matches target aesthetic | Their code may use proprietary build tools, non-standard CSS, or depend on their specific DOM structure | Never — always port to Tailwind/CSS variables |
+| Add `will-change: transform` to everything animated | Eliminates jank immediately | GPU memory exhaustion on mobile, battery drain | Only on elements with known hover interactions; remove after transition ends via JS |
+| Inline style for one-off color values (`style={{ color: '#1a1a1a' }}`) | Quick fix | Bypasses token system, invisible to search/replace | Never — add a token instead |
+| Wrap entire section in `'use client'` for one animated element | Unblocks immediately | Entire section loses RSC benefits, server data fetching pushed to client | Never — extract the animated element into its own component |
+| Disable `adjustFontFallback` in next/font | Avoids edge case with unusual fallback | Re-enables CLS when web font loads | Never for heading fonts; acceptable for decorative fonts only |
+| Use CSS `transition: all` on interactive elements | Catches any future property changes | Animates every CSS property including layout-triggering ones unexpectedly | Never |
+
+---
+
+## Integration Gotchas
+
+Common mistakes when connecting visual redesign features to the existing stack.
+
+| Integration | Common Mistake | Correct Approach |
+|-------------|----------------|------------------|
+| Tailwind v4 + next/font | Defining `--font-sans` in both the font `variable` option AND `@theme`, creating a circular reference | Set `variable: '--font-inter'` in next/font, then reference it in `@theme` as `--font-sans: var(--font-inter)` |
+| Framer Motion + App Router | Importing `motion` components in Server Components without `'use client'` directive | Always wrap motion components in isolated `'use client'` files; never import motion in server component files |
+| Tailwind v4 + arbitrary CSS animations | Using `animate-[name_duration_easing_infinite]` syntax which changed between v3 and v4 | Verify animation arbitrary value syntax in v4 docs; the existing `emergency-pulse` example in globals.css shows correct pattern |
+| CSS custom properties + Tailwind v4 | Using `bg-[--brand-color]` (v3 CSS var syntax) — produces no output in v4 | Use `bg-(--brand-color)` with parentheses, not square brackets |
+| Sticky header + scroll-linked animations | Animations that use `position: sticky` or `IntersectionObserver` interfering with the existing sticky header | Test header sticky behavior on every page after adding any scroll-linked animation |
+| Mobile nav overlay + animated hero | Framer Motion AnimatePresence for mobile nav exit animation leaving ghost elements above hero | Set `mode="wait"` on AnimatePresence and verify z-index stack after animation completes |
+
+---
+
+## Performance Traps
+
+Patterns that degrade performance during visual redesign.
+
+| Trap | Symptoms | Prevention | When It Breaks |
+|------|----------|------------|----------------|
+| Multiple Google Fonts loaded as separate requests | Waterfall shows 3-4 font requests, FOUT visible | Use variable fonts when possible; load all weights in one `next/font` call | First paint on every page |
+| `IntersectionObserver` scroll animations on every card | CPU usage spikes on scroll, scroll feels sticky on mobile | Use `once: true` in animation triggers; disconnect observer after animation fires | Pages with 6+ animated cards (services grid, case studies) |
+| Gradient mesh backgrounds as raster images | Hero section LCP > 3s | Pure CSS gradients or tiny SVG noise texture | Any slow connection |
+| Tailwind purge not catching dynamic class strings | Design tokens don't appear in production build | Never construct Tailwind classes dynamically (`'bg-' + color`); use full strings | Production build only — works fine in dev |
+| Too many `will-change` declarations | High GPU memory use, browser throttles other tabs | Apply `will-change` only on `mouseenter`, remove on `mouseleave` via JS | Devices with less than 4GB RAM |
+| Framer Motion in layout.tsx | Every page transition re-mounts the animation library bundle | Keep motion components out of shared layouts; use CSS transitions for layout-level transitions | Every client-side navigation |
+
+---
+
+## Security Mistakes
+
+This redesign has limited new security surface. Relevant considerations:
+
+| Mistake | Risk | Prevention |
+|---------|------|------------|
+| Loading fonts from external CDN (not next/font) | Font file could be poisoned or intercepted; exposes user IP to Google on every page load | Always use `next/font` which self-hosts at build time |
+| Embedding third-party animation scripts (GSAP CDN, etc.) | Script injection risk, adds external dependency | Self-host or use npm-installed packages only |
+| CSS `content: attr(data-animation)` with user-supplied data | XSS vector if any animation data comes from CMS/user input | No animation values should derive from dynamic content |
+
+---
+
+## UX Pitfalls
+
+Common user experience mistakes specific to this domain (premium visual redesign for emergency B2B services).
+
+| Pitfall | User Impact | Better Approach |
+|---------|-------------|-----------------|
+| Animations delay access to emergency phone number | CTO in a crisis waits for hero animation to complete before CTA is clickable/visible | Emergency CTA should render immediately with `opacity: 1` as initial state; animation is additive, never blocking |
+| Dark hero with insufficient contrast on body text | Text fails WCAG AA (4.5:1 ratio) — illegible for users in bright light on mobile | Verify every text/background combination with a contrast checker before finalizing color tokens |
+| Scroll-triggered animations fire on load due to elements already being in viewport | Jarring visual pop on first load instead of smooth entrance | Use `viewport: { once: true, amount: 0.3 }` — trigger only when 30% of element is visible |
+| Micro-interactions on mobile that require hover | Hover states never trigger on touch devices; interactive elements look broken | Use Tailwind's `hover:` variant which in v4 is wrapped in `@media (hover: hover)` — safe |
+| Typography scale that looks great at 1440px breaks at 375px | Text overflows containers, line lengths too short for readability | Design type scale as a ratio (e.g., 1.25 minor third) and test at 375px, 768px, 1440px simultaneously |
+| Gradient backgrounds that make emergency badge invisible | Fixed emergency badge blends into hero gradient | Keep emergency badge background solid brand-red with explicit border or shadow ensuring visibility against any background |
+| Page transitions that interfere with browser back button | Users hit back, expect previous scroll position, get re-animation instead | Test browser history navigation after adding any page transition animations |
+
+---
+
+## "Looks Done But Isn't" Checklist
+
+Things that appear complete during development but are missing critical pieces in production.
+
+- [ ] **Font system:** Font appears correct in dev — verify `next/font` is actually self-hosting by checking Network tab in production build; no requests to `fonts.googleapis.com` or `fonts.gstatic.com`
+- [ ] **Animation accessibility:** Animations look good in Chrome — verify with macOS System Preferences > Accessibility > Display > Reduce Motion enabled; all animations should disable or simplify
+- [ ] **Color system:** Colors look consistent on dev screen — verify on multiple monitors and phones; dark mode colors (if added) should be tested on actual OLED screens
+- [ ] **Hero CTA visibility:** Emergency phone button visible in hero mockup — verify it's visible and clickable on iOS Safari 16 with toolbar present (reduces viewport height by ~90px)
+- [ ] **Sticky header on redesigned pages:** Header works on homepage — verify sticky behavior on long service detail pages with scroll-linked animations
+- [ ] **Z-index stack:** Elements look correct individually — verify by scrolling through every page while watching the emergency badge and header remain on top
+- [ ] **Performance after redesign:** Site feels fast in dev (hot module reload) — run `next build && next start` and test on Lighthouse with CPU 4x slowdown; LCP must be under 2.5s
+- [ ] **Typography at all breakpoints:** Heading looks great at 1440px — verify `h1` text doesn't overflow at 320px (oldest iPhone SE)
+- [ ] **Tailwind v4 class validation:** New classes work in dev — run production build and verify no "purged" classes (dynamic class construction breaks purging)
+- [ ] **Calendly embed after layout changes:** Booking section works in current layout — verify CalendlyEmbed iframe renders correctly after any max-width or padding changes to its container
+
+---
+
+## Recovery Strategies
+
+When pitfalls occur despite prevention, how to recover.
+
+| Pitfall | Recovery Cost | Recovery Steps |
+|---------|---------------|----------------|
+| Server Component converted to client accidentally | LOW | Remove `'use client'` from page file; extract only interactive elements; re-test static optimization with `next build` output |
+| Font CLS introduced | LOW-MEDIUM | Switch from external link to `next/font`; add `adjustFontFallback: true`; check `@theme` binding to CSS variable |
+| Z-index stack broken by animation | MEDIUM | Audit every component using `transform`/`opacity`/`filter` for stacking context creation; implement z-index token system |
+| Color system fragmented | MEDIUM | Grep for raw Tailwind color utilities (`bg-slate-`, `bg-gray-`, `text-zinc-`) across component files; consolidate into token system |
+| Performance degraded after hero redesign | MEDIUM | Profile with Chrome DevTools Performance tab; identify LCP element; convert background images to CSS or next/image with `priority` |
+| Animation jank on mobile | LOW | Identify offending property with DevTools paint flashing; replace with `transform`/`opacity` equivalent |
+| `prefers-reduced-motion` violations in accessibility audit | LOW-MEDIUM | Global search for `animate-`, `transition-`, `motion.` in components; wrap each with `motion-safe:` or `useReducedMotion()` |
+
+---
+
+## Pitfall-to-Phase Mapping
+
+How roadmap phases should address these pitfalls.
+
+| Pitfall | Prevention Phase | Verification |
+|---------|------------------|--------------|
+| Animation breaks Server Components | Phase: Typography & Motion Foundation | Check no `page.tsx` files have `'use client'`; verify `force-static` still honored in build output |
+| Font loading FOUT/CLS | Phase: Typography & Font System | Run Lighthouse on production build; CLS must be < 0.1; Network tab shows no Google Fonts requests |
+| Tailwind v4 class renames | All phases — establish reference in Phase 1 | Visual QA pass comparing shadows, rings, rounded corners against designs |
+| Compositor-unsafe animations | Phase: Motion & Micro-interactions | Chrome DevTools paint flashing shows no green flashes during animation |
+| Missing `prefers-reduced-motion` | Phase: Motion & Micro-interactions | Test with reduced motion enabled in OS; all animations must disable or reduce |
+| Sticky header Z-index wars | Phase: Layout Restructuring | Scroll through each page verifying header always on top; emergency badge always visible |
+| Color token drift | Phase: Color System (earliest phase) | Grep for raw color utilities after each phase; zero raw `bg-slate-*` etc. in production code |
+| Hero LCP degradation | Phase: Hero Redesign | Lighthouse LCP under 2.5s on production build with Moto G4 emulation |
 
 ---
 
 ## Sources
 
-**SEO:**
-- [SALT Agency: Common SEO Issues on Next.js Websites (50 Site Study)](https://salt.agency/blog/common-seo-issues-on-next-js-websites/)
-- [FocusReactive: Typical Next.js SEO Pitfalls to Avoid in 2024](https://focusreactive.com/typical-next-js-seo-pitfalls-to-avoid-in-2024/)
-- [Strapi: The Complete Next.js SEO Guide](https://strapi.io/blog/nextjs-seo)
-- [Zumeirah: JavaScript SEO in 2026](https://zumeirah.com/javascript-seo-in-2026/)
-
-**Performance:**
-- [Rise Marketing: Core Web Vitals for React + Next.js Sites](https://rise.co/blog/core-web-vitals-for-react-next.js-sites-real-fixes-that-cut-lcp-by-50percent)
-- [DebugBear: How to Optimize Next.js Performance](https://www.debugbear.com/blog/nextjs-performance)
-- [Patterns.dev: Optimize Next.js apps for the Core Web Vitals](https://www.patterns.dev/react/nextjs-vitals/)
-- [Lydia Hallie: Optimizing Web Fonts in Next.js 13](https://www.lydiahallie.com/blog/optimizing-webfonts-in-nextjs13)
-- [Chrome Developers: Optimizing third-party script loading in Next.js](https://developer.chrome.com/blog/script-component)
-
-**Conversion:**
-- [Martal Group: Conversion Rate Statistics 2026](https://martal.ca/conversion-rate-statistics-lb/)
-- [Trajectory Web Design: B2B Website Conversion Optimization](https://www.trajectorywebdesign.com/blog/b2b-website-conversion-optimization)
-- [Trajectory Web Design: B2B Website Trust Signals](https://www.trajectorywebdesign.com/blog/b2b-website-trust-signals)
-- [Forrester: Predictions 2026 - Trust Will Be The Ultimate Currency For B2B Buyers](https://www.forrester.com/blogs/predictions-2026-trust-will-be-the-ultimate-currency-for-b2b-buyers/)
-- [ScoreApp: 10 Biggest B2B Lead Generation Mistakes](https://www.scoreapp.com/b2b-lead-generation-mistakes/)
-- [Calendly Consulting: Top 10 Costly Mistakes When Embedding Calendly](https://calendlyconsulting.com/top-10-costly-mistakes-for-calendly-integration/)
-- [DBS Interactive: Increase Conversions With Mobile Click To Call](https://www.dbswebsite.com/blog/increase-conversions-mobile-click-to-call/)
-
-**Technical:**
-- [Next.js: Architecture - Accessibility](https://nextjs.org/docs/architecture/accessibility)
-- [Flightcontrol: Next.js App Router migration - the good, bad, and ugly](https://www.flightcontrol.dev/blog/nextjs-app-router-migration-the-good-bad-and-ugly)
-- [GitHub Discussion #59373: An honest opinion about the App vs Pages router](https://github.com/vercel/next.js/discussions/59373)
-- [Next.js Security Update: December 11, 2025](https://nextjs.org/blog/security-update-2025-12-11)
-- [Upsun: Next.js App Router - common mistakes and how to fix them](https://upsun.com/blog/avoid-common-mistakes-with-next-js-app-router/)
-- [Prismic: Setting up a Next.js Site for Accessibility](https://prismic.io/blog/nextjs-accessibility)
-
-**Tailwind CSS:**
-- [FAB Web Studio: React & Next.js Best Practices in 2026](https://fabwebstudio.com/blog/react-nextjs-best-practices-2026-performance-scale)
-- [Tailwind CSS: Optimizing for Production](https://v3.tailwindcss.com/docs/optimizing-for-production)
+- Next.js 16.1.6 official documentation: Font optimization (`/docs/app/getting-started/fonts`), Image optimization (`/docs/app/getting-started/images`), Server and Client Components (`/docs/app/getting-started/server-and-client-components`) — verified 2026-02-27
+- Tailwind CSS v4 Upgrade Guide (`/docs/upgrade-guide`) — v3→v4 breaking changes, class renames confirmed
+- Tailwind CSS v4 prefers-reduced-motion variants (`motion-safe`, `motion-reduce`) — official docs confirmed
+- Next.js `next/font` API Reference (`/docs/app/api-reference/components/font`) — `adjustFontFallback`, `variable`, multiple font patterns — verified 2026-02-27
+- Existing codebase analysis: `app/components/EmergencyBadge.tsx`, `app/components/Header.tsx`, `app/components/MobileNav.tsx`, `app/(marketing)/page.tsx`, `app/globals.css` — read 2026-03-10
+- WCAG 2.1 Success Criterion 2.3.3 (Animation from Interactions) — Level AA requirement for `prefers-reduced-motion` respect
 
 ---
-
-## Summary
-
-Next.js marketing sites for tech consulting face four critical pitfall categories:
-
-1. **SEO misconfiguration** - 82% fail basic 404 handling, 50% missing canonicals, many render critical content client-side
-2. **Performance degradation** - Only 6% pass LCP/TBT thresholds, image optimization overlooked, third-party scripts block rendering
-3. **Conversion friction** - Forms asking too much (optimal: 4 fields), weak CTAs, missing trust signals for skeptical B2B buyers
-4. **Technical debt** - App Router complexity surfaces as production bugs, hydration errors, accessibility issues caught late
-
-**Most preventable through:**
-- Using Next.js built-in capabilities (Image, Script, Metadata API, font optimization)
-- Following framework conventions (server components by default, proper error handling)
-- B2B-specific UX patterns (minimal forms, specific value props, real trust signals)
-- Early architecture decisions (Pages vs App Router, import strategy, mobile-first)
-
-**Highest risk phases:**
-- Architecture (App Router complexity)
-- Launch (production-only bugs)
-- Conversion optimization (requires user testing)
+*Pitfalls research for: Visual redesign — animations, typography, color system, layout changes on existing Next.js 16 + Tailwind v4 marketing site*
+*Researched: 2026-03-10*

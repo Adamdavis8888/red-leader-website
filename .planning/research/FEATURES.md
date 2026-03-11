@@ -1,286 +1,259 @@
-# Features Research: Tech Consulting Marketing Website
+# Feature Research: Visual Redesign
 
-**Domain:** B2B Tech Consulting (Emergency Infrastructure Response)
-**Target Audience:** CTOs and Engineering Leaders at mid-to-large companies
-**Primary Goal:** Lead Generation via Consultation Bookings
-**Researched:** 2026-01-31
-**Overall Confidence:** MEDIUM (verified with multiple sources, WebSearch-based)
+**Domain:** Premium tech company marketing site — visual redesign to match Linear, Vercel, Stripe, PlanetScale, Tailscale, Render
+**Researched:** 2026-03-10
+**Confidence:** MEDIUM (training knowledge of reference sites through August 2025; WebSearch/WebFetch unavailable this session; patterns are well-established and stable in the design community)
 
----
-
-## Table Stakes
-
-Features every tech consulting website must have. Missing these = visitors leave or lose trust immediately.
-
-| Feature | Why Expected | Complexity | Dependencies | Notes |
-|---------|--------------|------------|--------------|-------|
-| **Clear Value Proposition Above Fold** | CTOs scan in <3 seconds to assess relevance. 63% source info from vendor websites first. | Low | None | State "who you help" immediately. Outcome-focused messaging ("Reduce downtime by 80%") converts 47% better than experience-based claims. |
-| **Mobile-Responsive Design** | 50%+ of B2B research happens on mobile, often after-hours when decision-makers have time. | Medium | Responsive framework | Must work perfectly on tablets/phones. 53% abandon if load >3 seconds. |
-| **Embedded Scheduling/Booking System** | Converts 3x better than "contact us" forms. CTOs want instant action, not email ping-pong. | Low | Calendly/HubSpot/Acuity integration | 24/7 self-service booking = 120% revenue boost. Automated reminders reduce no-shows by 90%. |
-| **Service Area Overview** | Engineering leaders need to quickly assess capability match before investing time. | Low | None | Clear, scannable list. Avoid marketing fluff. Technical audiences prefer specificity. |
-| **Case Studies / Portfolio** | Table stakes for B2B consulting. Decision-makers expect proof of past success. | Medium | Client permission, metrics tracking | Must include quantifiable results, not just descriptions. See "Case Study Best Practices" below. |
-| **Fast Page Load Speed** | 53% leave if page takes >3 seconds. Technical audiences are especially impatient. | Medium | CDN, image optimization, code splitting | Critical for credibility with engineering audience. |
-| **Contact Information Visible** | B2B buyers expect multiple contact methods (phone, email, physical address if applicable). | Low | None | Increases trust. Some enterprises require vendor address for procurement. |
-| **Professional Design (Not Flashy)** | Technical decision-makers value clarity over creativity. Overly "marketing-y" design reduces trust. | Medium | Design system | Dark mode optional but signals technical sophistication to dev audiences. |
-| **Security Indicators** | SSL certificate, privacy policy, secure forms. Engineering leaders scrutinize security. | Low | SSL cert, legal review | 60% of mid-size companies suffering severe cyberattack close within 6 months. Security is top-of-mind. |
-| **About/Team Section** | Humanizes brand. Decision-makers want to know who they're working with. | Low | Team bios, photos | Include credentials, certifications, expertise areas. B2B is relationship-driven. |
+> **Note:** This file supersedes the January 2026 FEATURES.md which addressed functional feature selection. This file is scoped exclusively to **visual and design features** for the v2.0 redesign milestone. Functional features (booking, SEO, case studies, etc.) are already built and are not in scope.
 
 ---
 
-## Differentiators
+## Baseline: Current Visual State
 
-Features that create competitive advantage for Red Leader specifically. Not expected, but highly valued.
+Before mapping the feature landscape, being explicit about the starting point is essential.
 
-| Feature | Value Proposition | Complexity | Dependencies | Notes |
-|---------|-------------------|------------|--------------|-------|
-| **Emergency Response Availability Badge** | Immediate visual signal of 24/7 emergency capability. Differentiates from typical consulting. | Low | Badge design, response policy | "Available Now" or "24/7 Emergency Response" in header. Addresses pain point of downtime urgency. |
-| **Response Time Calculator/SLA Widget** | Interactive tool showing cost of downtime vs. response speed. Quantifies value instantly. | Medium | JavaScript calculator, industry benchmarks | Example: "Every hour of downtime costs your team $X. Our 2-hour response saves $Y." Converts by making ROI concrete. |
-| **Live Incident Availability Indicator** | Real-time status showing current capacity to take emergency engagements. | High | Backend status system, real-time updates | Novel for consulting. Creates urgency ("2 slots available this week"). Signals exclusivity. |
-| **Infrastructure Health Assessment Tool** | Free diagnostic quiz/assessment that provides immediate value while qualifying leads. | High | Form logic, scoring system, email automation | Interactive content engages prospects 4-7 minutes vs. 30 seconds for static content. Collects detailed qualification data. |
-| **Incident Response Playbook (Lead Magnet)** | Gated content that provides immediate value to CTOs even if not ready to hire. | Medium | PDF creation, email capture, automation | Positions Red Leader as thought leader. Nurtures leads not ready for immediate engagement. |
-| **Filtered Case Studies by Industry/Crisis Type** | Allows CTOs to quickly find relevant proof points for their specific scenario. | Medium | Tagging system, filtering UI | "Show me: Cloud Migration Disasters" or "Database Recovery Cases". Reduces friction in buyer journey. |
-| **Client Logo Wall (Recognizable Brands)** | Social proof shortcut. If Company X trusts you, Company Y will too. | Low | Client permission, logos | B2B buyers heavily weight brand trust. Only use if you have recognizable names. |
-| **Transparent Pricing or Engagement Models** | Rare in consulting. Reduces friction and qualifies leads faster. | Low | Pricing strategy decision | Even ranges help ("Emergency engagements: $X-Y/day"). Filters price-sensitive leads early. |
-| **Technical Blog with Post-Mortems** | Demonstrates deep expertise through detailed incident analysis. Builds SEO and thought leadership. | Medium | Content creation process, publishing system | Engineering audiences value technical depth. "How we rescued X from Y failure" content. |
-| **Speed-to-Engagement Metric** | Prominently display "average response time: 2 hours" or similar. | Low | Metrics tracking | Addresses key pain point: urgency. Most consultants don't quantify this. |
+The current site (v1.1) has solid structure and real content but uses a conventional visual language that reads as "agency template" to the target audience of CTOs and engineering leaders:
+
+| Dimension | Current State | Gap |
+|-----------|--------------|-----|
+| **Background** | White primary, `#1f2937` hero only | Too gray, not deep enough — reference sites use near-black `#090909`–`#09090b` |
+| **Typography** | Inter only, uniform weights | No display font, no refined letter-spacing, headings lack drama |
+| **Hero** | `bg-gradient-to-br from-brand-dark to-gray-900` text block | No radial glow, no gradient text, no badge overline — bland |
+| **Cards** | White bg, `shadow-sm hover:shadow-md` | Shadow-based cards read as Material Design era; premium uses border-only on dark bg |
+| **Navigation** | White opaque, `border-b border-gray-200`, sticky | Generic SaaS template; reference sites use backdrop-blur on near-black |
+| **Animation** | SVG pulse only; zero scroll-triggered or micro-interaction | Fully static page reads as brochureware |
+| **Section spacing** | `py-16 sm:py-20` (64–80px) | Premium sites use 96–160px between major sections |
+| **Color palette** | `#dc2626` red + `#1f2937` gray, very limited | No depth, no opacity variants, no glow/ambient use of accent |
 
 ---
 
-## Anti-Features
+## Feature Landscape
 
-Features to deliberately NOT build. Common mistakes in this domain.
+### Table Stakes (Users Expect These)
 
-| Anti-Feature | Why Avoid | What to Do Instead | Severity |
-|--------------|-----------|-------------------|----------|
-| **Generic Stock Photos of "Teamwork"** | Undermines credibility with technical audience. Feels inauthentic. | Use real team photos, system diagrams, or no images. Technical audiences prefer substance. | High |
-| **Autoplaying Video/Carousels** | "Carousel of Doom" - annoys users, hides content. Accessibility nightmare. | Static hero image with clear CTA. Video available on-demand, never autoplay. | High |
-| **Lengthy Contact Forms (>5 fields)** | Friction kills conversions. Every field = 10-20% drop-off. | Name, email, company, brief need description. Max 4 fields. Get details after booking. | Critical |
-| **Vague "Solutions" Descriptions** | Technical buyers need specifics, not marketing speak. "Synergy" and "innovative solutions" destroy trust. | Concrete capabilities: "Kubernetes cluster recovery", "RDS failover implementation", "Redis optimization". | Critical |
-| **Social Media Feed Integration** | Only 14.2% of IT decision-makers influenced by social in purchase decisions. Distracting, not converting. | Link to social in footer. Don't embed feeds on key pages. | Medium |
-| **Blog Content Behind Email Gates** | Frustrates users. SEO suicide. Reduces discoverability. | Gate high-value assets (playbooks, assessments) only. Blog posts always free. | High |
-| **Live Chat Popups** | Interrupts user flow. Technical audiences prefer async communication initially. | Offer scheduling instead. Use subtle "Book a call" CTA, not intrusive popups. | Medium |
-| **Excessive Animation/Parallax Effects** | Slows page load, distracts from content. Engineering audiences value speed and clarity. | Minimal, purposeful animation only. Prioritize performance. | Medium |
-| **Industry Jargon Overload** | Even technical audiences tire of buzzword soup. Reduces clarity. | Use precise technical terms where needed, plain language elsewhere. "We fix broken databases" > "Database resiliency optimization solutions". | Medium |
-| **Long-Form Company History** | Decision-makers don't care about your founding story. They care about their problem. | Brief "About" section focused on credentials and expertise, not narrative. | Low |
-| **Resource Library Sprawl** | Overwhelming visitors with dozens of whitepapers/webinars dilutes focus. | Curate 3-5 highest-value resources. Quality over quantity. | Medium |
-| **Newsletter Popup on Entry** | Immediate friction. User hasn't even assessed value yet. | Offer newsletter after user engages (scrolls 50%, reads case study, etc.). | High |
-| **Testimonials Without Attribution** | "Great work! - John" is meaningless. Technical audiences skeptical of fake reviews. | Full attribution: name, title, company, photo if possible. Or skip entirely. | High |
-| **Multi-Level Navigation Menus** | "Pogo stick navigation" forces users up/down menu trees. Frustrating on mobile. | Flat navigation. Max 2 levels. Most sites need: Services, Case Studies, About, Blog, Contact. | Medium |
+Features a premium dark-first tech site must have. Their absence signals "amateur" immediately to a CTO who spends their day on Linear, Vercel, and GitHub.
+
+| Feature | Why Expected | Complexity | Notes |
+|---------|--------------|------------|-------|
+| **Dark/near-black primary theme** | Linear, Vercel, Stripe, GitHub, PlanetScale, Render all use near-black (`#090909`–`#09090b`) as primary background. Light-only reads as "agency template," not infrastructure company. | MEDIUM | Not a full light/dark toggle — just make dark the default. Current `#1f2937` hero is too gray, not deep enough. Needs to cascade to all sections, not just the hero. |
+| **Refined type scale with display font** | Premium sites use a dedicated display/heading font or Inter Display with tight tracking, layered over Inter body. Inter-only at uniform weight reads as unstyled. | LOW | Add Inter Display or Geist as the display font. Apply tight letter-spacing (`-0.03em` to `-0.05em`) to h1/h2. Scale: 14px body, 18px lead, 36/48/64/80px headings. |
+| **Navigation with backdrop blur** | Floating/sticky nav with `backdrop-filter: blur(16px)` and a subtle border is universal across all reference sites. White opaque nav with `border-b border-gray-200` reads old. | LOW | Pattern: `bg-black/80 backdrop-blur-xl border-b border-white/10`. Already sticky — needs restyle only. |
+| **Intentional section spacing** | Premium sites use 96–160px between major sections. Current `py-16 sm:py-20` (64–80px) feels crowded by comparison. | LOW | Increase to `py-24 sm:py-32` as baseline section rhythm. This single change dramatically improves perceived quality. |
+| **Border-based card system** | Cards defined by `border border-white/10` or `border border-gray-800` on dark background, not box shadows. Shadow cards read as Material Design (2014–2019 era). | LOW | Replace all `shadow-sm hover:shadow-md` cards with `border border-white/[0.08] bg-white/[0.04]` on dark bg or equivalent. |
+| **Consistent border radius system** | Premium sites pick one radius tier and apply systematically: `rounded-xl` (16px) for cards/containers, `rounded-lg` (8px) for buttons/badges. Mixing reads inconsistent. | LOW | Standardize. Do not mix `rounded`, `rounded-md`, `rounded-lg`, `rounded-xl` randomly. |
+| **Legible hero hierarchy with badge overline** | Hero must establish: label/badge → headline → subhead → CTAs. Current site skips the overline entirely; headline jumps cold with no framing. | MEDIUM | Add `<span>` badge above h1 (e.g., "24/7 Emergency Response" pill). Tighten headline tracking. |
+| **Scroll-triggered reveal animations** | Sections that fade/slide in on scroll (Intersection Observer) are baseline expected by this audience. A fully static page reads as brochureware to technical buyers. | MEDIUM | Simple `opacity-0 translate-y-4 → opacity-100 translate-y-0` with `transition-all duration-700`. Use Framer Motion or lightweight custom hook. |
+| **Mobile nav that feels native** | Current MobileNav exists but needs redesign: full-screen drawer or slide-in sheet with proper backdrop, clear close affordance. | MEDIUM | Full-screen dark overlay with slide-in panel. Proper z-index, backdrop-blur behind nav. |
+| **Premium button system** | Buttons must stop looking like Tailwind defaults. Premium: tight `rounded-lg`, proper tracking, subtle ring/glow on primary CTA, clean ghost buttons. | LOW | Three-tier system: primary (solid red with glow), secondary (transparent with border), ghost (text + underline). Consistent padding: `px-6 py-3` sm, `px-8 py-4` lg. |
+
+### Differentiators (Competitive Advantage)
+
+Features that elevate the site from "good dark redesign" to "this company is clearly elite." These are what Linear and Vercel do that most sites don't — and that map especially well to Red-Leader's emergency/rescue brand.
+
+| Feature | Value Proposition | Complexity | Notes |
+|---------|-------------------|------------|-------|
+| **Gradient text on hero headline** | Linear, Vercel, and PlanetScale use `background-clip: text` gradients on hero headlines for drama without imagery. Makes headlines feel designed, not typed. | LOW | `bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent` for main headline. Red gradient variant (`from-red-400 to-red-600`) for the "rescue" accent. Pure CSS, zero performance cost. |
+| **Ambient radial glow behind hero** | Vercel, Linear, and Render use a radial color glow on near-black background — creating depth without photography. Ideal for Red-Leader's dark hero and red brand color. | LOW | CSS: `background: radial-gradient(ellipse 900px 500px at 50% 0%, rgba(220,38,38,0.12) 0%, transparent 70%)` behind hero content. Red glow reinforces emergency urgency. |
+| **Background noise/texture layer** | Vercel and Linear use an imperceptible SVG noise texture or fine grid pattern at ~3% opacity on near-black. Adds richness and prevents flat "black hole" effect. | LOW | Inline SVG or CSS `background-image` at `opacity: 0.03`. Zero performance cost. Cannot be perceived consciously — only felt as depth. |
+| **Oversized stat display** | Stat numbers in massive type (64–80px) with muted descriptor labels below in small/medium weight. Linear-style: the number dominates, the label clarifies. Creates instant "wow" on metrics like "99.9%" or "<2hr". | LOW | CSS-only. SuccessMetrics component needs layout refinement: increase number size to `text-5xl lg:text-7xl`, reduce label to `text-sm font-medium text-gray-500`. |
+| **Animated number counters** | Success metrics (99.9% uptime, 2hr response) are key trust signals. Animating them as they scroll into view (0 → 99.9%) creates a moment of engagement instead of static text. | MEDIUM | Intersection Observer + counter animation hook. Worth the effort because the metrics section is already there and the content is strong. |
+| **Horizontal rules as design elements** | Top-tier sites use `border-t border-white/[0.06]` as intentional visual section breaks with very low opacity — not `border-gray-200`. Applied between every section. | LOW | Pure CSS change. Current `border-gray-200` on white reads heavy; `border-white/10` on dark reads refined. Significant perceived polish for zero effort. |
+| **Glassmorphism on accent elements** | Emergency badge, floating CTAs, notification-style elements look premium with `bg-white/5 backdrop-blur border border-white/10`. Applied sparingly (1–2 elements only) avoids the "glassmorphism overload" trap. | LOW | Apply specifically to the EmergencyBadge component and optionally a floating "Crisis right now?" sticky element. Not to every card. |
+| **Red glow on hover states** | Nav links and buttons with `box-shadow: 0 0 20px rgba(220,38,38,0.25)` on hover. The red glow on the emergency CTA button reinforces urgency and is brand-coherent in a way other sites cannot replicate. | LOW | CSS-only. High impact on premium feel. Directly reinforces the emergency brand position. |
+| **Bento grid / asymmetric feature layout** | Linear and Vercel use bento-style grids for feature showcases — some cells span 2 columns, some are tall — instead of equal 3-column grids. Creates visual rhythm and importance hierarchy. | MEDIUM | Replace services grid (6 equal cards) with bento: large card (spans 2 cols) for Emergency Recovery (primary service), 4 smaller cards for supporting services. CSS Grid, no library needed. |
+| **Pull-quote testimonial design** | Current testimonials are basic shadow cards. Premium: oversized quotation marks (`text-8xl` serif `"`), large quote text (`text-xl`), muted attribution below. Focus on the words, not the container. | LOW | Restyling existing Testimonials component. Data doesn't change. Pure visual uplift. |
+| **Monospace/terminal accent elements** | Infrastructure companies (Render, Tailscale) use monospace font snippets or terminal-style badges to signal technical credibility. Even small touches (a "UPTIME: 99.9%" tag in `font-mono`) land this. | MEDIUM | Small terminal-style element in hero or a metrics badge. `font-mono text-xs text-green-400` on dark bg. High signal value for the technical audience. |
+
+### Anti-Features (Commonly Requested, Often Problematic)
+
+| Feature | Why Requested | Why Problematic | Alternative |
+|---------|---------------|-----------------|-------------|
+| **Full dark/light mode toggle** | Seems professional; many sites have it | Doubles CSS complexity, creates 50+ edge cases across all components, delays delivery by weeks. The audience (technical CTOs) expects dark-default sites in this category. | Dark-first design. If toggle is ever requested, add as v3+ enhancement after design system is fully stable. |
+| **Animated gradient backgrounds (continuous shift)** | Dramatic in prototypes and design mockups | Creates visual noise that fights with content; readable text on shifting backgrounds is nearly impossible. Famous exception: Stripe's gradient — but Stripe has enormous brand equity and 10 years of iteration. | Static radial gradient glow at hero. Let content animate, not the background. |
+| **Heavy particle/canvas animations** | Looks impressive in Dribbble-style concepts | Kills performance on mobile, creates accessibility problems (prefers-reduced-motion), and often feels gimmicky rather than premium. Linear and Vercel are restrained with this. | Subtle CSS animations only: gradient shifts, backdrop blur, scroll reveals. No canvas, no WebGL. |
+| **Video hero / background video** | Agencies default to this for "impact" | 5–30MB autoplay videos destroy Core Web Vitals (LCP), create GDPR complexity, look dated. None of the reference sites use background video in the hero. | Static hero with ambient radial glow + gradient text achieves more visual interest at zero weight. |
+| **Custom cursor** | Shows up in Dribbble-style redesigns as "premium" | Breaks accessibility, confuses users on touch devices, feels try-hard. No reference site uses it. | Invest that effort in better hover state animations on existing interactive elements. |
+| **Lottie animations for illustrations** | Designer-friendly, "premium" perception | Lottie files are often 100–500KB each, render at low fidelity on some devices, require runtime library. The SVG illustrations already in the codebase are faster and already on-brand. | Refine existing SVGs with subtle CSS animation (transforms, opacity transitions) for the same feel. |
+| **Parallax scrolling effects** | Classic "premium" effect perception | Causes scroll jank on many devices, violates `prefers-reduced-motion`, reads as 2015-era design. Reference sites specifically avoid it. | Scroll-triggered fade/slide reveals (translateY with Intersection Observer) achieve depth without jank. |
+| **Chatbot / live chat widget** | "Increases conversions" | Obscures the emergency CTA (the phone number), creates distraction, signals "we don't have real emergency response" when the primary contact method is a chatbot. | The emergency phone number IS the emergency channel. Keep it prominent. No chatbot. |
+| **Heavy 3D elements / Three.js scenes** | Startup sites do this for wow factor | Performance cost is brutal; adds maintenance burden; rarely improves conversion for service businesses; feels mismatched with the urgency/reliability brand. | Spend that effort on typography and color — the actual differentiators for premium sites. |
 
 ---
 
 ## Feature Dependencies
 
-Understanding what must be built first to enable other features.
-
 ```
-FOUNDATION LAYER (Build First):
-├── Responsive Design Framework
-├── Fast Hosting/CDN
-└── SSL/Security Basics
+[Dark color system]
+    └──required by──> [Gradient text on headlines]
+    └──required by──> [Ambient radial glow]
+    └──required by──> [Border-based card system]
+    └──required by──> [Glassmorphism elements]
+    └──required by──> [Backdrop blur navigation]
+    └──required by──> [Background noise texture]
+    └──required by──> [Red glow hover states]
+    └──required by──> [Horizontal rule design elements]
+    └──required by──> [Terminal accent elements]
 
-CORE CONVERSION PATH (Phase 1):
-├── Clear Value Prop Messaging
-├── Service Area Pages
-├── Contact/Booking System
-│   ├── Calendar Integration (Calendly/HubSpot)
-│   ├── Email Notifications
-│   └── CRM Integration (optional but recommended)
-└── Mobile Optimization
+[Typography system]
+    └──required by──> [Gradient text headline]
+    └──required by──> [Oversized stat display]
+    └──required by──> [Pull quote testimonials]
+    └──required by──> [Section spacing uplift]
 
-TRUST BUILDING (Phase 2):
-├── Case Studies
-│   ├── Client Permissions
-│   ├── Metrics/Results Documentation
-│   └── Visual Assets (before/after, diagrams)
-├── Team/About Section
-└── Security/Privacy Documentation
+[Scroll animation foundation]
+    └──required by──> [Animated number counters]
+    └──enhances──> [Bento grid layout] (reveals staggered)
 
-DIFFERENTIATION (Phase 3):
-├── Emergency Response Badge/Indicator
-├── Response Time Metrics Display
-└── Filtered Case Study System
-    └── Requires: Case Studies (Phase 2)
+[Ambient radial glow] ──enhances──> [Gradient text on headline]
+    (glow + gradient text together = hero drama)
 
-LEAD NURTURING (Phase 4):
-├── Infrastructure Health Assessment Tool
-│   ├── Requires: Form System (Phase 1)
-│   ├── Requires: Email Automation
-│   └── Requires: Scoring Logic
-├── Technical Blog
-│   ├── Requires: Publishing System
-│   └── Requires: Content Strategy
-└── Incident Response Playbook (Lead Magnet)
-    ├── Requires: Email Capture (Phase 1)
-    └── Requires: Automation/Drip Campaign
+[Border card system] ──conflicts──> [Shadow card system]
+    (choose one system; mixing breaks visual coherence)
 
-ADVANCED DIFFERENTIATION (Phase 5 - Optional):
-├── Live Availability Indicator
-│   ├── Requires: Backend Status System
-│   ├── Requires: Real-time Updates
-│   └── High Complexity
-└── Interactive ROI Calculator
-    ├── Requires: Industry Benchmarks
-    └── Requires: JavaScript Framework
+[Background noise texture] ──requires──> [Dark color system]
+    (invisible and wrong-looking on white backgrounds)
+
+[Glassmorphism elements] ──requires──> [Dark color system]
+    (glass over dark creates depth; glass over white creates mud)
+
+[Bento grid] ──conflicts──> [Equal 3-column services grid]
+    (structural swap, not incremental change)
 ```
 
----
+### Dependency Notes
 
-## Case Study Best Practices
-
-Given their critical importance to conversion, case studies deserve special attention:
-
-### Structure
-1. **Problem Statement** (1-2 sentences) - What crisis/situation did client face?
-2. **Technical Challenge** (1 paragraph) - Specific technical details. Engineering audience wants depth.
-3. **Solution Approach** (2-3 paragraphs) - What you did, technologies used, timeline.
-4. **Results** (Quantified) - Metrics: uptime improvement, cost savings, time to recovery, etc.
-5. **Client Quote** (Optional but powerful) - Full attribution: Name, Title, Company.
-
-### Presentation
-- **Scannable**: Headlines, short paragraphs, bullet points.
-- **Visual**: System diagrams, before/after metrics, architecture drawings.
-- **Brief**: Digestible in 1-2 minutes. Link to detailed technical write-up if needed.
-- **Diverse**: Show range - different industries, different crisis types, different scales.
-
-### Content Guidelines
-- **Quantitative Results**: "Reduced recovery time from 48 hours to 2 hours" not "much faster recovery"
-- **Technical Specificity**: "Rebuilt RDS Multi-AZ with automated failover" not "improved database"
-- **Honest Challenges**: Briefly mention obstacles overcome. Shows real-world complexity.
-- **Replicable Process**: Hint at your methodology without giving away entire playbook.
-
-### Filtering/Organization
-For Red Leader's emergency focus, organize by:
-- **Crisis Type**: Database failure, cloud outage, security breach, performance collapse, etc.
-- **Industry**: FinTech, Healthcare, E-commerce, SaaS, etc.
-- **Technology Stack**: AWS, Azure, GCP, Kubernetes, specific databases, etc.
-- **Company Size**: Startup, Mid-market, Enterprise
+- **Dark color system is Phase 1, non-negotiable:** Everything else builds on near-black background. Gradient text, border cards, glassmorphism, glow effects, and noise texture all look wrong or invisible on a light background. This cannot be a parallel track.
+- **Typography system is parallel to color system:** Can be built simultaneously with the dark color system. Display font + refined scale + letter-spacing are independent of background color decisions but deliver immediately visible improvement.
+- **Scroll animations are independent of structure:** Can be layered at any phase without refactoring other work. Best added after visual design is stable — so animations reveal polished content, not interim styles.
+- **Bento grid is a destructuring, not an addition:** Converting the equal services grid to bento requires replacing the layout component. Plan as a deliberate swap, not an incremental change. Pairs well with dark card system since bento cells become dark bordered cards.
 
 ---
 
-## MVP Feature Prioritization
+## MVP Definition
 
-For initial launch, prioritize these features to achieve lead generation goal:
+This is a redesign milestone, not greenfield. "MVP" here means the minimum visual uplift that eliminates the "agency template" perception when a CTO lands on the site.
 
-### Must Have (Week 1-2):
-1. Clear value proposition homepage (outcome-focused messaging)
-2. Mobile-responsive design
-3. Embedded booking system (Calendly integration)
-4. Services overview page
-5. Contact information
-6. SSL/security basics
-7. Emergency response badge/indicator (differentiator)
+### Phase 1 Must-Have — Foundation (Nothing Else Matters Until This Is Done)
 
-### Should Have (Week 3-4):
-8. 3-5 case studies (filtered by crisis type)
-9. About/team section
-10. Fast page load optimization (<3 seconds)
-11. Response time metrics display
+- [ ] **Dark color system** — near-black background (`#09090b`), refined color palette, cascades to all sections
+- [ ] **Typography system** — display font + refined scale + tight letter-spacing on headings
+- [ ] **Backdrop blur navigation** — replace white opaque header
+- [ ] **Gradient text on hero headline** — primary visual differentiator, lowest cost, highest return
+- [ ] **Ambient hero glow** — radial gradient behind hero, no imagery needed
+- [ ] **Section spacing uplift** — 96–128px between sections (replaces 64–80px)
+- [ ] **Border-based card system** — replaces shadow cards site-wide
+- [ ] **Button system redesign** — primary (red + glow), secondary (transparent + border), ghost variants
 
-### Nice to Have (Post-MVP):
-12. Infrastructure health assessment tool
-13. Technical blog with 2-3 initial posts
-14. Incident response playbook (lead magnet)
-15. Interactive ROI calculator
-16. Live availability indicator
+### Phase 2 Refinements — Polish
 
-### Defer to Post-Launch:
-- Extensive resource library (focus on 3-5 best assets initially)
-- Video content (start with text/images, add video later if converting well)
-- Advanced filtering for case studies (start with simple tagging)
-- Client portal/dashboard (not needed for lead generation phase)
+- [ ] **Oversized stat display** — SuccessMetrics typography refinement
+- [ ] **Animated stat counters** — scroll-triggered, metrics section only
+- [ ] **Scroll-triggered fade reveals** — all major sections
+- [ ] **Bento grid services layout** — replaces equal 3-column grid
+- [ ] **Pull-quote testimonials** — restyling existing Testimonials component
+- [ ] **Background noise texture** — SVG noise layer at low opacity
+- [ ] **Red glow hover states** — nav links, emergency CTA button
+- [ ] **Glassmorphism on EmergencyBadge** — single element treatment
 
----
+### Deferred (v2.x or v3)
 
-## Conversion Path Optimization
-
-Based on research, the optimal conversion path for engineering decision-makers:
-
-```
-VISITOR LANDS ON HOMEPAGE
-↓
-Sees Clear Value Prop (3 seconds to decide relevance)
-"Emergency Infrastructure Response - 2 Hour Average Response Time"
-↓
-Scans Services (confirms capability match)
-↓
-Views 1-2 Relevant Case Studies (builds trust via proof)
-↓
-Decides to Engage
-↓
-BOOKS CONSULTATION (primary conversion)
-   OR
-DOWNLOADS ASSESSMENT TOOL (secondary conversion for nurturing)
-```
-
-**Critical Insight**: Decision-makers most commonly source from vendor websites (63%) and prefer short content in frequent intervals. Design for scanning, not deep reading.
-
-**Mobile Context**: Over 50% research on mobile after-hours. Ensure booking system is mobile-optimized and frictionless.
-
-**Speed Matters**: Companies following up within minutes convert far more leads. Automate immediate acknowledgment after booking.
+- [ ] **Terminal/code aesthetic** — needs content decisions; complex to execute well
+- [ ] **Mobile nav full redesign** — current works; premium treatment can follow Phase 2
+- [ ] **Dark/light toggle** — only if explicitly requested, only after dark system is complete
 
 ---
 
-## Technical Audience Conversion Insights
+## Feature Prioritization Matrix
 
-Specific findings for converting CTOs and engineering leaders:
+| Feature | User Value | Implementation Cost | Priority |
+|---------|------------|---------------------|----------|
+| Dark color system | HIGH | MEDIUM | P1 |
+| Typography system + display font | HIGH | LOW | P1 |
+| Gradient text on hero headlines | HIGH | LOW | P1 |
+| Ambient hero glow | HIGH | LOW | P1 |
+| Backdrop blur navigation | HIGH | LOW | P1 |
+| Section spacing uplift | MEDIUM | LOW | P1 |
+| Border-based card system | HIGH | LOW | P1 |
+| Button system redesign | HIGH | LOW | P1 |
+| Oversized stat display | MEDIUM | LOW | P2 |
+| Scroll-triggered reveals | MEDIUM | MEDIUM | P2 |
+| Animated stat counters | MEDIUM | MEDIUM | P2 |
+| Bento grid services | MEDIUM | MEDIUM | P2 |
+| Pull quote testimonials | MEDIUM | LOW | P2 |
+| Background noise texture | LOW | LOW | P2 |
+| Red glow hover states | MEDIUM | LOW | P2 |
+| Glassmorphism on EmergencyBadge | LOW | LOW | P2 |
+| Terminal/code accent elements | MEDIUM | HIGH | P3 |
+| Full dark/light toggle | LOW | HIGH | Do not build |
+| Video background | LOW | HIGH | Do not build |
+| Canvas/particle animations | LOW | HIGH | Do not build |
 
-1. **Outcome-Focused Headlines Convert 47% Better**: "Reduce Project Overruns by Half" beats "20 Years of Experience"
-2. **Short Content Preferred**: Engineering decision-makers prefer short articles in weekly-to-daily frequency over long-form
-3. **Brand Awareness Most Influential**: Invest in recognizable, trustworthy identity. Logo placement, professional design critical.
-4. **Social Media Low Impact**: Only 14.2% influenced by social media in purchase decisions. Focus on website and direct outreach.
-5. **Technical Depth Expected**: Thought leadership and technical content builds credibility. Surface-level content destroys trust.
-6. **Mobile-First Research**: After-hours research common. Site must perform perfectly on mobile.
+**Priority key:**
+- P1: Must have — without these, the redesign has not happened
+- P2: Should have — significant polish at manageable cost
+- P3: Nice to have — evaluate per phase against time budget
 
 ---
 
-## Confidence Assessment
+## Reference Site Analysis
 
-| Feature Category | Confidence Level | Source Quality | Notes |
-|------------------|------------------|----------------|-------|
-| Table Stakes Features | HIGH | Multiple sources agree (consulting website best practices, B2B lead gen research) | Industry standard features well-documented |
-| Booking System Impact | MEDIUM | WebSearch verified with multiple B2B sources | 3x conversion stat from credible source, backed by other sources on automation benefits |
-| Differentiation Features | MEDIUM | Inferred from emergency response consulting sites + general consulting best practices | Emergency-specific features based on adjacent domains (emergency mgmt consulting), not tech emergency consulting specifically |
-| Anti-Features | HIGH | Multiple UI/UX anti-pattern sources, consulting website mistake articles | Well-documented pitfalls across web design and consulting domains |
-| Technical Audience Behavior | MEDIUM | B2B marketing research focused on engineering leaders | 63% vendor website stat, 47% outcome-focused headline improvement from credible sources |
-| Conversion Metrics | MEDIUM | WebSearch from lead generation and consulting sources | Specific percentages (53% abandonment, 3x booking conversion) from multiple sources but not tech consulting specific |
+How the six named reference sites achieve their visual quality.
+
+**Confidence: MEDIUM** — Based on training data through August 2025. These sites' fundamental design systems are well-documented across the design community. Individual color tokens may drift over time but the patterns are stable.
+
+| Design Pattern | Linear | Vercel | Stripe | Tailscale | Render |
+|----------------|--------|--------|--------|-----------|--------|
+| **Background** | `#080808` near-black | `#000` with noise | `#0a2540` dark navy | `#1a1a1a` charcoal | `#0e0e10` near-black |
+| **Primary text** | White + muted grays | White + gray-300 | White + gray-400 | White + gray-400 | White + gray-400 |
+| **Brand accent** | Purple/violet gradient | White/blue | Purple/indigo | Sky blue | Emerald green |
+| **Nav style** | Backdrop blur, very subtle border | Backdrop blur, near-invisible border | Transparent scrolled, blur on scroll | Opaque dark | Backdrop blur |
+| **Hero headline** | Gradient text, tight tracking, 72–80px | Gradient text, 64–80px | White bold, very large, wide tracking | White on dark, bold | White on dark, bold |
+| **Card style** | Border-only on dark bg | Border + very subtle inner glow | Border + shadow on navy | Border-only | Border-only |
+| **Animations** | Subtle fade reveals, no jank | Scroll reveals + glow pulses | Scroll reveals | Minimal | Minimal |
+| **Section spacing** | 120–160px | 100–140px | 100–120px | 80–120px | 80–100px |
+| **Typography** | Inter Display | Geist | Stripe Sans (custom) | Inter | Inter |
+| **Texture** | Subtle noise | Fine noise | None | None | None |
+
+### Key Takeaway for Red-Leader
+
+Red-Leader's brand (deep red accent, near-black, infrastructure/emergency) aligns most closely with **Render and Tailscale** — companies that use restrained, technically credible dark aesthetics without purple gradients. The red accent color is a genuine differentiator: no reference site uses red as their accent. Red on near-black with a red glow is distinctive and directly reinforces the emergency/urgency brand position.
+
+**Do not attempt to copy Stripe's animated gradient** — it requires enormous brand equity and has complex accessibility and performance implications. Do not copy Linear's purple gradient — it would look derivative and off-brand. Red glow IS the brand.
+
+---
+
+## Existing Component Inventory vs. Redesign Scope
+
+| Component | Exists | Redesign Work Needed |
+|-----------|--------|----------------------|
+| `Header.tsx` | Yes | Major restyle: backdrop blur, dark bg, refined nav links, emergency CTA glow |
+| `Footer.tsx` | Yes | Minor: already dark; needs border/spacing refinement, noise texture |
+| `MobileNav.tsx` | Yes | Restyle: full-screen dark drawer pattern |
+| `SuccessMetrics.tsx` | Yes | Typography refinement: bigger numbers, smaller muted labels, counter animation |
+| `ClientLogos.tsx` | Yes | Minor: legibility on dark bg, reduce opacity treatment |
+| `Testimonials.tsx` | Yes | Major restyle: pull quote layout, remove shadow cards |
+| `Certifications.tsx` | Yes | Minor: legibility on dark, border-card style |
+| `EmergencyBadge.tsx` | Yes | Minor: glassmorphism treatment, glow pulse |
+| `ContactForm.tsx` | Yes | Restyle: dark input fields, border-based, proper focus states |
+| Homepage hero (inline) | Yes | Major: radial glow, gradient text, badge overline |
+| Services grid (inline) | Yes | Major: bento grid layout, border cards on dark bg |
+| Value props section (inline) | Yes | Major: border cards on dark bg, icon refinement |
+| About page sections (inline) | Yes | Moderate: dark section backgrounds, spacing, section borders |
+| Service detail pages (inline) | Yes | Moderate: consistent card/section system, dark styling |
+| Case study pages (inline) | Yes | Moderate: consistent system |
+| Blog pages (inline) | Yes | Moderate: consistent system |
 
 ---
 
 ## Sources
 
-### Tech Consulting Website Features:
-- [Best Consulting Websites: 17 Examples with Key Features in 2025](https://wpminds.com/best-consultant-websites/)
-- [Best IT Consulting Websites To Follow in 2026](https://www.booknetic.com/blog/best-it-consulting-websites)
-- [How to create an impactful technology consulting services company website](https://www.insivia.com/best-tech-consulting-websites/)
+- Codebase analysis: `/Users/adamdavis/red-leader-website/app/` — read directly (confidence: HIGH)
+- Project context: `.planning/PROJECT.md` — read directly (confidence: HIGH)
+- Reference sites (Linear, Vercel, Stripe, PlanetScale, Tailscale, Render) — training data through August 2025 (confidence: MEDIUM for patterns; LOW for exact current color tokens)
 
-### B2B Lead Generation:
-- [9 Essential B2B Lead Nurturing Strategies for 2026](https://www.headleymedia.com/resources/9-essential-b2b-lead-nurturing-strategies-for-2026/)
-- [B2B Lead Generation Trends in 2026](https://www.leadinfo.com/en/blog/b2b-lead-generation-trends-in-2026-the-7-channels-and-tactics-that-actually-work/)
-- [10+ B2B Lead Generation Strategies [2026]](https://wisepops.com/blog/b2b-lead-generation-strategies)
-
-### Website Design Mistakes:
-- [8 Common Website Design Mistakes to Avoid in 2026](https://www.zachsean.com/post/8-common-website-design-mistakes-to-avoid-in-2026-for-better-conversions-and-user-experience)
-- [Website design mistakes to avoid in 2026](https://www.ladybugz.com/website-design-mistakes-to-avoid-in-2026-and-how-to-fix-them/)
-
-### Consultation Booking Systems:
-- [Conversion Rate Statistics 2026: Best Practices for B2B Outbound Success](https://martal.ca/conversion-rate-statistics-lb/)
-- [B2B Appointment Setting Strategies](https://www.intelemark.com/blog/b2b-appointment-setting-strategies-for-saas/)
-
-### Engineering/Technical Audience:
-- [New Research Shows How to Reach Technology Decision Makers](https://marketing.engineering.com/digital-marketing-for-engineers-blog/new-research-shows-how-to-reach-technology-decision-makers)
-- [B2B Website Conversion Optimization: A Data-Driven Approach](https://www.trajectorywebdesign.com/blog/b2b-website-conversion-optimization)
-
-### Case Study Best Practices:
-- [How to Write Consulting Case Studies That Win Clients](https://consultport.com/succeed-as-consultant/how-to-write-consulting-case-studies-that-win-clients-2/)
-- [How to Create a Consulting Case Study Portfolio](https://consultport.com/succeed-as-consultant/how-to-create-a-great-consulting-case-study-portfolio-as-a-freelancer/)
-
-### UI/UX Anti-Patterns:
-- [6 UI Anti-Patterns That Every Designer Should Avoid](https://www.ingeniumweb.com/blog/post/6-ui-anti-patterns-that-every-designer-should-avoid/3476/)
-- [User Interface Anti-Patterns](https://ui-patterns.com/blog/User-Interface-AntiPatterns)
-- [Avoiding UX Anti-Patterns In Your Design](https://www.door3.com/blog/avoiding-anti-patterns-with-ux-design)
+**Confidence caveat:** WebSearch and WebFetch were unavailable in this session. The design patterns documented here are based on training knowledge of these specific reference sites. These patterns (dark themes, gradient text, backdrop blur, border cards, radial glows, section spacing) are fundamental and thoroughly documented across the design community. They are unlikely to have changed materially. However, exact color values and specific font versions should be verified against current site inspection before implementation.
 
 ---
 
-**Research Complete:** 2026-01-31
-**Next Step:** Use this feature research to inform roadmap phase structure and requirements definition.
+*Feature research for: Visual redesign — premium dark-first marketing site*
+*Researched: 2026-03-10*

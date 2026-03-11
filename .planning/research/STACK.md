@@ -1,649 +1,243 @@
-# Stack Research: Red Leader Tech Consulting Website
+# Stack Research
 
-**Researched:** 2026-01-31
-**Project Type:** Lead-generation marketing website for tech consulting firm
-**Target Audience:** CTOs and engineering leaders at mid-to-large companies
-**Core Value Proposition:** Emergency infrastructure rescue
-
----
-
-## Executive Summary
-
-For a high-converting tech consulting marketing website in 2026, the standard stack combines Next.js 16 with Tailwind CSS v4 for performance and developer experience, React Hook Form + Zod for type-safe form validation, shadcn/ui for pre-built conversion-optimized components, and Vercel for deployment. This stack prioritizes fast load times (critical for conversion), SEO excellence (organic lead generation), and professional UI (trust building for enterprise buyers).
-
-**Confidence:** HIGH - All recommendations verified with official documentation and current 2026 sources.
+**Domain:** Visual redesign — animations, typography, micro-interactions, refined color system
+**Researched:** 2026-03-10
+**Confidence:** HIGH (core recommendations verified via official Next.js docs and Tailwind CSS v4 docs)
+**Scope:** NEW additions only. Existing stack (Next.js 16, Tailwind v4, React 19) is validated and not re-researched.
 
 ---
 
-## Core Stack
+## Context: What the Existing Stack Already Provides
 
-### Framework: Next.js 16
-**Version:** 16.0.10+ (latest stable as of January 2026)
-**Confidence:** HIGH
+Before adding anything, understand what is already available at no cost:
 
-**Why Next.js 16:**
-- **Turbopack by default:** 5-10x faster Fast Refresh, 2-5x faster builds - critical for developer velocity
-- **Partial Pre-Rendering (PPR):** Enables instant navigation for marketing pages while keeping dynamic elements (contact forms, Calendly) responsive
-- **SEO excellence:** Server-side rendering (SSR) ensures search engines crawl complete content, critical for organic lead generation
-- **App Router maturity:** File-based routing with nested layouts simplifies services pages and case study organization
-- **Built-in Metadata API:** Eliminates need for heavy SEO libraries for basic meta tags
+**Tailwind v4 CSS animations** — `animate-spin`, `animate-ping`, `animate-pulse`, `animate-bounce` plus custom `@keyframes` via `@theme`. These cover loading states, skeleton screens, and simple attention effects. Already in use (`emergency-pulse` keyframe in `globals.css`).
 
-**Installation:**
-```bash
-npx create-next-app@latest red-leader-website --typescript --tailwind --app --use-npm
+**Tailwind v4 transitions** — `transition`, `transition-colors`, `transition-transform`, `transition-shadow`, `transition-opacity`, plus `duration-*`, `ease-*`, `delay-*` modifiers. Cover all hover micro-interactions on buttons, cards, and links with zero JS. Already the right approach for 80% of micro-interactions on a static marketing site.
+
+**`next/font`** — Built into Next.js 16.1.6. Already configured with Inter. Zero-cost upgrade path to any Google variable font. No new package needed.
+
+**Tailwind v4 `@theme` color system** — CSS custom properties in OKLCH color space. `globals.css` already uses `@theme` for brand colors. Full color system refinement is a CSS-only task.
+
+**Decision:** Before reaching for a JS animation library, exhaust CSS-first options. Motion (JS) is only justified for scroll-triggered entrance animations and gesture-based interactions that CSS cannot do.
+
+---
+
+## Recommended Stack (New Additions Only)
+
+### Core Technologies
+
+| Technology | Version | Purpose | Why Recommended |
+|------------|---------|---------|-----------------|
+| `motion` | `^12.x` (latest — verify before install) | Scroll-triggered entrance animations, layout transitions, gesture micro-interactions | Industry standard for React; required only for the cases CSS transitions cannot handle: scroll-based `whileInView` reveals, staggered children, and `AnimatePresence` exit animations. Pure CSS covers hover states and simple fades. |
+| `next/font/google` | Built into Next.js 16.1.6 | Premium typography via Google Fonts variable fonts | Already in the project. Upgrade path: swap Inter for a premium pairing (Inter + Fraunces, or Geist + Geist Mono) with zero new dependencies. Self-hosted at build time, no FOIT, no external requests. |
+
+### Supporting Libraries
+
+| Library | Version | Purpose | When to Use |
+|---------|---------|---------|-------------|
+| `lucide-react` | `^0.511.x` (latest) | Icon system for UI micro-interactions (arrows, chevrons, status indicators) | When building redesigned nav, service cards, or CTA buttons that need icon animations (e.g. `group-hover:translate-x-1`). Tree-shakeable — only icons imported are bundled. |
+| `tailwind-merge` | `^3.x` | Class conflict resolution for variant-heavy components | Required if using shadcn/ui or building component variants where Tailwind classes may conflict (e.g. hero section with conditional dark/light background). Already recommended in v1 STACK.md — install if not present. |
+| `clsx` | `^2.x` | Conditional class application | Companion to tailwind-merge. Standard `cn()` utility pattern. |
+
+### Development Tools
+
+| Tool | Purpose | Notes |
+|------|---------|-------|
+| None new required | — | Turbopack (Next.js 16 default) handles all CSS and JS bundling. No additional build tools needed for visual redesign work. |
+
+---
+
+## What Each Visual Feature Needs
+
+### Typography System
+
+**Approach:** CSS-only via `next/font` + Tailwind `@theme`
+
+No new packages. The work is:
+1. Replace Inter with a premium variable font pair (recommendation below)
+2. Define a type scale in `@theme` as CSS custom properties
+3. Apply via Tailwind utility classes
+
+**Recommended font pair for a modern infrastructure/tech brand:**
+
+| Role | Font | Rationale |
+|------|------|-----------|
+| Body / UI | **Inter** (current) OR **Geist** (Vercel's font, variable) | Inter is proven. Geist signals modern infrastructure. Both free via `next/font/google` / `next/font/local`. |
+| Display / Hero headings | **Fraunces** (variable, has `opsz` + `wght` axes) | High-contrast serif for bold hero text — same pattern used by Linear, Vercel's marketing pages, and Stripe's redesign. Signals premium, not generic. Available via `next/font/google`. |
+| Code / Mono accents | **Geist Mono** or **JetBrains Mono** | Reinforces the "engineers who code" identity. Use sparingly for technical metric callouts. |
+
+**Confidence:** MEDIUM — font pairing is a design judgment call. Inter + Fraunces is a known high-contrast approach. Final font selection must be validated against Red Leader's brand guidelines.
+
+### Animations and Scroll Effects
+
+**Approach:** CSS-first, add `motion` (the npm package) for scroll-triggered and complex interactions only.
+
+**What CSS covers (no JS library needed):**
+- Button hover states: `transition-transform hover:-translate-y-0.5 hover:shadow-lg`
+- Card hover lifts: `transition-all hover:scale-[1.02]`
+- Color transitions: `transition-colors hover:bg-brand-red-dark`
+- Emergency badge pulse: already implemented via custom `@keyframes`
+- Nav link underline animations: CSS `transition-[width]` approach
+
+**What requires `motion`:**
+- Hero section entrance: staggered fade-up of headline, subhead, CTA
+- Section reveals as user scrolls: `whileInView` with `viewport={{ once: true }}`
+- Service cards stagger: `variants` with `staggerChildren`
+- `AnimatePresence` for any exit animations (modal closes, mobile menu)
+
+**Motion server component constraint** — `motion` requires `'use client'`. With Next.js 16's server-first architecture, the pattern is:
+
+```tsx
+// app/components/AnimatedHero.tsx
+'use client'
+import { motion } from 'motion/react'
 ```
 
-**Alternatives considered:**
-- Next.js 15.5.x (maintenance branch): Stable but missing Turbopack performance gains
-- Astro: Better for pure static content, but Red Leader needs dynamic features (forms, booking, emergency hotline tracking)
-- Remix: Excellent for web fundamentals but smaller ecosystem for marketing-specific components
+Wrap only the interactive/animated leaf components in `'use client'`. Keep page-level Server Components for data and layout. This is standard practice — the server-first constraint is not a blocker.
 
-**Sources:**
-- [Next.js 16 Release](https://nextjs.org/blog/next-16)
-- [Next.js Support Policy](https://nextjs.org/support-policy)
+**Confidence:** HIGH — `motion` + Next.js App Router compatibility is the established pattern as of 2026. The `motion/react` import path (not `framer-motion`) is current.
 
----
+### Color System Refinement
 
-### Styling: Tailwind CSS v4.0
-**Version:** 4.1.18+ (latest stable)
-**Confidence:** HIGH
+**Approach:** Pure CSS via Tailwind v4 `@theme`. Zero new packages.
 
-**Why Tailwind v4:**
-- **5x faster full builds, 100x faster incremental builds:** Measured in microseconds, critical for rapid iteration on conversion-focused landing pages
-- **Modern CSS features:** Built on cascade layers, @property, and color-mix() for sophisticated visual effects that build trust with enterprise buyers
-- **Zero configuration:** Automatic content detection eliminates setup friction
-- **First-party Vite integration:** Maximum performance with Next.js
+Tailwind v4 uses OKLCH color space natively. The existing `globals.css` has a minimal brand color set. The redesign work is:
 
-**Browser support:** Safari 16.4+, Chrome 111+, Firefox 128+ (covers 95%+ of enterprise decision-makers)
+```css
+@theme {
+  /* Refined brand palette in OKLCH for perceptual uniformity */
+  --color-brand-red: oklch(0.5 0.22 25);        /* current: #dc2626 */
+  --color-brand-red-light: oklch(0.65 0.18 25); /* for hover states */
+  --color-brand-red-dark: oklch(0.4 0.2 25);    /* current: #b91c1c */
 
-**Installation:**
-```bash
-npm install tailwindcss@latest
-```
+  /* Surface system for dark/dark-elevated pattern */
+  --color-surface-base: oklch(0.10 0 0);        /* near-black */
+  --color-surface-elevated: oklch(0.13 0 0);    /* card background */
+  --color-surface-border: oklch(0.20 0 0);      /* subtle borders */
 
-**Why NOT CSS-in-JS (Emotion, Styled Components):**
-- Runtime performance overhead hurts conversion rates
-- Tailwind v4 performance makes it superior for marketing sites
-
-**Sources:**
-- [Tailwind CSS v4.0 Release](https://tailwindcss.com/blog/tailwindcss-v4)
-- [Tailwind CSS npm](https://www.npmjs.com/package/tailwindcss)
-
----
-
-### Language: TypeScript 5.9
-**Version:** 5.9.3+ (latest stable)
-**Confidence:** HIGH
-
-**Why TypeScript:**
-- **Type safety for forms:** Prevents runtime errors in critical conversion paths (contact forms, emergency hotline)
-- **Better developer experience:** IntelliSense for component APIs speeds development
-- **Future-proof:** TypeScript 6.0 and 7.0 (Go-based) are coming, but 5.9 is stable and recommended for production
-
-**Note:** TypeScript 7.0 (native/Go port) is in preview with 10x speedup, but use 5.9 for production stability.
-
-**Installation:**
-```bash
-npm install -D typescript@latest @types/react @types/node
-```
-
-**Sources:**
-- [TypeScript npm](https://www.npmjs.com/package/typescript)
-- [TypeScript 7 Native Preview](https://devblogs.microsoft.com/typescript/progress-on-typescript-7-december-2025/)
-
----
-
-## UI Components
-
-### Component Library: shadcn/ui
-**Confidence:** HIGH
-
-**Why shadcn/ui:**
-- **Copy-paste ownership:** Full control over components, no vendor lock-in
-- **Marketing-specific blocks:** Pre-built hero sections, testimonial grids, feature showcases optimized for conversion
-- **Built on Radix UI:** Accessibility out-of-the-box (critical for enterprise compliance)
-- **Tailwind CSS styling:** Consistent with core stack, easy customization for Red Leader branding
-
-**Marketing resources:**
-- **Shadcnblocks:** 1,110+ marketing-specific blocks for landing pages
-- **Tailark:** Production-ready blocks built for founders shipping marketing sites fast
-
-**Installation:**
-```bash
-npx shadcn@latest init
-npx shadcn@latest add button form input textarea
-```
-
-**Why NOT full component libraries:**
-- Material UI, Ant Design: Too opinionated, harder to customize for unique brand identity
-- Chakra UI: Good DX but heavier bundle size hurts page load (conversion killer)
-
-**Sources:**
-- [shadcn/ui](https://ui.shadcn.com/)
-- [Shadcnblocks](https://www.shadcnblocks.com/)
-- [Tailark Marketing Blocks](https://github.com/tailark/blocks)
-
----
-
-### Utility: clsx + tailwind-merge
-**Confidence:** HIGH
-
-**Why cn utility:**
-- **Conditional classes:** Apply styles based on state (active nav items, form validation)
-- **Conflict resolution:** tailwind-merge prevents Tailwind class conflicts in reusable components
-- **Standard pattern:** Used by shadcn/ui, widely adopted in 2026
-
-**Implementation:**
-```typescript
-import { clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
+  /* Text hierarchy */
+  --color-text-primary: oklch(0.97 0 0);
+  --color-text-secondary: oklch(0.65 0 0);
+  --color-text-muted: oklch(0.45 0 0);
 }
 ```
 
-**Installation:**
+This approach gives full utility class access (`bg-surface-elevated`, `border-surface-border`) with zero runtime cost.
+
+**Confidence:** HIGH — verified against Tailwind v4 official documentation (color customization, OKLCH support, `@theme` directive).
+
+### Micro-interactions
+
+**Approach:** Tailwind CSS transitions for 90% of cases; `motion` for the remaining 10% requiring gesture tracking.
+
+Examples of each:
+
+| Interaction | Approach | Implementation |
+|-------------|----------|---------------|
+| Button hover lift | CSS | `transition-transform duration-200 hover:-translate-y-0.5` |
+| Card hover shadow | CSS | `transition-shadow duration-200 hover:shadow-xl` |
+| Link underline slide | CSS | `after:transition-[width] after:w-0 hover:after:w-full` |
+| Nav mobile menu open/close | `motion` | `AnimatePresence` with `initial/animate/exit` variants |
+| Emergency CTA pulsing ring | CSS | `@keyframes` already exists, extend with `animate-ping` |
+| Metric counter animation | `motion` | `useMotionValue` + `useSpring` + `useTransform` |
+
+---
+
+## Installation
+
 ```bash
+# Animation library (only needed for scroll-triggered and gesture interactions)
+npm install motion
+
+# Icon system
+npm install lucide-react
+
+# Class utilities (if not already installed — check package.json first)
 npm install clsx tailwind-merge
 ```
 
-**Sources:**
-- [The story behind cn function](https://tigerabrodi.blog/the-story-behind-tailwinds-cn-function)
-- [tailwind-merge npm](https://www.npmjs.com/package/tailwind-merge)
+Font upgrades require no `npm install` — use `next/font/google` which is already in Next.js 16.
 
 ---
 
-## Forms & Validation
+## Alternatives Considered
 
-### Forms: React Hook Form
-**Version:** 7.x (latest)
-**Confidence:** HIGH
-
-**Why React Hook Form:**
-- **Performance:** Uncontrolled components minimize re-renders, critical for complex contact forms
-- **Tiny bundle:** No dependencies, fastest form library for React (fast forms = higher conversion)
-- **Developer experience:** Clean API with TypeScript support
-- **Ecosystem:** 1.9M+ downloads/week, most popular React form library
-
-**Installation:**
-```bash
-npm install react-hook-form
-```
-
-**Alternatives considered:**
-- Formik: Mature but development has slowed, team less responsive to issues
-- TanStack Form: New but less ecosystem maturity than RHF
-
-**Sources:**
-- [React Hook Form](https://react-hook-form.com/)
-- [Best React Form Libraries 2026](https://blog.croct.com/post/best-react-form-libraries)
+| Recommended | Alternative | When to Use Alternative |
+|-------------|-------------|-------------------------|
+| `motion` (npm package `motion`, import from `motion/react`) | `framer-motion` | `framer-motion` is the legacy package name. The Framer team renamed it to `motion` in 2024. Both install different packages. Use `motion` — it is the maintained package going forward. `framer-motion` is in maintenance mode. |
+| `motion` | GSAP (GreenSock) | GSAP when you need timeline-based, sequence-driven animations (e.g., full-page scroll storytelling, complex SVG morphing). Overkill for a marketing site hero. Also requires commercial license for some features. |
+| `motion` | React Spring | React Spring's physics-based model is better for interactive drag/fling gestures. Not needed for marketing site entrance animations. |
+| `motion` | CSS `@keyframes` only | Viable for purely decorative animations with no scroll trigger or state dependency. Already used for `emergency-pulse`. Use this wherever possible; reach for `motion` only when CSS cannot express the behavior. |
+| Tailwind v4 `@theme` colors | shadcn/ui CSS variables pattern | shadcn/ui uses a separate `--background`, `--foreground` CSS variable convention. Valid if adopting shadcn/ui fully. For this project, the existing Tailwind v4 `@theme` approach is simpler and already in place. |
+| `next/font/google` | Fontaine, Fontsource | These are workarounds for non-Next.js projects. `next/font` is the correct choice here — it handles subsetting, preloading, and CLS prevention automatically. |
 
 ---
 
-### Validation: Zod
-**Version:** 3.x (latest)
-**Confidence:** HIGH
+## What NOT to Use
 
-**Why Zod:**
-- **TypeScript-first:** Schema definitions generate TypeScript types automatically
-- **Runtime validation:** Validates form data from untrusted sources (user input, API calls)
-- **React Hook Form integration:** Official @hookform/resolvers package for seamless integration
-- **Expressive syntax:** Easy to define complex validation rules for emergency contact forms
-
-**Installation:**
-```bash
-npm install zod @hookform/resolvers
-```
-
-**Example schema:**
-```typescript
-import { z } from 'zod';
-
-export const contactSchema = z.object({
-  name: z.string().min(2, 'Name required'),
-  email: z.string().email('Valid email required'),
-  phone: z.string().regex(/^\+?[1-9]\d{1,14}$/, 'Valid phone required'),
-  emergency: z.boolean(),
-  message: z.string().min(10, 'Describe your infrastructure emergency')
-});
-```
-
-**Sources:**
-- [Zod](https://zod.dev/)
-- [React Hook Form with Zod Guide 2026](https://dev.to/marufrahmanlive/react-hook-form-with-zod-complete-guide-for-2026-1em1)
+| Avoid | Why | Use Instead |
+|-------|-----|-------------|
+| CSS-in-JS at runtime (Emotion, Styled Components, Stitches) | Runtime style injection defeats Next.js static rendering. These libraries force `'use client'` on layout components, breaking server-first architecture. | Tailwind v4 utility classes + `@layer components` for any shared styles |
+| `anime.js` | No React integration layer; requires manual DOM refs; doesn't work with React's reconciler | `motion` |
+| `react-spring` for entrance animations | More complex API than `motion` for this use case; better suited to gesture-driven UIs | `motion` with `whileInView` |
+| `aos` (Animate on Scroll) | jQuery-era library; adds global event listeners; not React-aware; FOUC issues with SSR | `motion` with `whileInView={{ once: true }}` |
+| `lottie-react` for decorative animations | Heavy runtime; requires After Effects source files; overkill for geometric/CSS-achievable animations | CSS `@keyframes` or `motion` SVG variants |
+| Google Fonts `<link>` tags | Blocked by privacy-focused browsers; adds render-blocking resource; causes CLS | `next/font/google` (self-hosted at build time) |
+| Manually setting `font-display: swap` | `next/font` handles this automatically and more correctly | `next/font` `display: 'swap'` option (already the default) |
 
 ---
 
-## Animation
+## Stack Patterns by Variant
 
-### Motion (formerly Framer Motion)
-**Version:** Latest
-**Confidence:** MEDIUM (name change creates uncertainty, verify package name)
+**If the hero needs scroll-parallax depth:**
+- Use CSS `transform: translateY()` driven by `motion` `useScroll` + `useTransform`
+- Keep the Hero component as `'use client'`
+- Do not use CSS `background-attachment: fixed` — it disables GPU compositing on mobile
 
-**Why Motion:**
-- **Industry standard:** De-facto React animation library in 2026
-- **GPU-accelerated:** Buttery-smooth animations that enhance perceived performance
-- **Lightweight:** Small bundle footprint despite powerful features
-- **TypeScript support:** First-class TypeScript integration
+**If the color system needs a dark mode toggle:**
+- Use CSS custom property swapping via a `data-theme` attribute on `<html>`
+- Implement with `next-themes` package (`npm install next-themes`)
+- NOT recommended for v2.0 unless explicitly scoped — adds significant complexity
 
-**Use cases for Red Leader:**
-- Hero section fade-ins and parallax effects
-- Service card hover animations
-- Case study transitions
-- Emergency hotline CTA pulse/attention animations
-
-**Installation:**
-```bash
-npm install motion
-```
-
-**Alternatives considered:**
-- React Spring: Physics-based, more complex API for simpler marketing animations
-- GSAP: Powerful but overkill for marketing site needs, larger bundle
-- CSS animations only: Not sufficient for complex interaction states
-
-**Sources:**
-- [Top React Animation Libraries 2026](https://www.syncfusion.com/blogs/post/top-react-animation-libraries)
-- [Comparing React Animation Libraries 2026](https://blog.logrocket.com/best-react-animation-libraries/)
+**If fonts need to be variable (recommended):**
+- Use `axes` option in `next/font/google` to enable optical sizing (`opsz`) and weight axes
+- Example: `Fraunces({ subsets: ['latin'], axes: ['SOFT', 'WONK', 'opsz'] })`
+- Variable fonts eliminate the need to load separate weight files
 
 ---
 
-## Content Management
+## Version Compatibility
 
-### Blog: MDX with next-mdx-remote
-**Confidence:** HIGH
-
-**Why MDX + next-mdx-remote:**
-- **MDX = Markdown + JSX:** Write blog posts in Markdown, embed React components for interactive examples
-- **next-mdx-remote:** Fetch MDX from filesystem, CMS, or database without build-time compilation
-- **Syntax highlighting:** Integrate rehype plugins for code examples in technical blog posts
-- **SEO-friendly:** Static generation for blog posts ensures fast load and search indexing
-
-**Installation:**
-```bash
-npm install next-mdx-remote gray-matter rehype-highlight
-```
-
-**Use case:**
-- Technical blog posts showcasing Red Leader expertise
-- Case study deep-dives with embedded interactive diagrams
-- Emergency response playbook articles
-
-**Why NOT full headless CMS for blog:**
-- Contentful: Enterprise pricing ($489/mo) overkill for blog-only needs
-- Sanity: Better for complex content models, blog doesn't need real-time collaboration
-- MDX files in repo: Version-controlled, free, easy for technical team
-
-**Sources:**
-- [next-mdx-remote GitHub](https://github.com/hashicorp/next-mdx-remote)
-- [Next.js MDX Guide](https://nextjs.org/docs/app/guides/mdx)
+| Package A | Compatible With | Notes |
+|-----------|-----------------|-------|
+| `motion` ^12.x | React ^19.x | Verified — `motion` supports React 19 concurrent features |
+| `motion` ^12.x | Next.js ^16.x App Router | Requires `'use client'` directive on animated components; pages and layouts remain Server Components |
+| Tailwind v4.0 | `motion` ^12.x | No conflict — Tailwind provides CSS classes, motion provides JS-driven inline styles. Both can apply to same element. |
+| `next/font` | Tailwind v4 `@theme` | Confirmed by official Next.js 16.1.6 docs. Pattern: `variable: '--font-display'` in font config, then `--font-display: var(--font-display)` in `@theme`. |
 
 ---
 
-### Optional: Headless CMS for Case Studies
-**Recommendation:** Sanity.io (if non-dev team needs CMS)
-**Confidence:** MEDIUM (only if CMS requirement emerges)
+## Sources
 
-**Why Sanity (if needed):**
-- **Flexible schema:** Custom content structures for case studies (problem, solution, outcome, metrics)
-- **GROQ queries:** Powerful query language for filtering case studies by industry, service type
-- **Real-time collaboration:** Marketing team can draft while devs build
-- **Free tier:** Generous limits for small team
-
-**When to use:**
-- Marketing team needs to publish case studies without dev involvement
-- Content workflow requires approval processes
-- Multiple contributors editing simultaneously
-
-**When NOT to use:**
-- Dev team is publishing all content (use MDX)
-- Budget constrained (MDX is free)
-- Simple linear workflow (file-based MDX is simpler)
-
-**Installation (if needed):**
-```bash
-npm install @sanity/client next-sanity
-```
-
-**Sources:**
-- [Best Headless CMS for Next.js 2026](https://naturaily.com/blog/next-js-cms)
-- [Sanity vs Contentful](https://pagepro.co/blog/sanity-vs-contentful/)
+- Next.js 16.1.6 official docs (`/docs/app/getting-started/fonts`) — `next/font` API, variable font configuration, Tailwind v4 integration pattern. Fetched 2026-03-10. **HIGH confidence.**
+- Next.js 16.1.6 official docs (`/docs/app/api-reference/components/font`) — Full font API reference, multiple font configuration, CSS variable method. Fetched 2026-03-10. **HIGH confidence.**
+- Tailwind CSS v4 official docs (`/docs/animation`) — Built-in animation utilities, custom `@keyframes` via `@theme`, `motion-safe`/`motion-reduce` variants. Fetched 2026-03-10. **HIGH confidence.**
+- Tailwind CSS v4 official docs (`/docs/transition-property`) — Transition utilities for micro-interactions. Fetched 2026-03-10. **HIGH confidence.**
+- Tailwind CSS v4 official docs (`/docs/customizing-colors`) — OKLCH color system, `@theme` override pattern, disabling defaults. Fetched 2026-03-10. **HIGH confidence.**
+- `motion` package name and version — WebFetch blocked during research. Version listed as `^12.x` based on training data (package renamed from `framer-motion` to `motion` in 2024). **LOW confidence on exact version number — verify with `npm view motion version` before installing.**
 
 ---
 
-## Email & Communications
+## Open Questions
 
-### Transactional Email: Resend
-**Confidence:** HIGH
+1. **`motion` exact current version** — Could not fetch npm registry or motion.dev during research. Verify: `npm view motion version`. Expected to be in the `^11.x` or `^12.x` range. The import path `motion/react` (not `framer-motion`) is the current correct path.
 
-**Why Resend:**
-- **Developer experience:** Built for React/Next.js, integrates with React Email for template components
-- **Deliverability:** Dynamic IP adjustment for variable sending volumes
-- **Pricing:** Free tier (3,000 emails/mo) covers early stage, $20/mo for 50k emails
-- **Contact form integration:** Send form submissions to sales team, auto-responders to leads
-- **SOC 2 Type II + GDPR compliant:** Enterprise trust requirements
+2. **Font pairing decision** — Inter + Fraunces is a reasonable recommendation for a bold/premium tech aesthetic, but the final choice depends on Red Leader's brand guidelines. This is a design decision, not a stack decision.
 
-**Installation:**
-```bash
-npm install resend react-email
-```
-
-**Use cases:**
-- Contact form submissions to sales team
-- Emergency hotline inquiry routing
-- Lead nurture sequences (future)
-- Blog newsletter (future)
-
-**Alternatives considered:**
-- SendGrid: Industry leader but more complex setup for simple use case
-- Postmark: Excellent deliverability but less Next.js-focused DX
-- AWS SES: Cheapest but requires AWS infrastructure, slower developer velocity
-
-**Sources:**
-- [Resend](https://resend.com/)
-- [Best Email APIs for Transactional Delivery 2026](https://wire.insiderfinance.io/the-7-best-email-apis-for-transactional-delivery-in-2026-af03eadabdbe)
+3. **Dark vs light theme** — The Vercel/Linear aesthetic is predominantly dark. If Red Leader's redesign targets a dark-first look, the color system section above applies directly. If light-first, the OKLCH values need adjustment but the approach is identical.
 
 ---
 
-## SEO & Analytics
-
-### SEO: Built-in Next.js Metadata API + next-seo (JSON-LD only)
-**Confidence:** HIGH
-
-**Why this approach:**
-- **Next.js Metadata API:** Use generateMetadata() for title, description, Open Graph - built-in, zero dependencies
-- **next-seo v7:** Use ONLY for structured data (JSON-LD schemas) - ArticleJsonLd for blog, OrganizationJsonLd for company
-
-**Installation:**
-```bash
-npm install next-seo
-```
-
-**Why NOT full next-seo:**
-- Next.js 16 has native metadata handling that's superior to library wrappers
-- next-seo v7 refocused on structured data, recommends native Next.js for basic meta tags
-
-**Structured data strategy:**
-- OrganizationJsonLd: Red Leader company info, contact details, logo
-- ServiceJsonLd: Each consulting service offered
-- ArticleJsonLd: Blog posts for featured snippets
-- FAQPageJsonLd: Common questions about emergency response
-
-**Sources:**
-- [Next.js SEO Documentation](https://nextjs.org/learn/seo)
-- [next-seo npm](https://www.npmjs.com/package/next-seo)
-- [Next.js 15 SEO Guide](https://medium.com/@thomasaugot/the-complete-guide-to-seo-optimization-in-next-js-15-1bdb118cffd7)
-
----
-
-### Analytics: Plausible Analytics
-**Confidence:** HIGH
-
-**Why Plausible:**
-- **Privacy-focused:** No cookies, GDPR compliant out-of-the-box (European clients likely for enterprise tech consulting)
-- **Accuracy:** Google Analytics misses ~45% of traffic due to cookie consent banners, Plausible doesn't require consent
-- **Performance:** 75x smaller script than GA4, faster page loads = higher conversion
-- **Data ownership:** 100% data ownership, EU servers, never sold or shared
-- **Simple metrics:** Focus on actionable conversion metrics (emergency hotline clicks, contact form submissions)
-
-**Pricing:** $19/mo for 10k pageviews (suitable for lead-gen site)
-
-**Installation:**
-```bash
-npm install next-plausible
-```
-
-**Why NOT Google Analytics:**
-- GDPR violations in Austria, France, Italy, Denmark, Finland, Norway, Sweden
-- Cookie consent banner reduces tracking accuracy and conversion rates
-- Overkill complexity for lead-gen site
-- Privacy concerns hurt enterprise trust
-
-**Sources:**
-- [Plausible Analytics](https://plausible.io/)
-- [Plausible vs Google Analytics](https://plausible.io/vs-google-analytics)
-- [Best Privacy-Focused GA Alternatives 2026](https://designmodo.com/google-analytics-alternatives/)
-
----
-
-## Hosting & Deployment
-
-### Primary: Vercel
-**Confidence:** HIGH
-
-**Why Vercel:**
-- **Next.js creators:** First-class Next.js support, new features available immediately
-- **Edge network:** Global CDN for fast load times regardless of visitor location (critical for international enterprise buyers)
-- **Automatic preview deployments:** Every PR gets a URL for stakeholder review before production
-- **Zero-config deployment:** Connect GitHub repo, automatic builds on push
-- **Free tier:** Generous limits for early-stage marketing sites
-
-**Pricing:** Free tier likely sufficient initially, Pro at $20/user/month when needed
-
-**Deployment:**
-```bash
-# Connect GitHub repo to Vercel via dashboard
-# Or CLI:
-npm install -g vercel
-vercel
-```
-
-**Why NOT alternatives:**
-- Netlify: Strong competitor but Vercel has tighter Next.js integration
-- AWS Amplify: More complex setup, overkill for marketing site
-- Railway: Better for full-stack apps with databases, unnecessary complexity
-- Cloudflare Pages: Emerging but less Next.js-specific features
-
-**Cost consideration:** Monitor bandwidth usage, Vercel's usage-based pricing can spike with traffic. If costs become concern, AWS Amplify or Railway are alternatives.
-
-**Sources:**
-- [Vercel](https://vercel.com/)
-- [Vercel Alternatives 2026](https://www.digitalocean.com/resources/articles/vercel-alternatives)
-
----
-
-## Supporting Libraries
-
-### Icon Library: Lucide React
-**Confidence:** HIGH
-
-```bash
-npm install lucide-react
-```
-
-**Why:** Consistent icon set, tree-shakeable, used by shadcn/ui, excellent TypeScript support
-
----
-
-### Date Handling: date-fns
-**Confidence:** MEDIUM
-
-```bash
-npm install date-fns
-```
-
-**Why:** Lightweight (vs Moment.js), modular imports, good for blog post dates and case study timestamps
-
----
-
-### Environment Variables: dotenv
-**Confidence:** HIGH
-
-```bash
-npm install -D dotenv
-```
-
-**Why:** Manage API keys (Resend, Plausible, Calendly), keep secrets out of repo
-
----
-
-## NOT Recommended
-
-### What to AVOID and Why
-
-#### 1. Create React App (CRA)
-**Why NOT:** Deprecated, no SSR/SSG, poor SEO, slower performance than Next.js
-
-#### 2. CSS-in-JS (Emotion, Styled Components, Styled JSX)
-**Why NOT:** Runtime performance overhead, Tailwind v4 is faster and more maintainable for marketing sites
-
-#### 3. Redux / Zustand / Jotai (Global State Management)
-**Why NOT:** Marketing site doesn't need complex state, React Context + Server Components sufficient
-
-#### 4. GraphQL (Apollo Client)
-**Why NOT:** Overkill for simple marketing site, REST API or Server Actions simpler for contact forms
-
-#### 5. Full CMS (Contentful, Strapi) for initial launch
-**Why NOT:** Expensive, complex setup, MDX sufficient until marketing team needs CMS
-
-#### 6. jQuery
-**Why NOT:** Outdated, React handles DOM manipulation, increases bundle size
-
-#### 7. Bootstrap
-**Why NOT:** Conflicts with Tailwind, generic look doesn't differentiate Red Leader brand
-
-#### 8. Google Analytics (GA4)
-**Why NOT:** GDPR violations, poor accuracy with consent banners, privacy concerns hurt enterprise trust
-
-#### 9. Webpack from scratch
-**Why NOT:** Next.js 16 includes Turbopack, zero config needed
-
-#### 10. Server frameworks (Express, Fastify) alongside Next.js
-**Why NOT:** Next.js API routes and Server Actions handle backend needs for marketing site
-
----
-
-## Installation Script
-
-Complete stack setup:
-
-```bash
-# Create Next.js app
-npx create-next-app@latest red-leader-website --typescript --tailwind --app --use-npm
-
-cd red-leader-website
-
-# Core dependencies
-npm install react-hook-form zod @hookform/resolvers
-npm install clsx tailwind-merge
-npm install next-mdx-remote gray-matter rehype-highlight
-npm install resend react-email
-npm install next-seo
-npm install next-plausible
-npm install lucide-react
-npm install date-fns
-
-# Dev dependencies
-npm install -D dotenv
-
-# shadcn/ui initialization
-npx shadcn@latest init
-
-# Add common shadcn components
-npx shadcn@latest add button form input textarea card separator
-
-# Optional: Animation
-npm install motion
-```
-
----
-
-## Version Lock Recommendations
-
-For production stability, lock major versions:
-
-```json
-{
-  "dependencies": {
-    "next": "^16.0.10",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "tailwindcss": "^4.1.18",
-    "typescript": "^5.9.3",
-    "react-hook-form": "^7.53.0",
-    "zod": "^3.24.1"
-  }
-}
-```
-
----
-
-## Stack Decision Summary
-
-| Category | Choice | Rationale |
-|----------|--------|-----------|
-| **Framework** | Next.js 16 | SEO, performance, SSR for lead-gen site |
-| **Styling** | Tailwind v4 | 5x faster builds, zero config, modern |
-| **UI Components** | shadcn/ui | Marketing blocks, ownership, accessible |
-| **Forms** | React Hook Form + Zod | Performance, TypeScript, validation |
-| **Animation** | Motion | Industry standard, lightweight, smooth |
-| **Content** | MDX (next-mdx-remote) | Blog without CMS overhead |
-| **Email** | Resend | Next.js-native, free tier, deliverability |
-| **SEO** | Next.js Metadata + next-seo | Built-in + structured data |
-| **Analytics** | Plausible | Privacy-focused, accurate, GDPR-safe |
-| **Hosting** | Vercel | Next.js creators, edge network, preview URLs |
-
----
-
-## Confidence Assessment
-
-| Technology | Confidence | Verification |
-|------------|-----------|--------------|
-| Next.js 16 | HIGH | Official releases, production-ready |
-| Tailwind v4 | HIGH | Stable release, npm verified |
-| TypeScript 5.9 | HIGH | Current stable, 7.0 in preview only |
-| React Hook Form | HIGH | Most popular form library, 1.9M/week |
-| Zod | HIGH | Standard validation, official RHF integration |
-| shadcn/ui | HIGH | Widely adopted, production-proven |
-| Motion | MEDIUM | Package name change from Framer Motion, verify |
-| MDX | HIGH | Next.js official support, mature ecosystem |
-| Resend | HIGH | Production email service, SOC 2 compliant |
-| Plausible | HIGH | GDPR-compliant, production analytics service |
-| Vercel | HIGH | Industry-standard Next.js hosting |
-
----
-
-## Sources Summary
-
-All recommendations verified with 2026-current sources:
-
-**Framework & Core:**
-- [Next.js 16 Release](https://nextjs.org/blog/next-16)
-- [Tailwind CSS v4.0](https://tailwindcss.com/blog/tailwindcss-v4)
-- [TypeScript npm](https://www.npmjs.com/package/typescript)
-
-**Forms & Validation:**
-- [React Hook Form](https://react-hook-form.com/)
-- [Best React Form Libraries 2026](https://blog.croct.com/post/best-react-form-libraries)
-- [Zod Documentation](https://zod.dev/)
-
-**UI & Animation:**
-- [shadcn/ui](https://ui.shadcn.com/)
-- [Top React Animation Libraries 2026](https://www.syncfusion.com/blogs/post/top-react-animation-libraries)
-
-**Content & Email:**
-- [next-mdx-remote GitHub](https://github.com/hashicorp/next-mdx-remote)
-- [Resend](https://resend.com/)
-- [Best Email APIs 2026](https://wire.insiderfinance.io/the-7-best-email-apis-for-transactional-delivery-in-2026-af03eadabdbe)
-
-**SEO & Analytics:**
-- [next-seo npm](https://www.npmjs.com/package/next-seo)
-- [Plausible Analytics](https://plausible.io/)
-- [Plausible vs Google Analytics](https://plausible.io/vs-google-analytics)
-
-**Hosting:**
-- [Vercel](https://vercel.com/)
-- [Vercel Alternatives 2026](https://www.digitalocean.com/resources/articles/vercel-alternatives)
-
----
-
-## Next Steps
-
-This stack research feeds into:
-1. **ARCHITECTURE.md** - How components interact, data flow patterns
-2. **FEATURES.md** - What to build with this stack (services pages, case studies, emergency hotline)
-3. **PITFALLS.md** - Common mistakes with Next.js marketing sites
-4. **Roadmap creation** - Phase structure based on stack capabilities
-
-**Ready for roadmap creation with comprehensive, verified 2026 stack recommendations.**
+*Stack research for: Visual redesign additions — Red Leader marketing site v2.0*
+*Researched: 2026-03-10*

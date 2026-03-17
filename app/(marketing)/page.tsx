@@ -38,7 +38,7 @@ export default function HomePage() {
             <div className="mt-8 flex flex-col sm:flex-row gap-4">
               <a
                 href={`tel:${emergencyPhone.replace(/[^+\d]/g, '')}`}
-                className="inline-flex items-center justify-center px-8 py-4 bg-brand-red text-white font-semibold rounded-lg hover:bg-brand-red-dark transition-colors"
+                className="inline-flex items-center justify-center px-8 py-4 bg-brand-red text-white font-semibold rounded-lg hover:bg-brand-red-dark hover:shadow-[0_0_20px_rgba(220,38,38,0.3)] transition-all"
               >
                 <svg
                   className="w-5 h-5 mr-2"
@@ -68,20 +68,20 @@ export default function HomePage() {
       </section>
 
       {/* Success Metrics - Response time prominently displayed (EMER-03) */}
-      <section className="py-8 bg-brand-dark">
+      <section className="py-8 bg-gray-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SuccessMetrics variant="dark" />
         </div>
       </section>
 
       {/* Value Props Section */}
-      <section className="py-16 sm:py-20">
+      <section className="py-16 sm:py-20 bg-gray-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-brand-dark">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white">
               Why Companies Trust Red-Leader
             </h2>
-            <p className="mt-4 text-lg text-brand-gray max-w-2xl mx-auto">
+            <p className="mt-4 text-lg text-gray-400 max-w-2xl mx-auto">
               When critical infrastructure fails, experience and speed matter.
               Our team has rescued systems for Fortune 500 companies.
             </p>
@@ -90,39 +90,39 @@ export default function HomePage() {
           <div className="grid md:grid-cols-3 gap-8">
             {/* Response Time */}
             <div className="text-center p-6">
-              <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-red-950/50 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 text-brand-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-brand-dark mb-2">Rapid Response</h3>
-              <p className="text-brand-gray">
+              <h3 className="text-xl font-bold text-white mb-2">Rapid Response</h3>
+              <p className="text-gray-400">
                 Average response time under 2 hours. We're on call 24/7/365 for your emergencies.
               </p>
             </div>
 
             {/* Expertise */}
             <div className="text-center p-6">
-              <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-red-950/50 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 text-brand-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-brand-dark mb-2">Battle-Tested Experts</h3>
-              <p className="text-brand-gray">
+              <h3 className="text-xl font-bold text-white mb-2">Battle-Tested Experts</h3>
+              <p className="text-gray-400">
                 Kubernetes, AWS, Azure, GPU clusters, LLM infrastructure — we've rescued them all. 20+ years combined experience.
               </p>
             </div>
 
             {/* Results */}
             <div className="text-center p-6">
-              <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-red-950/50 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 text-brand-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-brand-dark mb-2">Proven Results</h3>
-              <p className="text-brand-gray">
+              <h3 className="text-xl font-bold text-white mb-2">Proven Results</h3>
+              <p className="text-gray-400">
                 99.9% success rate on emergency recoveries. We fix what others said couldn't be fixed.
               </p>
             </div>
@@ -131,20 +131,20 @@ export default function HomePage() {
       </section>
 
       {/* Client Logos (TRUST-01) */}
-      <section className="py-12 border-y border-gray-200">
+      <section className="py-12 border-y border-gray-800 bg-gray-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ClientLogos showHeading />
         </div>
       </section>
 
       {/* Services Preview */}
-      <section className="py-16 sm:py-20 bg-gray-50">
+      <section className="py-16 sm:py-20 bg-gray-900/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-brand-dark">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white">
               Our Services
             </h2>
-            <p className="mt-4 text-lg text-brand-gray">
+            <p className="mt-4 text-lg text-gray-400">
               From emergency rescue to AI infrastructure and LLM security
             </p>
           </div>
@@ -190,12 +190,12 @@ export default function HomePage() {
             ].map((service) => (
               <div
                 key={service.title}
-                className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                className="bg-gray-900 border border-gray-800 p-6 rounded-lg hover:border-gray-700 transition-colors"
               >
-                <h3 className="text-lg font-bold text-brand-dark mb-2">
+                <h3 className="text-lg font-bold text-white mb-2">
                   {service.title}
                 </h3>
-                <p className="text-brand-gray">{service.description}</p>
+                <p className="text-gray-400">{service.description}</p>
               </div>
             ))}
           </div>
@@ -215,32 +215,32 @@ export default function HomePage() {
       </section>
 
       {/* Testimonials (TRUST-02) */}
-      <section className="py-16 sm:py-20">
+      <section className="py-16 sm:py-20 bg-gray-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Testimonials limit={3} />
         </div>
       </section>
 
       {/* Certifications (TRUST-03) */}
-      <section className="py-12 bg-gray-50">
+      <section className="py-12 bg-gray-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Certifications />
         </div>
       </section>
 
       {/* Booking Section */}
-      <section id="book" className="py-16 sm:py-20">
+      <section id="book" className="py-16 sm:py-20 bg-gray-900">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
-            <h2 className="text-3xl sm:text-4xl font-bold text-brand-dark">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white">
               Book a Free Consultation
             </h2>
-            <p className="mt-4 text-lg text-brand-gray">
+            <p className="mt-4 text-lg text-gray-400">
               Not an emergency? Let's discuss how we can help improve your infrastructure.
             </p>
           </div>
 
-          <CalendlyEmbed className="rounded-lg overflow-hidden shadow-lg" />
+          <CalendlyEmbed className="rounded-lg overflow-hidden border border-gray-800" />
         </div>
       </section>
     </>

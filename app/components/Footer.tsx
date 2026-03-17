@@ -2,14 +2,14 @@ import Link from 'next/link'
 
 export function Footer() {
   return (
-    <footer className="bg-brand-dark text-white mt-auto">
+    <footer className="bg-gray-950 text-white mt-auto">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="md:col-span-2">
             <div className="flex items-center space-x-2 mb-4">
               <img src="/images/logo-icon.png" alt="Red-Leader" className="h-10 w-auto brightness-0 invert" />
-              <span className="font-semibold text-lg">Red-Leader</span>
+              <span className="font-semibold text-lg text-white">Red-Leader</span>
             </div>
             <p className="text-gray-400 mb-4">
               Emergency Infrastructure Rescue
@@ -21,7 +21,7 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="font-semibold text-lg mb-4">Quick Links</h3>
+            <h3 className="font-semibold text-lg text-white mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li>
                 <Link href="/services" className="text-gray-400 hover:text-white transition-colors">
@@ -43,7 +43,7 @@ export function Footer() {
 
           {/* Emergency Contact */}
           <div>
-            <h3 className="font-semibold text-lg mb-4">Emergency Contact</h3>
+            <h3 className="font-semibold text-lg text-white mb-4">Emergency Contact</h3>
             <div className="space-y-3">
               <a
                 href="tel:+14088413982"
@@ -65,7 +65,7 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 text-sm">
+        <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
           <p>&copy; {new Date().getFullYear()} Red-Leader. All rights reserved.</p>
         </div>
       </div>

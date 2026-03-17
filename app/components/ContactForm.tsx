@@ -47,7 +47,7 @@ function FieldError({ errors }: { errors?: string[] }) {
   if (!errors?.length) return null
 
   return (
-    <p className="mt-1 text-sm text-red-600" role="alert">
+    <p className="mt-1 text-sm text-red-500" role="alert">
       {errors[0]}
     </p>
   )
@@ -61,9 +61,9 @@ export function ContactForm() {
 
   if (state?.success) {
     return (
-      <div className="bg-green-50 border border-green-200 rounded-lg p-6 text-center">
+      <div className="bg-green-950/50 border border-green-800 rounded-lg p-6 text-center">
         <svg
-          className="w-12 h-12 text-green-600 mx-auto mb-4"
+          className="w-12 h-12 text-green-500 mx-auto mb-4"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -75,10 +75,10 @@ export function ContactForm() {
             d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
           />
         </svg>
-        <h3 className="text-lg font-semibold text-green-800 mb-2">
+        <h3 className="text-lg font-semibold text-green-400 mb-2">
           Message Sent!
         </h3>
-        <p className="text-green-700">
+        <p className="text-green-300">
           Thank you for reaching out. We'll respond within 15 minutes during business hours.
           For emergencies, please call us directly.
         </p>
@@ -89,15 +89,15 @@ export function ContactForm() {
   return (
     <form action={formAction} className="space-y-6">
       {state?.error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4" role="alert">
-          <p className="text-red-700">{state.error}</p>
+        <div className="bg-red-950/50 border border-red-800 rounded-lg p-4" role="alert">
+          <p className="text-red-400">{state.error}</p>
         </div>
       )}
 
       <div>
         <label
           htmlFor="name"
-          className="block text-sm font-medium text-brand-dark mb-1"
+          className="block text-sm font-medium text-white mb-1"
         >
           Name
         </label>
@@ -106,7 +106,7 @@ export function ContactForm() {
           name="name"
           type="text"
           required
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-red focus:border-transparent transition-shadow"
+          className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-brand-red focus:border-transparent transition-shadow"
           placeholder="Your name"
         />
         <FieldError errors={state?.fieldErrors?.name} />
@@ -115,7 +115,7 @@ export function ContactForm() {
       <div>
         <label
           htmlFor="email"
-          className="block text-sm font-medium text-brand-dark mb-1"
+          className="block text-sm font-medium text-white mb-1"
         >
           Email
         </label>
@@ -124,7 +124,7 @@ export function ContactForm() {
           name="email"
           type="email"
           required
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-red focus:border-transparent transition-shadow"
+          className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-brand-red focus:border-transparent transition-shadow"
           placeholder="you@company.com"
         />
         <FieldError errors={state?.fieldErrors?.email} />
@@ -133,7 +133,7 @@ export function ContactForm() {
       <div>
         <label
           htmlFor="company"
-          className="block text-sm font-medium text-brand-dark mb-1"
+          className="block text-sm font-medium text-white mb-1"
         >
           Company
         </label>
@@ -142,7 +142,7 @@ export function ContactForm() {
           name="company"
           type="text"
           required
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-red focus:border-transparent transition-shadow"
+          className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-brand-red focus:border-transparent transition-shadow"
           placeholder="Your company name"
         />
         <FieldError errors={state?.fieldErrors?.company} />
@@ -151,7 +151,7 @@ export function ContactForm() {
       <div>
         <label
           htmlFor="message"
-          className="block text-sm font-medium text-brand-dark mb-1"
+          className="block text-sm font-medium text-white mb-1"
         >
           What can we help you with?
         </label>
@@ -160,7 +160,7 @@ export function ContactForm() {
           name="message"
           rows={5}
           required
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-red focus:border-transparent transition-shadow resize-y"
+          className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-brand-red focus:border-transparent transition-shadow resize-y"
           placeholder="Describe your situation or what you're looking for..."
         />
         <FieldError errors={state?.fieldErrors?.message} />

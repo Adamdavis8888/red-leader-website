@@ -16,7 +16,7 @@ export default function ContactPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-brand-dark text-white py-16 sm:py-20">
+      <section className="bg-gray-950 text-white py-16 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl sm:text-5xl font-bold">
             Get in Touch
@@ -62,15 +62,15 @@ export default function ContactPage() {
       </section>
 
       {/* Contact Methods Grid */}
-      <section className="py-16 sm:py-20">
+      <section className="py-16 sm:py-20 bg-gray-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
             {/* Contact Form */}
             <div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-brand-dark mb-6">
+              <h2 className="text-2xl sm:text-3xl font-bold text-white mb-6">
                 Send Us a Message
               </h2>
-              <p className="text-brand-gray mb-8">
+              <p className="text-gray-400 mb-8">
                 Fill out the form below and we'll get back to you within 15 minutes
                 during business hours.
               </p>
@@ -79,14 +79,14 @@ export default function ContactPage() {
 
             {/* Contact Info */}
             <div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-brand-dark mb-6">
+              <h2 className="text-2xl sm:text-3xl font-bold text-white mb-6">
                 Contact Information
               </h2>
 
               <div className="space-y-6">
                 {/* Emergency Phone */}
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-red-950/50 rounded-lg flex items-center justify-center flex-shrink-0">
                     <svg
                       className="w-6 h-6 text-brand-red"
                       fill="none"
@@ -102,8 +102,8 @@ export default function ContactPage() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-brand-dark">Emergency Hotline</h3>
-                    <p className="text-brand-gray mb-1">Available 24/7/365</p>
+                    <h3 className="font-semibold text-white">Emergency Hotline</h3>
+                    <p className="text-gray-400 mb-1">Available 24/7/365</p>
                     <a
                       href={`tel:${emergencyPhone.replace(/[^+\d]/g, '')}`}
                       className="text-brand-red font-semibold hover:text-brand-red-dark transition-colors"
@@ -115,7 +115,7 @@ export default function ContactPage() {
 
                 {/* Email */}
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-red-950/50 rounded-lg flex items-center justify-center flex-shrink-0">
                     <svg
                       className="w-6 h-6 text-brand-red"
                       fill="none"
@@ -131,8 +131,8 @@ export default function ContactPage() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-brand-dark">Email</h3>
-                    <p className="text-brand-gray mb-1">For non-urgent inquiries</p>
+                    <h3 className="font-semibold text-white">Email</h3>
+                    <p className="text-gray-400 mb-1">For non-urgent inquiries</p>
                     <a
                       href={`mailto:${contactEmail}`}
                       className="text-brand-red font-semibold hover:text-brand-red-dark transition-colors"
@@ -144,7 +144,7 @@ export default function ContactPage() {
 
                 {/* Response Time */}
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-red-950/50 rounded-lg flex items-center justify-center flex-shrink-0">
                     <svg
                       className="w-6 h-6 text-brand-red"
                       fill="none"
@@ -160,8 +160,8 @@ export default function ContactPage() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-brand-dark">Response Time</h3>
-                    <p className="text-brand-gray">
+                    <h3 className="font-semibold text-white">Response Time</h3>
+                    <p className="text-gray-400">
                       Emergency calls: Immediate<br />
                       Email/form: Within 15 minutes (business hours)
                     </p>
@@ -170,8 +170,8 @@ export default function ContactPage() {
               </div>
 
               {/* Quick Links */}
-              <div className="mt-8 p-6 bg-gray-50 rounded-lg">
-                <h3 className="font-semibold text-brand-dark mb-4">
+              <div className="mt-8 p-6 bg-gray-900 border border-gray-800 rounded-lg">
+                <h3 className="font-semibold text-white mb-4">
                   Looking for something specific?
                 </h3>
                 <ul className="space-y-2">
@@ -199,17 +199,17 @@ export default function ContactPage() {
       </section>
 
       {/* Calendly Section */}
-      <section className="py-16 sm:py-20 bg-gray-50">
+      <section className="py-16 sm:py-20 bg-gray-900">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
-            <h2 className="text-3xl sm:text-4xl font-bold text-brand-dark">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white">
               Book a Consultation
             </h2>
-            <p className="mt-4 text-lg text-brand-gray">
+            <p className="mt-4 text-lg text-gray-400">
               Schedule a time to discuss your infrastructure needs with our team.
             </p>
           </div>
-          <CalendlyEmbed className="bg-white rounded-lg shadow-lg overflow-hidden" />
+          <CalendlyEmbed className="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden" />
         </div>
       </section>
     </>

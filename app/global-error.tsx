@@ -17,13 +17,13 @@ export default function GlobalError({
   return (
     <html lang="en">
       <body className="font-sans antialiased">
-        <div className="min-h-screen flex items-center justify-center py-16 bg-gray-50">
+        <div className="min-h-screen flex items-center justify-center py-16" style={{ backgroundColor: '#030712' }}>
           <div className="max-w-2xl mx-auto px-4 text-center">
             {/* Critical Error Icon */}
             <div className="mb-8">
               <div
                 className="w-24 h-24 rounded-full flex items-center justify-center mx-auto"
-                style={{ backgroundColor: '#fee2e2' }}
+                style={{ backgroundColor: 'rgba(127, 29, 29, 0.5)' }}
               >
                 <svg
                   className="w-12 h-12"
@@ -46,13 +46,13 @@ export default function GlobalError({
             {/* Message */}
             <h1
               className="text-3xl font-bold mb-4"
-              style={{ color: '#1f2937' }}
+              style={{ color: '#ffffff' }}
             >
               Critical Error
             </h1>
             <p
               className="text-lg mb-8"
-              style={{ color: '#6b7280' }}
+              style={{ color: '#9ca3af' }}
             >
               A critical error occurred. We're working on fixing this as quickly as possible.
             </p>
@@ -61,18 +61,18 @@ export default function GlobalError({
             {process.env.NODE_ENV === 'development' && error.message && (
               <div
                 className="mb-8 p-4 rounded-lg text-left"
-                style={{ backgroundColor: '#f3f4f6' }}
+                style={{ backgroundColor: '#111827', border: '1px solid #1f2937' }}
               >
                 <p
                   className="text-sm font-mono break-all"
-                  style={{ color: '#6b7280' }}
+                  style={{ color: '#9ca3af' }}
                 >
                   {error.message}
                 </p>
                 {error.digest && (
                   <p
                     className="text-xs mt-2"
-                    style={{ color: '#9ca3af' }}
+                    style={{ color: '#6b7280' }}
                   >
                     Error ID: {error.digest}
                   </p>
@@ -112,8 +112,8 @@ export default function GlobalError({
                 href="/"
                 className="inline-flex items-center justify-center px-6 py-3 font-semibold rounded-lg border-2 transition-colors"
                 style={{
-                  borderColor: '#1f2937',
-                  color: '#1f2937',
+                  borderColor: '#4b5563',
+                  color: '#ffffff',
                 }}
               >
                 <svg
@@ -137,11 +137,11 @@ export default function GlobalError({
             {/* Emergency Contact */}
             <div
               className="p-6 rounded-lg"
-              style={{ backgroundColor: 'white', border: '1px solid #e5e7eb' }}
+              style={{ backgroundColor: '#111827', border: '1px solid #1f2937' }}
             >
               <p
                 className="font-semibold mb-2"
-                style={{ color: '#1f2937' }}
+                style={{ color: '#ffffff' }}
               >
                 Need immediate help?
               </p>
@@ -184,7 +184,7 @@ export default function GlobalError({
               </span>
               <span
                 className="font-semibold ml-2"
-                style={{ color: '#1f2937' }}
+                style={{ color: '#ffffff' }}
               >
                 Red Leader
               </span>

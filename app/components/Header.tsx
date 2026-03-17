@@ -3,13 +3,13 @@ import { MobileNav } from './MobileNav'
 
 export function Header() {
   return (
-    <header className="bg-white border-b border-gray-200 sticky top-0 z-30">
+    <header className="bg-gray-950/80 backdrop-blur-lg border-b border-gray-800 sticky top-0 z-30">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
             <img src="/images/logo-icon.png" alt="Red-Leader" className="h-10 w-auto" />
-            <span className="text-brand-dark font-semibold text-lg hidden sm:inline">
+            <span className="text-white font-semibold text-lg hidden sm:inline">
               Red-Leader
             </span>
           </Link>
@@ -18,25 +18,25 @@ export function Header() {
           <nav className="hidden md:flex items-center space-x-8">
             <Link
               href="/"
-              className="text-brand-dark hover:text-brand-red transition-colors"
+              className="text-gray-300 hover:text-brand-red transition-colors"
             >
               Home
             </Link>
             <Link
               href="/services"
-              className="text-brand-dark hover:text-brand-red transition-colors"
+              className="text-gray-300 hover:text-brand-red transition-colors"
             >
               Services
             </Link>
             <Link
               href="/about"
-              className="text-brand-dark hover:text-brand-red transition-colors"
+              className="text-gray-300 hover:text-brand-red transition-colors"
             >
               About
             </Link>
             <Link
               href="/contact"
-              className="text-brand-dark hover:text-brand-red transition-colors"
+              className="text-gray-300 hover:text-brand-red transition-colors"
             >
               Contact
             </Link>

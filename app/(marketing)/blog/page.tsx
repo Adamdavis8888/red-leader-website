@@ -26,7 +26,7 @@ export default function BlogPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-brand-dark text-white py-16 sm:py-20">
+      <section className="bg-gray-950 text-white py-16 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
             <h1 className="text-4xl sm:text-5xl font-bold leading-tight">
@@ -53,49 +53,49 @@ export default function BlogPage() {
       </section>
 
       {/* Blog Posts Grid */}
-      <section className="py-16 sm:py-20">
+      <section className="py-16 sm:py-20 bg-gray-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {sortedPosts.map((post) => (
               <article
                 key={post.id}
-                className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow group border border-gray-100"
+                className="bg-gray-900 rounded-lg border border-gray-800 group"
               >
                 <div className="p-6">
                   {/* Category Badge */}
-                  <span className="inline-block px-3 py-1 bg-red-100 text-brand-red text-xs font-medium rounded-full mb-4">
+                  <span className="inline-block px-3 py-1 bg-red-950/50 text-brand-red text-xs font-medium rounded-full mb-4">
                     {post.category}
                   </span>
 
                   {/* Title */}
-                  <h2 className="text-xl font-bold text-brand-dark mb-3 group-hover:text-brand-red transition-colors">
+                  <h2 className="text-xl font-bold text-white mb-3 group-hover:text-brand-red transition-colors">
                     <Link href={`/blog/${post.slug}`}>
                       {post.title}
                     </Link>
                   </h2>
 
                   {/* Excerpt */}
-                  <p className="text-brand-gray text-sm mb-4 line-clamp-3">
+                  <p className="text-gray-400 text-sm mb-4 line-clamp-3">
                     {post.excerpt}
                   </p>
 
                   {/* Author and Meta */}
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-full bg-brand-dark flex items-center justify-center text-white text-sm font-bold">
+                    <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-white text-sm font-bold">
                       {post.author.name.split(' ').map((n) => n[0]).join('')}
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-brand-dark">
+                      <p className="text-sm font-medium text-white">
                         {post.author.name}
                       </p>
-                      <p className="text-xs text-brand-gray">
+                      <p className="text-xs text-gray-400">
                         {post.author.role}
                       </p>
                     </div>
                   </div>
 
                   {/* Date and Reading Time */}
-                  <div className="flex items-center justify-between text-sm text-brand-gray pt-4 border-t border-gray-100">
+                  <div className="flex items-center justify-between text-sm text-gray-400 pt-4 border-t border-gray-800">
                     <span>{formatDate(post.publishedAt)}</span>
                     <span>{post.readingTime}</span>
                   </div>
@@ -128,12 +128,12 @@ export default function BlogPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 sm:py-20 bg-gray-50">
+      <section className="py-16 sm:py-20 bg-gray-900">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-brand-dark">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white">
             Have an Infrastructure Challenge?
           </h2>
-          <p className="mt-4 text-lg text-brand-gray">
+          <p className="mt-4 text-lg text-gray-400">
             Our team has solved problems like these for organizations across every industry.
             Let&apos;s discuss your situation.
           </p>
@@ -146,7 +146,7 @@ export default function BlogPage() {
             </Link>
             <Link
               href="/#book"
-              className="inline-flex items-center justify-center px-8 py-4 border-2 border-brand-dark text-brand-dark font-semibold rounded-lg hover:bg-brand-dark hover:text-white transition-colors"
+              className="inline-flex items-center justify-center px-8 py-4 border-2 border-gray-600 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors"
             >
               Book a Consultation
             </Link>

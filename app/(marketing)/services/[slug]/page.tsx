@@ -92,7 +92,7 @@ export default async function ServiceDetailPage({ params }: Props) {
       )}
 
       {/* Hero Section */}
-      <section className="bg-brand-dark text-white py-16 sm:py-20">
+      <section className="bg-gray-950 text-white py-16 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
             <p className="text-brand-red font-semibold mb-2">{service.title}</p>
@@ -120,7 +120,7 @@ export default async function ServiceDetailPage({ params }: Props) {
 
       {/* Urgent Help Sidebar Banner */}
       {!isEmergencyService && (
-        <section className="bg-red-50 border-l-4 border-brand-red py-4">
+        <section className="bg-red-950/30 border-l-4 border-brand-red py-4">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <svg
@@ -136,7 +136,7 @@ export default async function ServiceDetailPage({ params }: Props) {
                   d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
                 />
               </svg>
-              <span className="font-medium text-brand-dark">
+              <span className="font-medium text-white">
                 Need urgent help? We respond to emergencies 24/7.
               </span>
             </div>
@@ -151,13 +151,13 @@ export default async function ServiceDetailPage({ params }: Props) {
       )}
 
       {/* Main Content */}
-      <section className="py-16 sm:py-20">
+      <section className="py-16 sm:py-20 bg-gray-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-3 gap-12">
             {/* Long Description */}
             <div className="lg:col-span-2">
-              <h2 className="text-2xl font-bold text-brand-dark mb-6">Overview</h2>
-              <div className="prose prose-lg text-brand-gray max-w-none">
+              <h2 className="text-2xl font-bold text-white mb-6">Overview</h2>
+              <div className="prose prose-lg prose-invert text-gray-400 max-w-none">
                 {service.longDescription.split('\n\n').map((paragraph, index) => (
                   <p key={index} className="mb-4">
                     {paragraph}
@@ -167,14 +167,14 @@ export default async function ServiceDetailPage({ params }: Props) {
 
               {/* Technical Capabilities */}
               <div className="mt-12">
-                <h2 className="text-2xl font-bold text-brand-dark mb-6">
+                <h2 className="text-2xl font-bold text-white mb-6">
                   Technical Capabilities
                 </h2>
                 <div className="grid sm:grid-cols-2 gap-3">
                   {service.technicalCapabilities.map((capability) => (
                     <div key={capability} className="flex items-start gap-2">
                       <svg
-                        className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0"
+                        className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -186,7 +186,7 @@ export default async function ServiceDetailPage({ params }: Props) {
                           d="M5 13l4 4L19 7"
                         />
                       </svg>
-                      <span className="text-brand-gray text-sm">{capability}</span>
+                      <span className="text-gray-400 text-sm">{capability}</span>
                     </div>
                   ))}
                 </div>
@@ -194,14 +194,14 @@ export default async function ServiceDetailPage({ params }: Props) {
 
               {/* Use Cases */}
               <div className="mt-12">
-                <h2 className="text-2xl font-bold text-brand-dark mb-6">
+                <h2 className="text-2xl font-bold text-white mb-6">
                   Common Use Cases
                 </h2>
                 <ul className="space-y-3">
                   {service.useCases.map((useCase) => (
                     <li key={useCase} className="flex items-start gap-3">
                       <span className="w-2 h-2 bg-brand-red rounded-full mt-2 flex-shrink-0" />
-                      <span className="text-brand-gray">{useCase}</span>
+                      <span className="text-gray-400">{useCase}</span>
                     </li>
                   ))}
                 </ul>
@@ -211,11 +211,11 @@ export default async function ServiceDetailPage({ params }: Props) {
             {/* Sidebar */}
             <div className="lg:col-span-1">
               {/* CTA Card */}
-              <div className="bg-gray-50 rounded-lg p-6 sticky top-24">
-                <h3 className="text-xl font-bold text-brand-dark mb-4">
+              <div className="bg-gray-900 border border-gray-800 rounded-lg p-6 sticky top-24">
+                <h3 className="text-xl font-bold text-white mb-4">
                   Ready to Get Started?
                 </h3>
-                <p className="text-brand-gray mb-6">
+                <p className="text-gray-400 mb-6">
                   {isEmergencyService
                     ? 'In a crisis? Call us now. For non-urgent inquiries, schedule a consultation.'
                     : 'Let\'s discuss how we can help with your infrastructure needs.'}
@@ -246,7 +246,7 @@ export default async function ServiceDetailPage({ params }: Props) {
                     href="/contact"
                     className={`w-full inline-flex items-center justify-center px-6 py-3 font-semibold rounded-lg transition-colors ${
                       isEmergencyService
-                        ? 'border-2 border-brand-dark text-brand-dark hover:bg-brand-dark hover:text-white'
+                        ? 'border-2 border-gray-600 text-gray-100 hover:bg-gray-800 hover:text-white'
                         : 'bg-brand-red text-white hover:bg-brand-red-dark'
                     }`}
                   >
@@ -254,15 +254,15 @@ export default async function ServiceDetailPage({ params }: Props) {
                   </Link>
                   <Link
                     href="/#book"
-                    className="w-full inline-flex items-center justify-center px-6 py-3 border-2 border-brand-dark text-brand-dark font-semibold rounded-lg hover:bg-brand-dark hover:text-white transition-colors"
+                    className="w-full inline-flex items-center justify-center px-6 py-3 border-2 border-gray-600 text-gray-100 font-semibold rounded-lg hover:bg-gray-800 hover:text-white transition-colors"
                   >
                     Book a Consultation
                   </Link>
                 </div>
 
                 {/* Emergency Contact */}
-                <div className="mt-6 pt-6 border-t border-gray-200">
-                  <p className="text-sm text-brand-gray mb-2">24/7 Emergency Line:</p>
+                <div className="mt-6 pt-6 border-t border-gray-800">
+                  <p className="text-sm text-gray-400 mb-2">24/7 Emergency Line:</p>
                   <a
                     href={`tel:${emergencyPhone.replace(/[^+\d]/g, '')}`}
                     className="text-lg font-bold text-brand-red hover:text-brand-red-dark transition-colors"
@@ -277,20 +277,20 @@ export default async function ServiceDetailPage({ params }: Props) {
       </section>
 
       {/* Related Services */}
-      <section className="py-16 sm:py-20 bg-gray-50">
+      <section className="py-16 sm:py-20 bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-bold text-brand-dark mb-8">Related Services</h2>
+          <h2 className="text-2xl font-bold text-white mb-8">Related Services</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {relatedServices.map((related) => (
               <Link
                 key={related.slug}
                 href={`/services/${related.slug}`}
-                className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow group"
+                className="bg-gray-900 border border-gray-800 p-6 rounded-lg hover:border-gray-700 transition-colors group"
               >
-                <h3 className="text-lg font-bold text-brand-dark mb-2 group-hover:text-brand-red transition-colors">
+                <h3 className="text-lg font-bold text-white mb-2 group-hover:text-brand-red transition-colors">
                   {related.title}
                 </h3>
-                <p className="text-brand-gray text-sm mb-4">{related.tagline}</p>
+                <p className="text-gray-400 text-sm mb-4">{related.tagline}</p>
                 <span className="text-brand-red font-medium text-sm inline-flex items-center">
                   Learn more
                   <svg
@@ -314,14 +314,14 @@ export default async function ServiceDetailPage({ params }: Props) {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-16 sm:py-20">
+      <section className="py-16 sm:py-20 bg-gray-950">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-brand-dark">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white">
             {isEmergencyService
               ? 'Don\'t Wait Until It\'s Too Late'
               : 'Ready to Transform Your Infrastructure?'}
           </h2>
-          <p className="mt-4 text-lg text-brand-gray">
+          <p className="mt-4 text-lg text-gray-400">
             {isEmergencyService
               ? 'Whether you\'re in crisis mode or want to prevent the next emergency, we\'re here to help.'
               : 'Let\'s discuss how we can help you build more reliable, scalable systems.'}
@@ -335,7 +335,7 @@ export default async function ServiceDetailPage({ params }: Props) {
             </Link>
             <Link
               href="/#book"
-              className="inline-flex items-center justify-center px-8 py-4 border-2 border-brand-dark text-brand-dark font-semibold rounded-lg hover:bg-brand-dark hover:text-white transition-colors"
+              className="inline-flex items-center justify-center px-8 py-4 border-2 border-gray-600 text-gray-100 font-semibold rounded-lg hover:bg-gray-800 hover:text-white transition-colors"
             >
               Book a Consultation
             </Link>

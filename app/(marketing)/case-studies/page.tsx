@@ -27,7 +27,7 @@ export default function CaseStudiesPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-brand-dark text-white py-16 sm:py-20">
+      <section className="bg-gray-950 text-white py-16 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl sm:text-5xl font-bold">
             Case Studies
@@ -40,7 +40,7 @@ export default function CaseStudiesPage() {
       </section>
 
       {/* Filter Bar */}
-      <section className="sticky top-0 z-10 bg-white border-b border-gray-200 py-4">
+      <section className="sticky top-0 z-10 bg-gray-950/80 backdrop-blur-lg border-b border-gray-800 py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-center gap-4">
             {/* All Button */}
@@ -49,7 +49,7 @@ export default function CaseStudiesPage() {
               className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                 !hasActiveFilters
                   ? 'bg-brand-red text-white'
-                  : 'bg-gray-100 text-brand-gray hover:bg-gray-200'
+                  : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
               }`}
             >
               All
@@ -57,7 +57,7 @@ export default function CaseStudiesPage() {
 
             {/* Crisis Type Filter */}
             <div className="flex items-center gap-2">
-              <span className="text-sm text-brand-gray">Crisis:</span>
+              <span className="text-sm text-gray-400">Crisis:</span>
               <div className="flex flex-wrap gap-2">
                 {crisisTypes.map((type) => (
                   <button
@@ -66,7 +66,7 @@ export default function CaseStudiesPage() {
                     className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
                       selectedCrisisType === type
                         ? 'bg-brand-red text-white'
-                        : 'bg-gray-100 text-brand-gray hover:bg-gray-200'
+                        : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
                     }`}
                   >
                     {type}
@@ -77,7 +77,7 @@ export default function CaseStudiesPage() {
 
             {/* Industry Filter */}
             <div className="flex items-center gap-2">
-              <span className="text-sm text-brand-gray">Industry:</span>
+              <span className="text-sm text-gray-400">Industry:</span>
               <div className="flex flex-wrap gap-2">
                 {industries.map((industry) => (
                   <button
@@ -86,7 +86,7 @@ export default function CaseStudiesPage() {
                     className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
                       selectedIndustry === industry
                         ? 'bg-brand-red text-white'
-                        : 'bg-gray-100 text-brand-gray hover:bg-gray-200'
+                        : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
                     }`}
                   >
                     {industry}
@@ -99,11 +99,11 @@ export default function CaseStudiesPage() {
       </section>
 
       {/* Case Studies Grid */}
-      <section className="py-16 sm:py-20">
+      <section className="py-16 sm:py-20 bg-gray-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {filteredCaseStudies.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-brand-gray text-lg">No case studies match your filters.</p>
+              <p className="text-gray-400 text-lg">No case studies match your filters.</p>
               <button
                 onClick={clearFilters}
                 className="mt-4 text-brand-red font-medium hover:underline"
@@ -116,24 +116,24 @@ export default function CaseStudiesPage() {
               {filteredCaseStudies.map((caseStudy) => (
                 <article
                   key={caseStudy.id}
-                  className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-100 overflow-hidden"
+                  className="bg-gray-900 rounded-lg border border-gray-800 overflow-hidden"
                 >
                   <div className="p-6">
                     {/* Badges */}
                     <div className="flex flex-wrap gap-2 mb-4">
-                      <span className="inline-block px-2 py-1 bg-red-100 text-brand-red text-xs font-medium rounded">
+                      <span className="inline-block px-2 py-1 bg-red-950/50 text-brand-red text-xs font-medium rounded">
                         {caseStudy.crisisType}
                       </span>
-                      <span className="inline-block px-2 py-1 bg-gray-100 text-brand-gray text-xs font-medium rounded">
+                      <span className="inline-block px-2 py-1 bg-gray-800 text-gray-400 text-xs font-medium rounded">
                         {caseStudy.industry}
                       </span>
                     </div>
 
                     {/* Client */}
-                    <p className="text-sm text-brand-gray mb-1">{caseStudy.client}</p>
+                    <p className="text-sm text-gray-400 mb-1">{caseStudy.client}</p>
 
                     {/* Title */}
-                    <h2 className="text-xl font-bold text-brand-dark mb-3">
+                    <h2 className="text-xl font-bold text-white mb-3">
                       <Link
                         href={`/case-studies/${caseStudy.slug}`}
                         className="hover:text-brand-red transition-colors"
@@ -143,7 +143,7 @@ export default function CaseStudiesPage() {
                     </h2>
 
                     {/* Problem Summary */}
-                    <p className="text-brand-gray text-sm mb-4 line-clamp-3">
+                    <p className="text-gray-400 text-sm mb-4 line-clamp-3">
                       {caseStudy.problem}
                     </p>
 
@@ -152,7 +152,7 @@ export default function CaseStudiesPage() {
                       {caseStudy.metrics.slice(0, 3).map((metric) => (
                         <div key={metric.label} className="text-center">
                           <div className="text-lg font-bold text-brand-red">{metric.value}</div>
-                          <div className="text-xs text-brand-gray">{metric.label}</div>
+                          <div className="text-xs text-gray-400">{metric.label}</div>
                         </div>
                       ))}
                     </div>
@@ -186,12 +186,12 @@ export default function CaseStudiesPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 sm:py-20 bg-gray-50">
+      <section className="py-16 sm:py-20 bg-gray-900">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-brand-dark">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white">
             Have a Similar Challenge?
           </h2>
-          <p className="mt-4 text-lg text-brand-gray">
+          <p className="mt-4 text-lg text-gray-400">
             Whether you're facing an infrastructure emergency or planning a complex migration,
             we've likely solved a similar problem before. Let's talk about your situation.
           </p>
@@ -204,7 +204,7 @@ export default function CaseStudiesPage() {
             </Link>
             <Link
               href="/#book"
-              className="inline-flex items-center justify-center px-8 py-4 border-2 border-brand-dark text-brand-dark font-semibold rounded-lg hover:bg-brand-dark hover:text-white transition-colors"
+              className="inline-flex items-center justify-center px-8 py-4 border-2 border-gray-600 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors"
             >
               Book a Consultation
             </Link>

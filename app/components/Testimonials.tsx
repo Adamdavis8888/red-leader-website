@@ -11,10 +11,10 @@ export function Testimonials({ limit, className = '' }: TestimonialsProps) {
   return (
     <div className={className}>
       <div className="text-center mb-12">
-        <h2 className="text-3xl sm:text-4xl font-bold text-brand-dark">
+        <h2 className="text-3xl sm:text-4xl font-bold text-white">
           What Our Clients Say
         </h2>
-        <p className="mt-4 text-lg text-brand-gray">
+        <p className="mt-4 text-lg text-gray-400">
           Real stories from companies we've helped in their critical moments
         </p>
       </div>
@@ -23,7 +23,7 @@ export function Testimonials({ limit, className = '' }: TestimonialsProps) {
         {testimonials.map((testimonial, index) => (
           <div
             key={index}
-            className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow"
+            className="bg-gray-900 border border-gray-800 p-6 rounded-xl"
           >
             {/* Quote icon */}
             <svg
@@ -36,7 +36,7 @@ export function Testimonials({ limit, className = '' }: TestimonialsProps) {
             </svg>
 
             {/* Quote text */}
-            <p className="text-brand-dark leading-relaxed mb-6">
+            <p className="text-gray-300 leading-relaxed mb-6">
               "{testimonial.quote}"
             </p>
 
@@ -53,7 +53,7 @@ export function Testimonials({ limit, className = '' }: TestimonialsProps) {
                 </span>
               </div>
               <div>
-                <p className="font-semibold text-brand-dark">{testimonial.role}</p>
+                <p className="font-semibold text-white">{testimonial.role}</p>
               </div>
             </div>
           </div>

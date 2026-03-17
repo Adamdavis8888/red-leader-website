@@ -39,7 +39,7 @@ export default function AboutPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-brand-dark to-gray-900 text-white py-16 sm:py-24">
+      <section className="bg-gradient-to-br from-gray-950 to-gray-900 text-white py-16 sm:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold">
             When Systems Fail,{' '}
@@ -52,7 +52,7 @@ export default function AboutPage() {
       </section>
 
       {/* Stats Bar */}
-      <section className="bg-white py-8 border-b border-gray-200">
+      <section className="bg-gray-900 py-8 border-b border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             {stats.map((stat) => (
@@ -60,7 +60,7 @@ export default function AboutPage() {
                 <div className="text-3xl sm:text-4xl font-bold text-brand-red">
                   {stat.value}
                 </div>
-                <div className="text-sm sm:text-base text-brand-gray mt-1">
+                <div className="text-sm sm:text-base text-gray-400 mt-1">
                   {stat.label}
                 </div>
               </div>
@@ -70,16 +70,16 @@ export default function AboutPage() {
       </section>
 
       {/* Company Story Section */}
-      <section className="py-16 sm:py-20">
+      <section className="py-16 sm:py-20 bg-gray-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-3xl sm:text-4xl font-bold text-brand-dark mb-6">
+              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
                 Our Story
               </h2>
               <div className="space-y-4">
                 {companyInfo.story.map((paragraph, index) => (
-                  <p key={index} className="text-brand-gray text-lg leading-relaxed">
+                  <p key={index} className="text-gray-400 text-lg leading-relaxed">
                     {paragraph}
                   </p>
                 ))}
@@ -87,7 +87,7 @@ export default function AboutPage() {
             </div>
 
             {/* Team illustration */}
-            <div className="bg-gray-100 rounded-lg min-h-[400px] flex items-center justify-center p-8">
+            <div className="bg-gray-900 rounded-lg min-h-[400px] flex items-center justify-center p-8">
               <svg viewBox="0 0 400 300" className="w-full max-w-md" fill="none">
                 {/* Desk/table */}
                 <rect x="40" y="180" width="320" height="8" rx="4" fill="#dc2626" opacity="0.2"/>
@@ -159,14 +159,14 @@ export default function AboutPage() {
       </section>
 
       {/* Mission Section */}
-      <section className="py-16 sm:py-20 bg-gray-50">
+      <section className="py-16 sm:py-20 bg-gray-900/50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-brand-dark mb-8">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-8">
             Our Mission
           </h2>
           <div className="relative">
             <div className="absolute left-0 top-0 bottom-0 w-1 bg-brand-red rounded-full" />
-            <blockquote className="pl-8 text-2xl sm:text-3xl font-medium text-brand-dark leading-relaxed">
+            <blockquote className="pl-8 text-2xl sm:text-3xl font-medium text-gray-100 leading-relaxed">
               "{companyInfo.mission}"
             </blockquote>
           </div>
@@ -174,13 +174,13 @@ export default function AboutPage() {
       </section>
 
       {/* Values Section */}
-      <section className="py-16 sm:py-20">
+      <section className="py-16 sm:py-20 bg-gray-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-brand-dark">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white">
               Our Values
             </h2>
-            <p className="mt-4 text-lg text-brand-gray max-w-2xl mx-auto">
+            <p className="mt-4 text-lg text-gray-400 max-w-2xl mx-auto">
               The principles that guide every engagement, every decision, every line of code.
             </p>
           </div>
@@ -189,17 +189,17 @@ export default function AboutPage() {
             {values.map((value) => (
               <div
                 key={value.title}
-                className="bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-100"
+                className="bg-gray-900 p-8 rounded-lg border border-gray-800 transition-colors"
               >
                 <div className="flex items-start gap-4">
-                  <div className="w-14 h-14 bg-red-100 rounded-lg flex items-center justify-center text-brand-red flex-shrink-0">
+                  <div className="w-14 h-14 bg-red-950/50 rounded-lg flex items-center justify-center text-brand-red flex-shrink-0">
                     {valueIcons[value.icon]}
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-brand-dark mb-2">
+                    <h3 className="text-xl font-bold text-white mb-2">
                       {value.title}
                     </h3>
-                    <p className="text-brand-gray leading-relaxed">
+                    <p className="text-gray-400 leading-relaxed">
                       {value.description}
                     </p>
                   </div>
@@ -211,13 +211,13 @@ export default function AboutPage() {
       </section>
 
       {/* Timeline/Milestones Section */}
-      <section className="py-16 sm:py-20 bg-gray-50">
+      <section className="py-16 sm:py-20 bg-gray-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-brand-dark">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white">
               Our Journey
             </h2>
-            <p className="mt-4 text-lg text-brand-gray max-w-2xl mx-auto">
+            <p className="mt-4 text-lg text-gray-400 max-w-2xl mx-auto">
               From startup to trusted enterprise partner.
             </p>
           </div>
@@ -226,22 +226,22 @@ export default function AboutPage() {
           <div className="lg:hidden">
             <div className="relative">
               {/* Vertical line */}
-              <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-300" />
+              <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-700" />
 
               <div className="space-y-8">
                 {milestones.map((milestone, index) => (
                   <div key={milestone.year} className="relative pl-12">
                     {/* Dot */}
-                    <div className="absolute left-2 w-5 h-5 bg-brand-red rounded-full border-4 border-white shadow" />
+                    <div className="absolute left-2 w-5 h-5 bg-brand-red rounded-full border-4 border-gray-950" />
 
-                    <div className="bg-white p-6 rounded-lg shadow-sm">
+                    <div className="bg-gray-900 p-6 rounded-lg border border-gray-800">
                       <div className="text-brand-red font-bold text-lg mb-1">
                         {milestone.year}
                       </div>
-                      <h3 className="text-lg font-bold text-brand-dark mb-2">
+                      <h3 className="text-lg font-bold text-white mb-2">
                         {milestone.title}
                       </h3>
-                      <p className="text-brand-gray text-sm">
+                      <p className="text-gray-400 text-sm">
                         {milestone.description}
                       </p>
                     </div>
@@ -255,22 +255,22 @@ export default function AboutPage() {
           <div className="hidden lg:block">
             <div className="relative">
               {/* Horizontal line */}
-              <div className="absolute left-0 right-0 top-6 h-0.5 bg-gray-300" />
+              <div className="absolute left-0 right-0 top-6 h-0.5 bg-gray-700" />
 
               <div className="grid grid-cols-3 gap-4">
                 {milestones.map((milestone) => (
                   <div key={milestone.year} className="relative pt-12">
                     {/* Dot */}
-                    <div className="absolute left-1/2 top-4 -translate-x-1/2 w-5 h-5 bg-brand-red rounded-full border-4 border-white shadow" />
+                    <div className="absolute left-1/2 top-4 -translate-x-1/2 w-5 h-5 bg-brand-red rounded-full border-4 border-gray-950" />
 
-                    <div className="bg-white p-4 rounded-lg shadow-sm h-full">
+                    <div className="bg-gray-900 p-4 rounded-lg border border-gray-800 h-full">
                       <div className="text-brand-red font-bold text-lg mb-1">
                         {milestone.year}
                       </div>
-                      <h3 className="text-base font-bold text-brand-dark mb-2">
+                      <h3 className="text-base font-bold text-white mb-2">
                         {milestone.title}
                       </h3>
-                      <p className="text-brand-gray text-sm">
+                      <p className="text-gray-400 text-sm">
                         {milestone.description}
                       </p>
                     </div>
@@ -283,12 +283,12 @@ export default function AboutPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 sm:py-20 bg-gray-50">
+      <section className="py-16 sm:py-20 bg-gray-950">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-brand-dark">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white">
             Ready to Work with Us?
           </h2>
-          <p className="mt-4 text-lg text-brand-gray">
+          <p className="mt-4 text-lg text-gray-400">
             Whether you're facing an emergency right now or want to prevent the next one,
             we're here to help.
           </p>
@@ -302,14 +302,14 @@ export default function AboutPage() {
             </Link>
             <Link
               href="/#book"
-              className="inline-flex items-center justify-center px-8 py-4 border-2 border-brand-dark text-brand-dark font-semibold rounded-lg hover:bg-brand-dark hover:text-white transition-colors"
+              className="inline-flex items-center justify-center px-8 py-4 border-2 border-gray-600 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors"
             >
               Book a Consultation
             </Link>
           </div>
 
-          <div className="mt-8 pt-8 border-t border-gray-200">
-            <p className="text-brand-gray mb-2">Having an emergency right now?</p>
+          <div className="mt-8 pt-8 border-t border-gray-800">
+            <p className="text-gray-400 mb-2">Having an emergency right now?</p>
             <a
               href={`tel:${emergencyPhone.replace(/[^+\d]/g, '')}`}
               className="inline-flex items-center text-brand-red font-bold text-xl hover:text-brand-red-dark transition-colors"

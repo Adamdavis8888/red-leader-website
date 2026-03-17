@@ -5,7 +5,7 @@ export function EmergencyBadge() {
     <div className="fixed bottom-6 right-6 z-40">
       <a
         href="tel:+14088413982"
-        className="flex items-center space-x-3 bg-brand-red text-white px-5 py-3 rounded-full shadow-lg hover:bg-brand-red-dark transition-colors"
+        className="flex items-center space-x-3 bg-brand-red text-white px-5 py-3 rounded-full shadow-lg shadow-red-900/50 hover:bg-brand-red-dark transition-colors ring-2 ring-red-500/20"
         aria-label="24/7 Emergency Response - Call Now"
       >
         {/* Pulse Indicator */}

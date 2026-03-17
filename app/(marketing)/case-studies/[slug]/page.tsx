@@ -64,22 +64,22 @@ export default async function CaseStudyDetailPage({ params }: Props) {
       <JsonLd data={generateBreadcrumbSchema(breadcrumbs)} />
 
       {/* Breadcrumb */}
-      <nav className="bg-gray-50 border-b border-gray-200">
+      <nav className="bg-gray-950 border-b border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <ol className="flex items-center space-x-2 text-sm">
             <li>
-              <Link href="/" className="text-brand-gray hover:text-brand-red transition-colors">
+              <Link href="/" className="text-gray-400 hover:text-brand-red transition-colors">
                 Home
               </Link>
             </li>
-            <li className="text-brand-gray">/</li>
+            <li className="text-gray-400">/</li>
             <li>
-              <Link href="/case-studies" className="text-brand-gray hover:text-brand-red transition-colors">
+              <Link href="/case-studies" className="text-gray-400 hover:text-brand-red transition-colors">
                 Case Studies
               </Link>
             </li>
-            <li className="text-brand-gray">/</li>
-            <li className="text-brand-dark font-medium truncate max-w-[200px]">
+            <li className="text-gray-400">/</li>
+            <li className="text-white font-medium truncate max-w-[200px]">
               {caseStudy.title}
             </li>
           </ol>
@@ -87,7 +87,7 @@ export default async function CaseStudyDetailPage({ params }: Props) {
       </nav>
 
       {/* Hero Section */}
-      <section className="bg-brand-dark text-white py-16 sm:py-20">
+      <section className="bg-gray-950 text-white py-16 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
             {/* Badges */}
@@ -131,30 +131,30 @@ export default async function CaseStudyDetailPage({ params }: Props) {
       </section>
 
       {/* Main Content */}
-      <section className="py-16 sm:py-20">
+      <section className="py-16 sm:py-20 bg-gray-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-3 gap-12">
             {/* Content Column */}
             <div className="lg:col-span-2 space-y-12">
               {/* Challenge Section */}
               <div>
-                <h2 className="text-2xl font-bold text-brand-dark mb-4 flex items-center gap-3">
-                  <span className="w-10 h-10 rounded-full bg-red-100 text-brand-red flex items-center justify-center flex-shrink-0">
+                <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
+                  <span className="w-10 h-10 rounded-full bg-red-950/50 text-brand-red flex items-center justify-center flex-shrink-0">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                     </svg>
                   </span>
                   The Challenge
                 </h2>
-                <p className="text-brand-gray leading-relaxed">
+                <p className="text-gray-300 leading-relaxed">
                   {caseStudy.problem}
                 </p>
               </div>
 
               {/* Solution Section */}
               <div>
-                <h2 className="text-2xl font-bold text-brand-dark mb-4 flex items-center gap-3">
-                  <span className="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0">
+                <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
+                  <span className="w-10 h-10 rounded-full bg-blue-950/50 text-blue-400 flex items-center justify-center flex-shrink-0">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -162,29 +162,29 @@ export default async function CaseStudyDetailPage({ params }: Props) {
                   </span>
                   Our Solution
                 </h2>
-                <p className="text-brand-gray leading-relaxed">
+                <p className="text-gray-300 leading-relaxed">
                   {caseStudy.solution}
                 </p>
               </div>
 
               {/* Outcome Section */}
               <div>
-                <h2 className="text-2xl font-bold text-brand-dark mb-4 flex items-center gap-3">
-                  <span className="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center flex-shrink-0">
+                <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
+                  <span className="w-10 h-10 rounded-full bg-green-950/50 text-green-500 flex items-center justify-center flex-shrink-0">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </span>
                   The Outcome
                 </h2>
-                <p className="text-brand-gray leading-relaxed">
+                <p className="text-gray-300 leading-relaxed">
                   {caseStudy.outcome}
                 </p>
               </div>
 
               {/* Testimonial */}
               {caseStudy.testimonial && (
-                <div className="bg-gray-50 rounded-lg p-8 border-l-4 border-brand-red">
+                <div className="bg-gray-900 border border-gray-800 rounded-lg p-8 border-l-4 border-l-brand-red">
                   <svg
                     className="w-10 h-10 text-brand-red/20 mb-4"
                     fill="currentColor"
@@ -192,16 +192,16 @@ export default async function CaseStudyDetailPage({ params }: Props) {
                   >
                     <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
                   </svg>
-                  <blockquote className="text-lg text-brand-dark italic mb-4">
+                  <blockquote className="text-lg text-gray-300 italic mb-4">
                     &ldquo;{caseStudy.testimonial.quote}&rdquo;
                   </blockquote>
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-brand-dark flex items-center justify-center text-white font-bold">
+                    <div className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center text-white font-bold">
                       {caseStudy.testimonial.author.split(' ').map(n => n[0]).join('')}
                     </div>
                     <div>
-                      <div className="font-semibold text-brand-dark">{caseStudy.testimonial.author}</div>
-                      <div className="text-sm text-brand-gray">{caseStudy.testimonial.role}, {caseStudy.client}</div>
+                      <div className="font-semibold text-white">{caseStudy.testimonial.author}</div>
+                      <div className="text-sm text-gray-400">{caseStudy.testimonial.role}, {caseStudy.client}</div>
                     </div>
                   </div>
                 </div>
@@ -210,34 +210,34 @@ export default async function CaseStudyDetailPage({ params }: Props) {
 
             {/* Sidebar */}
             <div className="lg:col-span-1">
-              <div className="bg-gray-50 rounded-lg p-6 sticky top-24">
+              <div className="bg-gray-900 border border-gray-800 rounded-lg p-6 sticky top-24">
                 {/* Quick Facts */}
-                <h3 className="text-lg font-bold text-brand-dark mb-4">Quick Facts</h3>
+                <h3 className="text-lg font-bold text-white mb-4">Quick Facts</h3>
                 <dl className="space-y-4 mb-8">
                   <div>
-                    <dt className="text-sm text-brand-gray">Client</dt>
-                    <dd className="font-medium text-brand-dark">{caseStudy.client}</dd>
+                    <dt className="text-sm text-gray-400">Client</dt>
+                    <dd className="font-medium text-white">{caseStudy.client}</dd>
                   </div>
                   <div>
-                    <dt className="text-sm text-brand-gray">Industry</dt>
-                    <dd className="font-medium text-brand-dark">{caseStudy.industry}</dd>
+                    <dt className="text-sm text-gray-400">Industry</dt>
+                    <dd className="font-medium text-white">{caseStudy.industry}</dd>
                   </div>
                   <div>
-                    <dt className="text-sm text-brand-gray">Crisis Type</dt>
-                    <dd className="font-medium text-brand-dark">{caseStudy.crisisType}</dd>
+                    <dt className="text-sm text-gray-400">Crisis Type</dt>
+                    <dd className="font-medium text-white">{caseStudy.crisisType}</dd>
                   </div>
                   <div>
-                    <dt className="text-sm text-brand-gray">Timeline</dt>
-                    <dd className="font-medium text-brand-dark">{caseStudy.timeline}</dd>
+                    <dt className="text-sm text-gray-400">Timeline</dt>
+                    <dd className="font-medium text-white">{caseStudy.timeline}</dd>
                   </div>
                   <div>
-                    <dt className="text-sm text-brand-gray mb-2">Services Used</dt>
+                    <dt className="text-sm text-gray-400 mb-2">Services Used</dt>
                     <dd className="flex flex-wrap gap-2">
                       {caseStudy.services.map((service) => (
                         <Link
                           key={service}
                           href={`/services/${service}`}
-                          className="inline-block px-2 py-1 bg-white text-brand-gray text-xs font-medium rounded border border-gray-200 hover:border-brand-red hover:text-brand-red transition-colors"
+                          className="inline-block px-2 py-1 bg-gray-800 text-gray-400 text-xs font-medium rounded border border-gray-700 hover:border-brand-red hover:text-brand-red transition-colors"
                         >
                           {service.replace(/-/g, ' ')}
                         </Link>
@@ -247,11 +247,11 @@ export default async function CaseStudyDetailPage({ params }: Props) {
                 </dl>
 
                 {/* CTA */}
-                <div className="border-t border-gray-200 pt-6">
-                  <h3 className="text-lg font-bold text-brand-dark mb-2">
+                <div className="border-t border-gray-800 pt-6">
+                  <h3 className="text-lg font-bold text-white mb-2">
                     Facing a Similar Challenge?
                   </h3>
-                  <p className="text-sm text-brand-gray mb-4">
+                  <p className="text-sm text-gray-400 mb-4">
                     Let&apos;s discuss how we can help your organization.
                   </p>
                   <div className="space-y-3">
@@ -263,7 +263,7 @@ export default async function CaseStudyDetailPage({ params }: Props) {
                     </Link>
                     <Link
                       href="/#book"
-                      className="w-full inline-flex items-center justify-center px-6 py-3 border-2 border-brand-dark text-brand-dark font-semibold rounded-lg hover:bg-brand-dark hover:text-white transition-colors"
+                      className="w-full inline-flex items-center justify-center px-6 py-3 border-2 border-gray-600 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors"
                     >
                       Book a Consultation
                     </Link>
@@ -276,23 +276,23 @@ export default async function CaseStudyDetailPage({ params }: Props) {
       </section>
 
       {/* Prev/Next Navigation */}
-      <section className="border-t border-gray-200">
+      <section className="border-t border-gray-800 bg-gray-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2">
             {/* Previous */}
-            <div className={`py-8 pr-4 ${prevCaseStudy ? 'border-r border-gray-200' : ''}`}>
+            <div className={`py-8 pr-4 ${prevCaseStudy ? 'border-r border-gray-800' : ''}`}>
               {prevCaseStudy ? (
                 <Link
                   href={`/case-studies/${prevCaseStudy.slug}`}
                   className="group flex flex-col"
                 >
-                  <span className="text-sm text-brand-gray mb-1 flex items-center gap-1">
+                  <span className="text-sm text-gray-400 mb-1 flex items-center gap-1">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                     </svg>
                     Previous
                   </span>
-                  <span className="font-medium text-brand-dark group-hover:text-brand-red transition-colors line-clamp-2">
+                  <span className="font-medium text-white group-hover:text-brand-red transition-colors line-clamp-2">
                     {prevCaseStudy.title}
                   </span>
                 </Link>
@@ -308,13 +308,13 @@ export default async function CaseStudyDetailPage({ params }: Props) {
                   href={`/case-studies/${nextCaseStudy.slug}`}
                   className="group flex flex-col items-end"
                 >
-                  <span className="text-sm text-brand-gray mb-1 flex items-center gap-1">
+                  <span className="text-sm text-gray-400 mb-1 flex items-center gap-1">
                     Next
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
                   </span>
-                  <span className="font-medium text-brand-dark group-hover:text-brand-red transition-colors line-clamp-2">
+                  <span className="font-medium text-white group-hover:text-brand-red transition-colors line-clamp-2">
                     {nextCaseStudy.title}
                   </span>
                 </Link>
@@ -328,29 +328,29 @@ export default async function CaseStudyDetailPage({ params }: Props) {
 
       {/* Related Case Studies */}
       {relatedCaseStudies.length > 0 && (
-        <section className="py-16 sm:py-20 bg-gray-50">
+        <section className="py-16 sm:py-20 bg-gray-900">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-brand-dark mb-8">Related Case Studies</h2>
+            <h2 className="text-2xl font-bold text-white mb-8">Related Case Studies</h2>
             <div className="grid sm:grid-cols-2 gap-6">
               {relatedCaseStudies.map((related) => (
                 <Link
                   key={related.slug}
                   href={`/case-studies/${related.slug}`}
-                  className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow group"
+                  className="bg-gray-900 border border-gray-800 p-6 rounded-lg group"
                 >
                   <div className="flex flex-wrap gap-2 mb-3">
-                    <span className="inline-block px-2 py-1 bg-red-100 text-brand-red text-xs font-medium rounded">
+                    <span className="inline-block px-2 py-1 bg-red-950/50 text-brand-red text-xs font-medium rounded">
                       {related.crisisType}
                     </span>
-                    <span className="inline-block px-2 py-1 bg-gray-100 text-brand-gray text-xs font-medium rounded">
+                    <span className="inline-block px-2 py-1 bg-gray-800 text-gray-400 text-xs font-medium rounded">
                       {related.industry}
                     </span>
                   </div>
-                  <p className="text-sm text-brand-gray mb-1">{related.client}</p>
-                  <h3 className="text-lg font-bold text-brand-dark mb-2 group-hover:text-brand-red transition-colors">
+                  <p className="text-sm text-gray-400 mb-1">{related.client}</p>
+                  <h3 className="text-lg font-bold text-white mb-2 group-hover:text-brand-red transition-colors">
                     {related.title}
                   </h3>
-                  <p className="text-brand-gray text-sm mb-4 line-clamp-2">
+                  <p className="text-gray-400 text-sm mb-4 line-clamp-2">
                     {related.tagline}
                   </p>
                   <span className="text-brand-red font-medium text-sm inline-flex items-center">
@@ -377,12 +377,12 @@ export default async function CaseStudyDetailPage({ params }: Props) {
       )}
 
       {/* Final CTA Section */}
-      <section className="py-16 sm:py-20">
+      <section className="py-16 sm:py-20 bg-gray-950">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-brand-dark">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white">
             Ready to Write Your Success Story?
           </h2>
-          <p className="mt-4 text-lg text-brand-gray">
+          <p className="mt-4 text-lg text-gray-400">
             Whether you&apos;re facing an infrastructure emergency or planning a complex migration,
             we&apos;ve likely solved a similar problem before. Let&apos;s talk about your situation.
           </p>
@@ -395,7 +395,7 @@ export default async function CaseStudyDetailPage({ params }: Props) {
             </Link>
             <Link
               href="/#book"
-              className="inline-flex items-center justify-center px-8 py-4 border-2 border-brand-dark text-brand-dark font-semibold rounded-lg hover:bg-brand-dark hover:text-white transition-colors"
+              className="inline-flex items-center justify-center px-8 py-4 border-2 border-gray-600 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors"
             >
               Book a Consultation
             </Link>

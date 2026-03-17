@@ -68,10 +68,10 @@ const serviceIllustrations: Record<string, React.ReactNode> = {
   'emergency-recovery': (
     <svg viewBox="0 0 240 180" className="w-full max-w-xs" fill="none">
       {/* Server rack */}
-      <rect x="70" y="30" width="100" height="120" rx="6" stroke="#dc2626" strokeWidth="2" fill="#fef2f2"/>
-      <rect x="82" y="45" width="76" height="14" rx="2" fill="#fee2e2" stroke="#dc2626" strokeWidth="1.5"/>
-      <rect x="82" y="67" width="76" height="14" rx="2" fill="#fee2e2" stroke="#dc2626" strokeWidth="1.5"/>
-      <rect x="82" y="89" width="76" height="14" rx="2" fill="#fee2e2" stroke="#dc2626" strokeWidth="1.5"/>
+      <rect x="70" y="30" width="100" height="120" rx="6" stroke="#dc2626" strokeWidth="2" fill="#991b1b" opacity="0.3"/>
+      <rect x="82" y="45" width="76" height="14" rx="2" fill="#7f1d1d" opacity="0.4" stroke="#dc2626" strokeWidth="1.5"/>
+      <rect x="82" y="67" width="76" height="14" rx="2" fill="#7f1d1d" opacity="0.4" stroke="#dc2626" strokeWidth="1.5"/>
+      <rect x="82" y="89" width="76" height="14" rx="2" fill="#7f1d1d" opacity="0.4" stroke="#dc2626" strokeWidth="1.5"/>
       {/* Status lights */}
       <circle cx="92" cy="52" r="3" fill="#dc2626"><animate attributeName="opacity" values="1;0.3;1" dur="1s" repeatCount="indefinite"/></circle>
       <circle cx="92" cy="74" r="3" fill="#f59e0b"/>
@@ -86,15 +86,15 @@ const serviceIllustrations: Record<string, React.ReactNode> = {
   'cloud-migration': (
     <svg viewBox="0 0 240 180" className="w-full max-w-xs" fill="none">
       {/* On-prem server */}
-      <rect x="20" y="80" width="50" height="70" rx="4" stroke="#6b7280" strokeWidth="2" fill="#f3f4f6"/>
-      <rect x="28" y="90" width="34" height="8" rx="1" fill="#e5e7eb" stroke="#6b7280" strokeWidth="1"/>
-      <rect x="28" y="104" width="34" height="8" rx="1" fill="#e5e7eb" stroke="#6b7280" strokeWidth="1"/>
-      <rect x="28" y="118" width="34" height="8" rx="1" fill="#e5e7eb" stroke="#6b7280" strokeWidth="1"/>
+      <rect x="20" y="80" width="50" height="70" rx="4" stroke="#6b7280" strokeWidth="2" fill="#374151"/>
+      <rect x="28" y="90" width="34" height="8" rx="1" fill="#374151" stroke="#6b7280" strokeWidth="1"/>
+      <rect x="28" y="104" width="34" height="8" rx="1" fill="#374151" stroke="#6b7280" strokeWidth="1"/>
+      <rect x="28" y="118" width="34" height="8" rx="1" fill="#374151" stroke="#6b7280" strokeWidth="1"/>
       {/* Arrow */}
       <path d="M80 110h50" stroke="#dc2626" strokeWidth="2.5" strokeDasharray="6 4"/>
       <path d="M125 105l10 5-10 5" fill="#dc2626"/>
       {/* Cloud */}
-      <path d="M160 75c0-11 9-20 20-20 8.5 0 15.8 5.3 18.7 12.8C201 65.4 205 63 210 63c8.3 0 15 6.7 15 15 0 .5 0 1-.1 1.5 4.5 2.3 7.6 7 7.6 12.5 0 7.7-6.3 14-14 14h-46c-7.2 0-13-5.8-13-13 0-5.5 3.5-10.2 8.4-12 .1-.2.1-4 0-6z" fill="#fee2e2" stroke="#dc2626" strokeWidth="2"/>
+      <path d="M160 75c0-11 9-20 20-20 8.5 0 15.8 5.3 18.7 12.8C201 65.4 205 63 210 63c8.3 0 15 6.7 15 15 0 .5 0 1-.1 1.5 4.5 2.3 7.6 7 7.6 12.5 0 7.7-6.3 14-14 14h-46c-7.2 0-13-5.8-13-13 0-5.5 3.5-10.2 8.4-12 .1-.2.1-4 0-6z" fill="#7f1d1d" opacity="0.4" stroke="#dc2626" strokeWidth="2"/>
       {/* Check in cloud */}
       <path d="M185 82l6 6 12-12" stroke="#dc2626" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
@@ -102,20 +102,20 @@ const serviceIllustrations: Record<string, React.ReactNode> = {
   'infrastructure-modernization': (
     <svg viewBox="0 0 240 180" className="w-full max-w-xs" fill="none">
       {/* Old system */}
-      <rect x="20" y="50" width="70" height="90" rx="4" stroke="#9ca3af" strokeWidth="2" fill="#f9fafb" strokeDasharray="4 2"/>
-      <text x="55" y="80" textAnchor="middle" fontSize="10" fill="#9ca3af" fontFamily="monospace">Legacy</text>
-      <rect x="30" y="90" width="50" height="6" rx="1" fill="#e5e7eb"/>
-      <rect x="30" y="102" width="50" height="6" rx="1" fill="#e5e7eb"/>
-      <rect x="30" y="114" width="50" height="6" rx="1" fill="#e5e7eb"/>
+      <rect x="20" y="50" width="70" height="90" rx="4" stroke="#6b7280" strokeWidth="2" fill="#374151" strokeDasharray="4 2"/>
+      <text x="55" y="80" textAnchor="middle" fontSize="10" fill="#e5e7eb" fontFamily="monospace">Legacy</text>
+      <rect x="30" y="90" width="50" height="6" rx="1" fill="#374151"/>
+      <rect x="30" y="102" width="50" height="6" rx="1" fill="#374151"/>
+      <rect x="30" y="114" width="50" height="6" rx="1" fill="#374151"/>
       {/* Transform arrow */}
       <path d="M100 95h30" stroke="#dc2626" strokeWidth="2"/>
       <path d="M125 90l10 5-10 5" fill="#dc2626"/>
       {/* Modern microservices */}
-      <rect x="145" y="40" width="35" height="30" rx="6" fill="#fee2e2" stroke="#dc2626" strokeWidth="1.5"/>
-      <rect x="190" y="40" width="35" height="30" rx="6" fill="#fee2e2" stroke="#dc2626" strokeWidth="1.5"/>
-      <rect x="145" y="80" width="35" height="30" rx="6" fill="#fee2e2" stroke="#dc2626" strokeWidth="1.5"/>
-      <rect x="190" y="80" width="35" height="30" rx="6" fill="#fee2e2" stroke="#dc2626" strokeWidth="1.5"/>
-      <rect x="168" y="120" width="35" height="30" rx="6" fill="#fee2e2" stroke="#dc2626" strokeWidth="1.5"/>
+      <rect x="145" y="40" width="35" height="30" rx="6" fill="#7f1d1d" opacity="0.4" stroke="#dc2626" strokeWidth="1.5"/>
+      <rect x="190" y="40" width="35" height="30" rx="6" fill="#7f1d1d" opacity="0.4" stroke="#dc2626" strokeWidth="1.5"/>
+      <rect x="145" y="80" width="35" height="30" rx="6" fill="#7f1d1d" opacity="0.4" stroke="#dc2626" strokeWidth="1.5"/>
+      <rect x="190" y="80" width="35" height="30" rx="6" fill="#7f1d1d" opacity="0.4" stroke="#dc2626" strokeWidth="1.5"/>
+      <rect x="168" y="120" width="35" height="30" rx="6" fill="#7f1d1d" opacity="0.4" stroke="#dc2626" strokeWidth="1.5"/>
       {/* Connections */}
       <line x1="180" y1="55" x2="190" y2="55" stroke="#dc2626" strokeWidth="1" opacity="0.5"/>
       <line x1="162" y1="70" x2="162" y2="80" stroke="#dc2626" strokeWidth="1" opacity="0.5"/>
@@ -126,16 +126,16 @@ const serviceIllustrations: Record<string, React.ReactNode> = {
   'high-availability': (
     <svg viewBox="0 0 240 180" className="w-full max-w-xs" fill="none">
       {/* Shield */}
-      <path d="M120 20l50 20v50c0 30-20 55-50 70-30-15-50-40-50-70V40l50-20z" fill="#fef2f2" stroke="#dc2626" strokeWidth="2"/>
+      <path d="M120 20l50 20v50c0 30-20 55-50 70-30-15-50-40-50-70V40l50-20z" fill="#991b1b" opacity="0.3" stroke="#dc2626" strokeWidth="2"/>
       {/* Uptime arrow */}
       <path d="M120 60v40" stroke="#dc2626" strokeWidth="3" strokeLinecap="round"/>
       <path d="M108 72l12-16 12 16" stroke="#dc2626" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
       {/* 99.99% text */}
       <text x="120" y="120" textAnchor="middle" fontSize="14" fill="#dc2626" fontWeight="bold" fontFamily="system-ui">99.99%</text>
-      <text x="120" y="135" textAnchor="middle" fontSize="9" fill="#6b7280" fontFamily="system-ui">uptime</text>
+      <text x="120" y="135" textAnchor="middle" fontSize="9" fill="#e5e7eb" fontFamily="system-ui">uptime</text>
       {/* Redundancy nodes */}
-      <circle cx="40" cy="90" r="12" fill="#fee2e2" stroke="#dc2626" strokeWidth="1.5"/>
-      <circle cx="200" cy="90" r="12" fill="#fee2e2" stroke="#dc2626" strokeWidth="1.5"/>
+      <circle cx="40" cy="90" r="12" fill="#7f1d1d" opacity="0.4" stroke="#dc2626" strokeWidth="1.5"/>
+      <circle cx="200" cy="90" r="12" fill="#7f1d1d" opacity="0.4" stroke="#dc2626" strokeWidth="1.5"/>
       <path d="M52 90h18" stroke="#dc2626" strokeWidth="1" strokeDasharray="3 2"/>
       <path d="M188 90h-18" stroke="#dc2626" strokeWidth="1" strokeDasharray="3 2"/>
     </svg>
@@ -146,13 +146,13 @@ const serviceIllustrations: Record<string, React.ReactNode> = {
       <path d="M70 90c0-22 18-40 40-40s40 18 40 40-18 40-40 40" stroke="#dc2626" strokeWidth="2.5" fill="none"/>
       <path d="M170 90c0 22-18 40-40 40s-40-18-40-40 18-40 40-40" stroke="#dc2626" strokeWidth="2.5" fill="none" strokeDasharray="6 4"/>
       {/* Pipeline stages */}
-      <circle cx="70" cy="90" r="14" fill="#fee2e2" stroke="#dc2626" strokeWidth="2"/>
+      <circle cx="70" cy="90" r="14" fill="#7f1d1d" opacity="0.4" stroke="#dc2626" strokeWidth="2"/>
       <text x="70" y="94" textAnchor="middle" fontSize="8" fill="#dc2626" fontWeight="bold">Code</text>
-      <circle cx="120" cy="50" r="14" fill="#fee2e2" stroke="#dc2626" strokeWidth="2"/>
+      <circle cx="120" cy="50" r="14" fill="#7f1d1d" opacity="0.4" stroke="#dc2626" strokeWidth="2"/>
       <text x="120" y="54" textAnchor="middle" fontSize="8" fill="#dc2626" fontWeight="bold">Build</text>
-      <circle cx="170" cy="90" r="14" fill="#fee2e2" stroke="#dc2626" strokeWidth="2"/>
+      <circle cx="170" cy="90" r="14" fill="#7f1d1d" opacity="0.4" stroke="#dc2626" strokeWidth="2"/>
       <text x="170" y="94" textAnchor="middle" fontSize="8" fill="#dc2626" fontWeight="bold">Test</text>
-      <circle cx="120" cy="130" r="14" fill="#fee2e2" stroke="#dc2626" strokeWidth="2"/>
+      <circle cx="120" cy="130" r="14" fill="#7f1d1d" opacity="0.4" stroke="#dc2626" strokeWidth="2"/>
       <text x="120" y="134" textAnchor="middle" fontSize="7" fill="#dc2626" fontWeight="bold">Deploy</text>
       {/* Rocket */}
       <path d="M205 30l-5 15h10l-5-15z" fill="#dc2626"/>
@@ -162,15 +162,15 @@ const serviceIllustrations: Record<string, React.ReactNode> = {
   'networking': (
     <svg viewBox="0 0 240 180" className="w-full max-w-xs" fill="none">
       {/* Central hub */}
-      <circle cx="120" cy="90" r="20" fill="#fee2e2" stroke="#dc2626" strokeWidth="2"/>
+      <circle cx="120" cy="90" r="20" fill="#7f1d1d" opacity="0.4" stroke="#dc2626" strokeWidth="2"/>
       <circle cx="120" cy="90" r="8" fill="#dc2626"/>
       {/* Nodes */}
-      <circle cx="50" cy="40" r="14" fill="#fef2f2" stroke="#dc2626" strokeWidth="1.5"/>
-      <circle cx="190" cy="40" r="14" fill="#fef2f2" stroke="#dc2626" strokeWidth="1.5"/>
-      <circle cx="50" cy="140" r="14" fill="#fef2f2" stroke="#dc2626" strokeWidth="1.5"/>
-      <circle cx="190" cy="140" r="14" fill="#fef2f2" stroke="#dc2626" strokeWidth="1.5"/>
-      <circle cx="30" cy="90" r="14" fill="#fef2f2" stroke="#dc2626" strokeWidth="1.5"/>
-      <circle cx="210" cy="90" r="14" fill="#fef2f2" stroke="#dc2626" strokeWidth="1.5"/>
+      <circle cx="50" cy="40" r="14" fill="#991b1b" opacity="0.3" stroke="#dc2626" strokeWidth="1.5"/>
+      <circle cx="190" cy="40" r="14" fill="#991b1b" opacity="0.3" stroke="#dc2626" strokeWidth="1.5"/>
+      <circle cx="50" cy="140" r="14" fill="#991b1b" opacity="0.3" stroke="#dc2626" strokeWidth="1.5"/>
+      <circle cx="190" cy="140" r="14" fill="#991b1b" opacity="0.3" stroke="#dc2626" strokeWidth="1.5"/>
+      <circle cx="30" cy="90" r="14" fill="#991b1b" opacity="0.3" stroke="#dc2626" strokeWidth="1.5"/>
+      <circle cx="210" cy="90" r="14" fill="#991b1b" opacity="0.3" stroke="#dc2626" strokeWidth="1.5"/>
       {/* Connections */}
       <line x1="64" y1="48" x2="102" y2="78" stroke="#dc2626" strokeWidth="1.5" opacity="0.6"/>
       <line x1="176" y1="48" x2="138" y2="78" stroke="#dc2626" strokeWidth="1.5" opacity="0.6"/>
@@ -185,24 +185,24 @@ const serviceIllustrations: Record<string, React.ReactNode> = {
   'disaster-prevention': (
     <svg viewBox="0 0 240 180" className="w-full max-w-xs" fill="none">
       {/* Shield with checkmark */}
-      <path d="M120 15l60 25v55c0 35-25 65-60 80-35-15-60-45-60-80V40l60-25z" fill="#fef2f2" stroke="#dc2626" strokeWidth="2"/>
+      <path d="M120 15l60 25v55c0 35-25 65-60 80-35-15-60-45-60-80V40l60-25z" fill="#991b1b" opacity="0.3" stroke="#dc2626" strokeWidth="2"/>
       <path d="M95 85l15 15 35-35" stroke="#dc2626" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
       {/* Monitoring lines */}
       <path d="M20 150h30l5-10 8 20 6-15 8 10 5-5h30" stroke="#dc2626" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.5"/>
       <path d="M130 150h20l5-8 6 16 5-12 7 8 4-4h25" stroke="#dc2626" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.5"/>
       {/* Warning indicators prevented */}
-      <circle cx="35" cy="35" r="10" stroke="#9ca3af" strokeWidth="1.5" fill="none" strokeDasharray="3 2"/>
-      <line x1="28" y1="28" x2="42" y2="42" stroke="#9ca3af" strokeWidth="1.5"/>
-      <circle cx="205" cy="35" r="10" stroke="#9ca3af" strokeWidth="1.5" fill="none" strokeDasharray="3 2"/>
-      <line x1="198" y1="28" x2="212" y2="42" stroke="#9ca3af" strokeWidth="1.5"/>
+      <circle cx="35" cy="35" r="10" stroke="#6b7280" strokeWidth="1.5" fill="none" strokeDasharray="3 2"/>
+      <line x1="28" y1="28" x2="42" y2="42" stroke="#6b7280" strokeWidth="1.5"/>
+      <circle cx="205" cy="35" r="10" stroke="#6b7280" strokeWidth="1.5" fill="none" strokeDasharray="3 2"/>
+      <line x1="198" y1="28" x2="212" y2="42" stroke="#6b7280" strokeWidth="1.5"/>
     </svg>
   ),
   'ai-security': (
     <svg viewBox="0 0 240 180" className="w-full max-w-xs" fill="none">
       {/* Shield */}
-      <path d="M120 20l55 22v48c0 32-22 58-55 72-33-14-55-40-55-72V42l55-22z" fill="#fef2f2" stroke="#dc2626" strokeWidth="2"/>
+      <path d="M120 20l55 22v48c0 32-22 58-55 72-33-14-55-40-55-72V42l55-22z" fill="#991b1b" opacity="0.3" stroke="#dc2626" strokeWidth="2"/>
       {/* AI brain icon inside shield */}
-      <circle cx="120" cy="75" r="22" fill="#fee2e2" stroke="#dc2626" strokeWidth="1.5"/>
+      <circle cx="120" cy="75" r="22" fill="#7f1d1d" opacity="0.4" stroke="#dc2626" strokeWidth="1.5"/>
       <path d="M108 75c0-6.6 5.4-12 12-12s12 5.4 12 12" stroke="#dc2626" strokeWidth="2" fill="none"/>
       <circle cx="112" cy="72" r="2.5" fill="#dc2626"/>
       <circle cx="128" cy="72" r="2.5" fill="#dc2626"/>
@@ -215,9 +215,9 @@ const serviceIllustrations: Record<string, React.ReactNode> = {
       <path d="M115 100v-4a5 5 0 0110 0v4" stroke="#dc2626" strokeWidth="2" fill="none"/>
       <circle cx="120" cy="108" r="2" fill="white"/>
       {/* Prompt injection blocks */}
-      <rect x="25" y="50" width="40" height="12" rx="2" fill="#fee2e2" stroke="#dc2626" strokeWidth="1" opacity="0.6"/>
+      <rect x="25" y="50" width="40" height="12" rx="2" fill="#7f1d1d" opacity="0.4" stroke="#dc2626" strokeWidth="1" />
       <line x1="25" y1="50" x2="65" y2="62" stroke="#dc2626" strokeWidth="1.5" opacity="0.5"/>
-      <rect x="175" y="50" width="40" height="12" rx="2" fill="#fee2e2" stroke="#dc2626" strokeWidth="1" opacity="0.6"/>
+      <rect x="175" y="50" width="40" height="12" rx="2" fill="#7f1d1d" opacity="0.4" stroke="#dc2626" strokeWidth="1" />
       <line x1="175" y1="50" x2="215" y2="62" stroke="#dc2626" strokeWidth="1.5" opacity="0.5"/>
       {/* Data flow lines */}
       <path d="M30 140h180" stroke="#dc2626" strokeWidth="1" opacity="0.3" strokeDasharray="4 3"/>
@@ -229,11 +229,11 @@ const serviceIllustrations: Record<string, React.ReactNode> = {
       {/* People around a table */}
       <rect x="60" y="90" width="120" height="8" rx="4" fill="#dc2626" opacity="0.2"/>
       {/* Laptop screens on table */}
-      <rect x="75" y="70" width="30" height="22" rx="2" fill="#1f2937" stroke="#374151" strokeWidth="1.5"/>
+      <rect x="75" y="70" width="30" height="22" rx="2" fill="#1f2937" stroke="#6b7280" strokeWidth="1.5"/>
       <rect x="78" y="73" width="24" height="14" rx="1" fill="#111827"/>
       <rect x="81" y="76" width="18" height="2" rx="1" fill="#dc2626" opacity="0.7"/>
       <rect x="81" y="80" width="14" height="2" rx="1" fill="#4ade80" opacity="0.6"/>
-      <rect x="135" y="70" width="30" height="22" rx="2" fill="#1f2937" stroke="#374151" strokeWidth="1.5"/>
+      <rect x="135" y="70" width="30" height="22" rx="2" fill="#1f2937" stroke="#6b7280" strokeWidth="1.5"/>
       <rect x="138" y="73" width="24" height="14" rx="1" fill="#111827"/>
       <rect x="141" y="76" width="18" height="2" rx="1" fill="#dc2626" opacity="0.7"/>
       <rect x="141" y="80" width="14" height="2" rx="1" fill="#4ade80" opacity="0.6"/>
@@ -254,12 +254,12 @@ const serviceIllustrations: Record<string, React.ReactNode> = {
         <animate attributeName="opacity" values="0.8;0.3;0.8" dur="2s" repeatCount="indefinite"/>
       </path>
       {/* 10x badge */}
-      <rect x="170" y="25" width="40" height="20" rx="10" fill="#fee2e2" stroke="#dc2626" strokeWidth="1.5"/>
+      <rect x="170" y="25" width="40" height="20" rx="10" fill="#7f1d1d" opacity="0.4" stroke="#dc2626" strokeWidth="1.5"/>
       <text x="190" y="39" textAnchor="middle" fontSize="11" fill="#dc2626" fontWeight="bold">10x</text>
       {/* Chat bubbles representing prompts */}
-      <rect x="30" y="110" width="50" height="16" rx="8" fill="#fee2e2" stroke="#dc2626" strokeWidth="1"/>
+      <rect x="30" y="110" width="50" height="16" rx="8" fill="#7f1d1d" opacity="0.4" stroke="#dc2626" strokeWidth="1"/>
       <text x="55" y="121" textAnchor="middle" fontSize="7" fill="#dc2626">prompt &gt;</text>
-      <rect x="160" y="110" width="50" height="16" rx="8" fill="#fee2e2" stroke="#dc2626" strokeWidth="1"/>
+      <rect x="160" y="110" width="50" height="16" rx="8" fill="#7f1d1d" opacity="0.4" stroke="#dc2626" strokeWidth="1"/>
       <text x="185" y="121" textAnchor="middle" fontSize="7" fill="#dc2626">prompt &gt;</text>
       {/* Arrow showing knowledge transfer */}
       <path d="M120 140v15" stroke="#dc2626" strokeWidth="2" strokeDasharray="4 3"/>
@@ -269,18 +269,18 @@ const serviceIllustrations: Record<string, React.ReactNode> = {
   'ai-infrastructure': (
     <svg viewBox="0 0 240 180" className="w-full max-w-xs" fill="none">
       {/* GPU cluster - 3 cards */}
-      <rect x="30" y="30" width="50" height="70" rx="4" fill="#fef2f2" stroke="#dc2626" strokeWidth="2"/>
-      <rect x="38" y="40" width="34" height="20" rx="2" fill="#fee2e2" stroke="#dc2626" strokeWidth="1"/>
+      <rect x="30" y="30" width="50" height="70" rx="4" fill="#991b1b" opacity="0.3" stroke="#dc2626" strokeWidth="2"/>
+      <rect x="38" y="40" width="34" height="20" rx="2" fill="#7f1d1d" opacity="0.4" stroke="#dc2626" strokeWidth="1"/>
       <rect x="38" y="66" width="34" height="6" rx="1" fill="#dc2626" opacity="0.3"/>
       <rect x="38" y="76" width="34" height="6" rx="1" fill="#dc2626" opacity="0.3"/>
       <text x="55" y="54" textAnchor="middle" fontSize="8" fill="#dc2626" fontWeight="bold">GPU</text>
-      <rect x="95" y="30" width="50" height="70" rx="4" fill="#fef2f2" stroke="#dc2626" strokeWidth="2"/>
-      <rect x="103" y="40" width="34" height="20" rx="2" fill="#fee2e2" stroke="#dc2626" strokeWidth="1"/>
+      <rect x="95" y="30" width="50" height="70" rx="4" fill="#991b1b" opacity="0.3" stroke="#dc2626" strokeWidth="2"/>
+      <rect x="103" y="40" width="34" height="20" rx="2" fill="#7f1d1d" opacity="0.4" stroke="#dc2626" strokeWidth="1"/>
       <rect x="103" y="66" width="34" height="6" rx="1" fill="#dc2626" opacity="0.3"/>
       <rect x="103" y="76" width="34" height="6" rx="1" fill="#dc2626" opacity="0.3"/>
       <text x="120" y="54" textAnchor="middle" fontSize="8" fill="#dc2626" fontWeight="bold">GPU</text>
-      <rect x="160" y="30" width="50" height="70" rx="4" fill="#fef2f2" stroke="#dc2626" strokeWidth="2"/>
-      <rect x="168" y="40" width="34" height="20" rx="2" fill="#fee2e2" stroke="#dc2626" strokeWidth="1"/>
+      <rect x="160" y="30" width="50" height="70" rx="4" fill="#991b1b" opacity="0.3" stroke="#dc2626" strokeWidth="2"/>
+      <rect x="168" y="40" width="34" height="20" rx="2" fill="#7f1d1d" opacity="0.4" stroke="#dc2626" strokeWidth="1"/>
       <rect x="168" y="66" width="34" height="6" rx="1" fill="#dc2626" opacity="0.3"/>
       <rect x="168" y="76" width="34" height="6" rx="1" fill="#dc2626" opacity="0.3"/>
       <text x="185" y="54" textAnchor="middle" fontSize="8" fill="#dc2626" fontWeight="bold">GPU</text>
@@ -290,7 +290,7 @@ const serviceIllustrations: Record<string, React.ReactNode> = {
       <line x1="185" y1="100" x2="185" y2="120" stroke="#dc2626" strokeWidth="2"/>
       <line x1="40" y1="120" x2="200" y2="120" stroke="#dc2626" strokeWidth="2.5"/>
       {/* Model serving */}
-      <rect x="75" y="130" width="90" height="30" rx="6" fill="#fee2e2" stroke="#dc2626" strokeWidth="2"/>
+      <rect x="75" y="130" width="90" height="30" rx="6" fill="#7f1d1d" opacity="0.4" stroke="#dc2626" strokeWidth="2"/>
       <text x="120" y="149" textAnchor="middle" fontSize="10" fill="#dc2626" fontWeight="bold">LLM Inference</text>
       {/* Throughput indicator */}
       <path d="M30 155l-8 8m0-8l8 8" stroke="#dc2626" strokeWidth="1.5" strokeLinecap="round" opacity="0.5"/>
@@ -306,7 +306,7 @@ export default function ServicesPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-brand-dark text-white py-16 sm:py-20">
+      <section className="bg-gray-950 text-white py-16 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl sm:text-5xl font-bold">
             Our Services
@@ -332,7 +332,7 @@ export default function ServicesPage() {
       </section>
 
       {/* Services List */}
-      <section className="py-16 sm:py-20">
+      <section className="py-16 sm:py-20 bg-gray-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="space-y-16">
             {services.map((service, index) => (
@@ -346,11 +346,11 @@ export default function ServicesPage() {
                 {/* Content */}
                 <div className="flex-1">
                   <div className="flex items-center gap-4 mb-4">
-                    <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center text-brand-red">
+                    <div className="w-12 h-12 bg-red-950/50 rounded-lg flex items-center justify-center text-brand-red">
                       {serviceIcons[service.slug]}
                     </div>
                     <div>
-                      <h2 className="text-2xl sm:text-3xl font-bold text-brand-dark">
+                      <h2 className="text-2xl sm:text-3xl font-bold text-white">
                         {service.title}
                       </h2>
                       <p className="text-brand-red font-medium">{service.tagline}</p>
@@ -362,7 +362,7 @@ export default function ServicesPage() {
                     {service.metrics.slice(0, 2).map((metric) => (
                       <span
                         key={metric.label}
-                        className="inline-flex items-center px-3 py-1 bg-gray-100 text-brand-dark text-sm font-medium rounded-full"
+                        className="inline-flex items-center px-3 py-1 bg-gray-800 text-gray-100 text-sm font-medium rounded-full"
                       >
                         <span className="text-brand-red font-bold mr-1">{metric.value}</span>
                         {metric.label}
@@ -370,14 +370,14 @@ export default function ServicesPage() {
                     ))}
                   </div>
 
-                  <p className="text-brand-gray text-lg mb-6">
+                  <p className="text-gray-400 text-lg mb-6">
                     {service.description}
                   </p>
                   <ul className="space-y-2 mb-6">
                     {service.features.map((feature) => (
                       <li key={feature} className="flex items-start gap-2">
                         <svg
-                          className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0"
+                          className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -389,7 +389,7 @@ export default function ServicesPage() {
                             d="M5 13l4 4L19 7"
                           />
                         </svg>
-                        <span className="text-brand-gray">{feature}</span>
+                        <span className="text-gray-400">{feature}</span>
                       </li>
                     ))}
                   </ul>
@@ -417,7 +417,7 @@ export default function ServicesPage() {
                 </div>
 
                 {/* Service illustration */}
-                <div className="flex-1 bg-gray-100 rounded-lg min-h-[200px] lg:min-h-0 flex items-center justify-center p-8">
+                <div className="flex-1 bg-gray-900 border border-gray-800 rounded-lg min-h-[200px] lg:min-h-0 flex items-center justify-center p-8">
                   {serviceIllustrations[service.slug]}
                 </div>
               </div>
@@ -427,14 +427,14 @@ export default function ServicesPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 sm:py-20 bg-gray-50">
+      <section className="py-16 sm:py-20 bg-gray-950">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-brand-dark">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white">
             Ready to Get Started?
           </h2>
-          <p className="mt-4 text-lg text-brand-gray">
-            Whether you're facing an emergency or planning for the future,
-            we're here to help. Let's talk about your infrastructure needs.
+          <p className="mt-4 text-lg text-gray-400">
+            Whether you&apos;re facing an emergency or planning for the future,
+            we&apos;re here to help. Let&apos;s talk about your infrastructure needs.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
             <Link
@@ -445,7 +445,7 @@ export default function ServicesPage() {
             </Link>
             <Link
               href="/#book"
-              className="inline-flex items-center justify-center px-8 py-4 border-2 border-brand-dark text-brand-dark font-semibold rounded-lg hover:bg-brand-dark hover:text-white transition-colors"
+              className="inline-flex items-center justify-center px-8 py-4 border-2 border-gray-600 text-gray-100 font-semibold rounded-lg hover:bg-gray-800 hover:text-white transition-colors"
             >
               Book a Consultation
             </Link>

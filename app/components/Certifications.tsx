@@ -84,10 +84,10 @@ export function Certifications({ className = '' }: CertificationsProps) {
   return (
     <div className={className}>
       <div className="text-center mb-12">
-        <h2 className="text-3xl sm:text-4xl font-bold text-brand-dark">
+        <h2 className="text-3xl sm:text-4xl font-bold text-white">
           Certified Expertise
         </h2>
-        <p className="mt-4 text-lg text-brand-gray">
+        <p className="mt-4 text-lg text-gray-400">
           Industry-recognized credentials and certifications
         </p>
       </div>
@@ -99,7 +99,7 @@ export function Certifications({ className = '' }: CertificationsProps) {
             key={cert.name}
             className="flex flex-col items-center text-center group"
           >
-            <div className="w-20 h-20 md:w-24 md:h-24 bg-white rounded-lg shadow-sm flex items-center justify-center mb-3 group-hover:shadow-md transition-shadow text-brand-gray">
+            <div className="w-20 h-20 md:w-24 md:h-24 bg-gray-900 border border-gray-800 rounded-lg flex items-center justify-center mb-3 group-hover:border-gray-700 transition-colors text-gray-400">
               {certLogos[cert.issuer] || (
                 <span className="text-xs md:text-sm font-bold text-brand-red">
                   {cert.issuer
@@ -111,7 +111,7 @@ export function Certifications({ className = '' }: CertificationsProps) {
                 </span>
               )}
             </div>
-            <p className="text-sm font-medium text-brand-dark max-w-[120px]">
+            <p className="text-sm font-medium text-gray-100 max-w-[120px]">
               {cert.name}
             </p>
           </div>

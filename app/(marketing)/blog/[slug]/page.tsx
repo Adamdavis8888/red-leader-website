@@ -53,7 +53,7 @@ function renderContent(content: string) {
     // Handle headings
     if (paragraph.startsWith('## ')) {
       return (
-        <h2 key={index} className="text-2xl font-bold text-brand-dark mt-10 mb-4">
+        <h2 key={index} className="text-2xl font-bold text-white mt-10 mb-4">
           {paragraph.replace('## ', '')}
         </h2>
       )
@@ -80,13 +80,13 @@ function renderContent(content: string) {
 
     if (hasInlineCode) {
       return (
-        <p key={index} className="mb-4 text-brand-gray leading-relaxed">
+        <p key={index} className="mb-4 text-gray-300 leading-relaxed">
           {parts.map((part, partIndex) => {
             if (part.startsWith('`') && part.endsWith('`')) {
               return (
                 <code
                   key={partIndex}
-                  className="bg-gray-100 text-brand-red px-1.5 py-0.5 rounded text-sm font-mono"
+                  className="bg-gray-800 text-brand-red px-1.5 py-0.5 rounded text-sm font-mono"
                 >
                   {part.slice(1, -1)}
                 </code>
@@ -100,7 +100,7 @@ function renderContent(content: string) {
 
     // Regular paragraph
     return (
-      <p key={index} className="mb-4 text-brand-gray leading-relaxed">
+      <p key={index} className="mb-4 text-gray-300 leading-relaxed">
         {paragraph}
       </p>
     )
@@ -133,22 +133,22 @@ export default async function BlogPostPage({ params }: Props) {
       <JsonLd data={generateBreadcrumbSchema(breadcrumbs)} />
 
       {/* Breadcrumb */}
-      <nav className="bg-gray-50 border-b border-gray-200">
+      <nav className="bg-gray-950 border-b border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <ol className="flex items-center space-x-2 text-sm">
             <li>
-              <Link href="/" className="text-brand-gray hover:text-brand-red transition-colors">
+              <Link href="/" className="text-gray-400 hover:text-brand-red transition-colors">
                 Home
               </Link>
             </li>
-            <li className="text-brand-gray">/</li>
+            <li className="text-gray-400">/</li>
             <li>
-              <Link href="/blog" className="text-brand-gray hover:text-brand-red transition-colors">
+              <Link href="/blog" className="text-gray-400 hover:text-brand-red transition-colors">
                 Blog
               </Link>
             </li>
-            <li className="text-brand-gray">/</li>
-            <li className="text-brand-dark font-medium truncate max-w-[200px]">
+            <li className="text-gray-400">/</li>
+            <li className="text-white font-medium truncate max-w-[200px]">
               {post.title}
             </li>
           </ol>
@@ -156,7 +156,7 @@ export default async function BlogPostPage({ params }: Props) {
       </nav>
 
       {/* Hero Section */}
-      <section className="bg-brand-dark text-white py-16 sm:py-20">
+      <section className="bg-gray-950 text-white py-16 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
             {/* Category Badge */}
@@ -205,7 +205,7 @@ export default async function BlogPostPage({ params }: Props) {
       </section>
 
       {/* Main Content */}
-      <section className="py-16 sm:py-20">
+      <section className="py-16 sm:py-20 bg-gray-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-3 gap-12">
             {/* Article Content */}
@@ -213,13 +213,13 @@ export default async function BlogPostPage({ params }: Props) {
               {renderContent(post.content)}
 
               {/* Tags */}
-              <div className="mt-12 pt-8 border-t border-gray-200">
-                <h3 className="text-sm font-semibold text-brand-dark mb-4">Tags</h3>
+              <div className="mt-12 pt-8 border-t border-gray-800">
+                <h3 className="text-sm font-semibold text-white mb-4">Tags</h3>
                 <div className="flex flex-wrap gap-2">
                   {post.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="inline-block px-3 py-1 bg-gray-100 text-brand-gray text-sm rounded-full"
+                      className="inline-block px-3 py-1 bg-gray-800 text-gray-400 text-sm rounded-full"
                     >
                       {tag}
                     </span>
@@ -230,27 +230,27 @@ export default async function BlogPostPage({ params }: Props) {
 
             {/* Sidebar */}
             <aside className="lg:col-span-1">
-              <div className="bg-gray-50 rounded-lg p-6 sticky top-24">
+              <div className="bg-gray-900 border border-gray-800 rounded-lg p-6 sticky top-24">
                 {/* Author Card */}
                 <div className="mb-8">
-                  <h3 className="text-lg font-bold text-brand-dark mb-4">About the Author</h3>
+                  <h3 className="text-lg font-bold text-white mb-4">About the Author</h3>
                   <div className="flex items-center gap-3">
-                    <div className="w-14 h-14 rounded-full bg-brand-dark flex items-center justify-center text-white font-bold">
+                    <div className="w-14 h-14 rounded-full bg-gray-800 flex items-center justify-center text-white font-bold">
                       {post.author.name.split(' ').map((n) => n[0]).join('')}
                     </div>
                     <div>
-                      <p className="font-medium text-brand-dark">{post.author.name}</p>
-                      <p className="text-sm text-brand-gray">{post.author.role}</p>
+                      <p className="font-medium text-white">{post.author.name}</p>
+                      <p className="text-sm text-gray-400">{post.author.role}</p>
                     </div>
                   </div>
                 </div>
 
                 {/* CTA */}
-                <div className="border-t border-gray-200 pt-6">
-                  <h3 className="text-lg font-bold text-brand-dark mb-2">
+                <div className="border-t border-gray-800 pt-6">
+                  <h3 className="text-lg font-bold text-white mb-2">
                     Need Help With {post.category}?
                   </h3>
-                  <p className="text-sm text-brand-gray mb-4">
+                  <p className="text-sm text-gray-400 mb-4">
                     Our team has deep expertise in this area. Let&apos;s discuss your challenges.
                   </p>
                   <div className="space-y-3">
@@ -262,7 +262,7 @@ export default async function BlogPostPage({ params }: Props) {
                     </Link>
                     <Link
                       href="/#book"
-                      className="w-full inline-flex items-center justify-center px-6 py-3 border-2 border-brand-dark text-brand-dark font-semibold rounded-lg hover:bg-brand-dark hover:text-white transition-colors"
+                      className="w-full inline-flex items-center justify-center px-6 py-3 border-2 border-gray-600 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors"
                     >
                       Book a Consultation
                     </Link>
@@ -275,23 +275,23 @@ export default async function BlogPostPage({ params }: Props) {
       </section>
 
       {/* Prev/Next Navigation */}
-      <section className="border-t border-gray-200">
+      <section className="border-t border-gray-800 bg-gray-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2">
             {/* Previous */}
-            <div className={`py-8 pr-4 ${prevPost ? 'border-r border-gray-200' : ''}`}>
+            <div className={`py-8 pr-4 ${prevPost ? 'border-r border-gray-800' : ''}`}>
               {prevPost ? (
                 <Link
                   href={`/blog/${prevPost.slug}`}
                   className="group flex flex-col"
                 >
-                  <span className="text-sm text-brand-gray mb-1 flex items-center gap-1">
+                  <span className="text-sm text-gray-400 mb-1 flex items-center gap-1">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                     </svg>
                     Previous
                   </span>
-                  <span className="font-medium text-brand-dark group-hover:text-brand-red transition-colors line-clamp-2">
+                  <span className="font-medium text-white group-hover:text-brand-red transition-colors line-clamp-2">
                     {prevPost.title}
                   </span>
                 </Link>
@@ -307,13 +307,13 @@ export default async function BlogPostPage({ params }: Props) {
                   href={`/blog/${nextPost.slug}`}
                   className="group flex flex-col items-end"
                 >
-                  <span className="text-sm text-brand-gray mb-1 flex items-center gap-1">
+                  <span className="text-sm text-gray-400 mb-1 flex items-center gap-1">
                     Next
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
                   </span>
-                  <span className="font-medium text-brand-dark group-hover:text-brand-red transition-colors line-clamp-2">
+                  <span className="font-medium text-white group-hover:text-brand-red transition-colors line-clamp-2">
                     {nextPost.title}
                   </span>
                 </Link>
@@ -327,28 +327,28 @@ export default async function BlogPostPage({ params }: Props) {
 
       {/* Related Posts */}
       {relatedPosts.length > 0 && (
-        <section className="py-16 sm:py-20 bg-gray-50">
+        <section className="py-16 sm:py-20 bg-gray-900">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-brand-dark mb-8">Related Articles</h2>
+            <h2 className="text-2xl font-bold text-white mb-8">Related Articles</h2>
             <div className="grid sm:grid-cols-2 gap-6">
               {relatedPosts.map((related) => (
                 <Link
                   key={related.slug}
                   href={`/blog/${related.slug}`}
-                  className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow group"
+                  className="bg-gray-900 border border-gray-800 p-6 rounded-lg group"
                 >
                   <div className="flex flex-wrap gap-2 mb-3">
-                    <span className="inline-block px-2 py-1 bg-red-100 text-brand-red text-xs font-medium rounded">
+                    <span className="inline-block px-2 py-1 bg-red-950/50 text-brand-red text-xs font-medium rounded">
                       {related.category}
                     </span>
-                    <span className="inline-block px-2 py-1 bg-gray-100 text-brand-gray text-xs font-medium rounded">
+                    <span className="inline-block px-2 py-1 bg-gray-800 text-gray-400 text-xs font-medium rounded">
                       {related.readingTime}
                     </span>
                   </div>
-                  <h3 className="text-lg font-bold text-brand-dark mb-2 group-hover:text-brand-red transition-colors">
+                  <h3 className="text-lg font-bold text-white mb-2 group-hover:text-brand-red transition-colors">
                     {related.title}
                   </h3>
-                  <p className="text-brand-gray text-sm mb-4 line-clamp-2">
+                  <p className="text-gray-400 text-sm mb-4 line-clamp-2">
                     {related.excerpt}
                   </p>
                   <span className="text-brand-red font-medium text-sm inline-flex items-center">
@@ -375,11 +375,11 @@ export default async function BlogPostPage({ params }: Props) {
       )}
 
       {/* Back to Blog Link */}
-      <section className="py-8 border-t border-gray-200">
+      <section className="py-8 border-t border-gray-800 bg-gray-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Link
             href="/blog"
-            className="inline-flex items-center text-brand-gray hover:text-brand-red transition-colors"
+            className="inline-flex items-center text-gray-400 hover:text-brand-red transition-colors"
           >
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -390,12 +390,12 @@ export default async function BlogPostPage({ params }: Props) {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-16 sm:py-20">
+      <section className="py-16 sm:py-20 bg-gray-950">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-brand-dark">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white">
             Ready to Improve Your Infrastructure?
           </h2>
-          <p className="mt-4 text-lg text-brand-gray">
+          <p className="mt-4 text-lg text-gray-400">
             Whether you&apos;re facing an infrastructure emergency or planning proactive improvements,
             our team has the expertise to help.
           </p>
@@ -408,7 +408,7 @@ export default async function BlogPostPage({ params }: Props) {
             </Link>
             <Link
               href="/#book"
-              className="inline-flex items-center justify-center px-8 py-4 border-2 border-brand-dark text-brand-dark font-semibold rounded-lg hover:bg-brand-dark hover:text-white transition-colors"
+              className="inline-flex items-center justify-center px-8 py-4 border-2 border-gray-600 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors"
             >
               Book a Consultation
             </Link>

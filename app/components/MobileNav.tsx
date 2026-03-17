@@ -30,7 +30,7 @@ export function MobileNav() {
       {/* Hamburger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2 text-brand-dark hover:text-brand-red transition-colors"
+        className="p-2 text-gray-300 hover:text-brand-red transition-colors"
         aria-label="Toggle menu"
         aria-expanded={isOpen}
       >
@@ -62,11 +62,11 @@ export function MobileNav() {
           />
 
           {/* Menu Panel */}
-          <div className="fixed top-0 right-0 bottom-0 w-64 bg-white shadow-xl z-50 p-6">
+          <div className="fixed top-0 right-0 bottom-0 w-64 bg-gray-950 border-l border-gray-800 z-50 p-6">
             <div className="flex justify-end mb-8">
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-2 text-brand-dark hover:text-brand-red transition-colors"
+                className="p-2 text-gray-300 hover:text-brand-red transition-colors"
                 aria-label="Close menu"
               >
                 <svg
@@ -86,31 +86,31 @@ export function MobileNav() {
             <nav className="flex flex-col space-y-4">
               <Link
                 href="/"
-                className="text-lg text-brand-dark hover:text-brand-red transition-colors py-2"
+                className="text-lg text-gray-300 hover:text-brand-red transition-colors py-2"
               >
                 Home
               </Link>
               <Link
                 href="/services"
-                className="text-lg text-brand-dark hover:text-brand-red transition-colors py-2"
+                className="text-lg text-gray-300 hover:text-brand-red transition-colors py-2"
               >
                 Services
               </Link>
               <Link
                 href="/about"
-                className="text-lg text-brand-dark hover:text-brand-red transition-colors py-2"
+                className="text-lg text-gray-300 hover:text-brand-red transition-colors py-2"
               >
                 About
               </Link>
               <Link
                 href="/contact"
-                className="text-lg text-brand-dark hover:text-brand-red transition-colors py-2"
+                className="text-lg text-gray-300 hover:text-brand-red transition-colors py-2"
               >
                 Contact
               </Link>
 
               {/* Emergency CTA in mobile menu */}
-              <div className="pt-4 border-t border-gray-200">
+              <div className="pt-4 border-t border-gray-800">
                 <a
                   href="tel:+14088413982"
                   className="block text-center bg-brand-red text-white px-6 py-3 rounded-lg font-semibold hover:bg-brand-red-dark transition-colors"

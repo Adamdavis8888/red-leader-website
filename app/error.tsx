@@ -16,11 +16,11 @@ export default function Error({
   }, [error])
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-16 sm:py-24 bg-gray-50">
+    <div className="min-h-screen flex items-center justify-center py-16 sm:py-24 bg-gray-950">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         {/* Error Icon */}
         <div className="mb-8">
-          <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto">
+          <div className="w-20 h-20 bg-red-950/50 rounded-full flex items-center justify-center mx-auto">
             <svg
               className="w-10 h-10 text-brand-red"
               fill="none"
@@ -39,22 +39,22 @@ export default function Error({
         </div>
 
         {/* Message */}
-        <h1 className="text-3xl sm:text-4xl font-bold text-brand-dark mb-4">
+        <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">
           Something Went Wrong
         </h1>
-        <p className="text-lg text-brand-gray mb-8">
+        <p className="text-lg text-gray-400 mb-8">
           We encountered an unexpected error. Don't worry — as infrastructure experts,
           we know how to recover from these situations.
         </p>
 
         {/* Error Details (development only) */}
         {process.env.NODE_ENV === 'development' && error.message && (
-          <div className="mb-8 p-4 bg-gray-100 rounded-lg text-left">
-            <p className="text-sm font-mono text-brand-gray break-all">
+          <div className="mb-8 p-4 bg-gray-900 border border-gray-800 rounded-lg text-left">
+            <p className="text-sm font-mono text-gray-400 break-all">
               {error.message}
             </p>
             {error.digest && (
-              <p className="text-xs text-gray-400 mt-2">
+              <p className="text-xs text-gray-500 mt-2">
                 Error ID: {error.digest}
               </p>
             )}
@@ -85,7 +85,7 @@ export default function Error({
           </button>
           <Link
             href="/"
-            className="inline-flex items-center justify-center px-6 py-3 border-2 border-brand-dark text-brand-dark font-semibold rounded-lg hover:bg-brand-dark hover:text-white transition-colors"
+            className="inline-flex items-center justify-center px-6 py-3 border-2 border-gray-600 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors"
           >
             <svg
               className="w-5 h-5 mr-2"
@@ -106,11 +106,11 @@ export default function Error({
         </div>
 
         {/* Emergency CTA */}
-        <div className="p-6 bg-white rounded-lg border border-gray-200">
-          <p className="text-brand-dark font-semibold mb-2">
+        <div className="p-6 bg-gray-900 rounded-lg border border-gray-800">
+          <p className="text-white font-semibold mb-2">
             Need immediate assistance?
           </p>
-          <p className="text-brand-gray text-sm mb-4">
+          <p className="text-gray-400 text-sm mb-4">
             Our team is available 24/7 to help with any issues.
           </p>
           <a
